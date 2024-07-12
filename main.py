@@ -9,6 +9,10 @@ from __feature__ import snake_case, true_property
 
 
 my_app = QApplication([])
+label_font = QFont()
+label_font.set_family("Times New Roman")
+label_font.set_point_size(24)
+my_app.set_font(label_font, "QLabel")
 
 class MainWindow(QWidget):
     """This class defines the main window of the application, which will house all other necessary widgets."""
