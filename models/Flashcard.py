@@ -7,6 +7,15 @@ class Flashcard:
         self.answer = answer
         self.next_review_date = datetime.now()
 
+    def review(self, grade: int) -> None:
+        # Simplified SM-2 Algorithm for spaced repetition
+        if grade < 3:
+            self.next_review_date = datetime.now()
+        elif grade == 3:
+            self.next_review_date = self.next_review_date + timedelta(days=1)
+        else:
+            self.next_review_date = self.next_review_date + timedelta(days=3)
+
     def __str__(self):
         return f"Question: {self.question}\nAnswer: {self.answer}\nNext Review Date: {self.next_review_date}"
 
