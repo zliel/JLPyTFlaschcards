@@ -72,9 +72,13 @@ class CardWidget(QWidget):
         self.update_card()
 
     def update_card_list(self):
-        pass
+        # Filter out cards that are not due for review
+        self.cards = [card for card in self.cards if card.next_review_date <= datetime.now()]
+        # Sort the cards by next review
+        self.cards = sorted(self.cards, key=lambda card: card.next_review_date)
 
     def update_card(self):
+        # If there are no cards left, display a message
         if len(self.cards) == 0:
             self.question_label.text = "No more cards to review"
             self.answer_label.hide()
@@ -82,6 +86,7 @@ class CardWidget(QWidget):
             self.pass_btn.hide()
             self.fail_btn.hide()
         else:
+            # Otherwise, display the front of the card
             card = self.cards[0]
             self.question_label.text = "Front: " + card.question
             self.answer_label.text = ""
