@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt, Slot
 from __feature__ import snake_case, true_property
 
 from models.Deck import Deck
+from widgets.CardWidget import CardWidget
 
 
 class DeckListWidget(QWidget):
@@ -41,4 +42,17 @@ class DeckListWidget(QWidget):
 
     @Slot()
     def view_deck(self, deck: Deck):
-        pass
+        # Create a new widget to house the card widget
+        flashcard_layout_widget = QWidget()
+        flashcard_layout = QVBoxLayout(flashcard_layout_widget)
+        card_widget = CardWidget(deck)
+
+        # Create a back button to return to the deck list
+        back_button = QPushButton("Back")
+        back_button.clicked.connect(lambda: self.stacked_widget.set_current_widget(self.deck_list_widget))
+
+        # Add the back button and card widget to the flashcard layout
+        flashcard_layout.add_widget(back_button)
+        flashcard_layout.add_widget(card_widget)
+        self.stacked_widget.add_widget(flashcard_layout_widget)
+        self.stacked_widget.set_current_widget(flashcard_layout_widget)
