@@ -1,10 +1,14 @@
+from uuid import uuid4
+
+
 class Deck:
     def __init__(self, name, cards):
+        self.id = str(uuid4())
         self.name = name
         self.cards = cards
 
     def __str__(self):
-        return f"Deck: {self.name}\nCards: {self.cards}"
+        return f"Deck: {self.name}\nID: {self.id}\nCards: {self.cards}"
 
     def __eq__(self, other):
         return self.name == other.name and self.cards == other.cards
@@ -25,4 +29,4 @@ class Deck:
         return not self < other
 
     def __repr__(self):
-        return f"Deck({self.name}, {self.cards})"
+        return f"Deck({self.id}, {self.name}, {self.cards})"
