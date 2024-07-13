@@ -8,6 +8,7 @@ from __feature__ import snake_case, true_property
 
 from models.Deck import Deck
 
+
 class CardWidget(QWidget):
     def __init__(self, deck: Deck):
         super().__init__()
@@ -56,7 +57,6 @@ class CardWidget(QWidget):
         # Set up the first card
         self.update_card()
 
-
     @Slot()
     def on_show_answer_click(self):
         self.answer_label.text = ("<hr style=\"color: #fff; width: 50%;\">Back: " +
@@ -66,10 +66,11 @@ class CardWidget(QWidget):
         self.pass_btn.show()
         self.fail_btn.show()
 
-
     @Slot()
     def on_review_click(self, grade: int):
         self.cards[0].review(grade)
+        # When a card is reviewed, the deck is modified, for the save function to know to save this particular deck
+        self.deck.is_modified = True
         self.update_card_list()
 
         self.show_answer_btn.show()
