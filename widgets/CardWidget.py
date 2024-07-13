@@ -63,7 +63,13 @@ class CardWidget(QWidget):
 
     @Slot()
     def on_review_click(self, score: int):
-        pass
+        self.cards[0].review(grade)
+        self.update_card_list()
+
+        self.show_answer_btn.show()
+        self.pass_btn.hide()
+        self.fail_btn.hide()
+        self.update_card()
 
     def update_card_list(self):
         pass
