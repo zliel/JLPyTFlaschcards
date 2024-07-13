@@ -6,6 +6,7 @@ class Deck:
         self.id = str(uuid4())
         self.name = name
         self.cards = cards
+        self.is_modified = False
 
     def __str__(self):
         return f"Deck: {self.name}\nID: {self.id}\nCards: {self.cards}"
