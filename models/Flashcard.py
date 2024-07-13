@@ -6,12 +6,14 @@ class Flashcard:
         self.question = question
         self.answer = answer
         self.next_review_date = datetime.now()
+        self.repetitions = 0
+        self.easiness_factor = 2.5
 
-    def review(self, grade: int) -> None:
+    def review(self, quality: int) -> None:
         # Simplified SM-2 Algorithm for spaced repetition
-        if grade < 3:
+        if quality < 3:
             self.next_review_date = datetime.now()
-        elif grade == 3:
+        elif quality == 3:
             self.next_review_date = self.next_review_date + timedelta(days=1)
         else:
             self.next_review_date = self.next_review_date + timedelta(days=3)
