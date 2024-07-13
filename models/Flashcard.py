@@ -34,6 +34,24 @@ class Flashcard:
         # Update the next review date
         self.next_review_date = datetime.now() + timedelta(days=self.interval)
 
+    def print_stats(self) -> None:
+        print(f"Question: {self.question}")
+        print(f"Answer: {self.answer}")
+        print(f"Next Review Date: {self.next_review_date}")
+        print(f"Repetitions: {self.repetitions}")
+        print(f"Easiness Factor: {self.easiness_factor}")
+        print(f"Interval: {self.interval}")
+
+    def get_stats(self) -> dict:
+        return {
+            "question": self.question,
+            "answer": self.answer,
+            "next_review_date": self.next_review_date,
+            "repetitions": self.repetitions,
+            "easiness_factor": self.easiness_factor,
+            "interval": self.interval
+        }
+
     def __str__(self):
         return f"Question: {self.question}\nAnswer: {self.answer}\nNext Review Date: {self.next_review_date}"
 
