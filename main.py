@@ -39,7 +39,11 @@ n5_family_deck = Deck("JLPT N5 Family", [
     Flashcard("親戚", "しんせき - Relatives")
 ])
 
-app_decks = [n5_animal_deck, n5_family_deck]
+app_decks = utils.load_decks_from_csv("decks")
+
+# TODO: Default decks, remove later
+if not app_decks:
+    app_decks = [n5_animal_deck, n5_family_deck]
 
 
 class MainWindow(QWidget):
