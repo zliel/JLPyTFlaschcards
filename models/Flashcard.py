@@ -3,14 +3,14 @@ from uuid import uuid4
 
 
 class Flashcard:
-    def __init__(self, question, answer):
-        self.id = str(uuid4())
+    def __init__(self, question, answer, id=str(uuid4()), next_review_date=datetime.now(), repetitions=0, easiness_factor=2.5, interval=0):
+        self.id = id
         self.question = question
         self.answer = answer
-        self.next_review_date = datetime.now()
-        self.repetitions = 0
-        self.easiness_factor = 2.5
-        self.interval = 0
+        self.next_review_date = datetime.fromisoformat(next_review_date) if isinstance(next_review_date, str) else next_review_date
+        self.repetitions = repetitions
+        self.easiness_factor = easiness_factor
+        self.interval = interval
 
     def review(self, quality: int) -> None:
         # Simplified SM-2 Algorithm for spaced repetition
