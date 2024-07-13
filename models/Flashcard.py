@@ -8,15 +8,31 @@ class Flashcard:
         self.next_review_date = datetime.now()
         self.repetitions = 0
         self.easiness_factor = 2.5
+        self.interval = 0
 
     def review(self, quality: int) -> None:
         # Simplified SM-2 Algorithm for spaced repetition
-        if quality < 3:
-            self.next_review_date = datetime.now()
-        elif quality == 3:
-            self.next_review_date = self.next_review_date + timedelta(days=1)
+        # In our case, this is if the user clicks "Pass"
+        if quality >= 3:
+            if self.repetitions == 0:
+                self.interval = 1
+            elif self.repetitions == 1:
+                self.interval = 6
+            else:
+                self.interval = round(self.repetitions * self.easiness_factor)
+            self.repetitions += 1
         else:
-            self.next_review_date = self.next_review_date + timedelta(days=3)
+            # If the user clicks "Fail", reset the card's repetitions and interval
+            self.repetitions = 0
+            self.interval = 1
+
+        # Update the easiness factor
+        self.easiness_factor = self.easiness_factor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
+        if self.easiness_factor < 1.3:
+            self.easiness_factor = 1.3
+
+        # Update the next review date
+        self.next_review_date = datetime.now() + timedelta(days=self.interval)
 
     def __str__(self):
         return f"Question: {self.question}\nAnswer: {self.answer}\nNext Review Date: {self.next_review_date}"
