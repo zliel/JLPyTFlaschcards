@@ -6,7 +6,8 @@ class Deck:
         self.id = str(uuid4())
         self.name = name
         self.cards = cards
-        self.is_modified = False
+        self.is_modified = True
+        # When a new deck is created, it is automatically modified, as it has not been saved yet
 
     def __str__(self):
         return f"Deck: {self.name}\nID: {self.id}\nCards: {self.cards}"
