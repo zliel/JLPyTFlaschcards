@@ -53,7 +53,13 @@ class CardWidget(QWidget):
 
     @Slot()
     def on_show_answer_click(self):
-        pass
+        self.answer_label.text = ("<hr style=\"color: #fff; width: 50%;\">Back: " +
+                                  self.cards[0].answer)
+        self.answer_label.show()
+        self.show_answer_btn.hide()
+        self.pass_btn.show()
+        self.fail_btn.show()
+
 
     @Slot()
     def on_review_click(self, score: int):
