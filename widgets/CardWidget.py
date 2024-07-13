@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt, Slot
 
@@ -13,6 +15,7 @@ class CardWidget(QWidget):
         self.cards = self.deck.cards
 
         vbox = QVBoxLayout()
+        btn_style = "background-color: #5a6363; color: #fff;"
 
         # Question and Answer Labels
         self.question_label = QLabel("")
