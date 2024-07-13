@@ -24,7 +24,7 @@ class Flashcard:
         else:
             # If the user clicks "Fail", reset the card's repetitions and interval
             self.repetitions = 0
-            self.interval = 1
+            self.interval = 0  # Slight adjustment to the algorithm to make the user review the card again on the same day
 
         # Update the easiness factor
         self.easiness_factor = self.easiness_factor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
