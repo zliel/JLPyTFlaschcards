@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
+from uuid import uuid4
 
 
 class Flashcard:
     def __init__(self, question, answer):
+        self.id = str(uuid4())
         self.question = question
         self.answer = answer
         self.next_review_date = datetime.now()
@@ -35,6 +37,7 @@ class Flashcard:
         self.next_review_date = datetime.now() + timedelta(days=self.interval)
 
     def print_stats(self) -> None:
+        print(f"ID: {self.id}")
         print(f"Question: {self.question}")
         print(f"Answer: {self.answer}")
         print(f"Next Review Date: {self.next_review_date}")
@@ -44,6 +47,7 @@ class Flashcard:
 
     def get_stats(self) -> dict:
         return {
+            "id": self.id,
             "question": self.question,
             "answer": self.answer,
             "next_review_date": self.next_review_date,
