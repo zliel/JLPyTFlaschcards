@@ -14,6 +14,9 @@ class CardWidget(QWidget):
         self.deck = deck
         self.cards = self.deck.cards
 
+        # Ensure that the only cards in the list are those that need to be reviewed, and sort them by review date
+        self.update_card_list()
+
         vbox = QVBoxLayout()
         btn_style = "background-color: #5a6363; color: #fff;"
 
