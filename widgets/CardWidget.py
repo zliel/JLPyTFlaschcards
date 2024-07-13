@@ -62,7 +62,7 @@ class CardWidget(QWidget):
 
 
     @Slot()
-    def on_review_click(self, score: int):
+    def on_review_click(self, grade: int):
         self.cards[0].review(grade)
         self.update_card_list()
 
