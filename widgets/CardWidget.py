@@ -75,4 +75,13 @@ class CardWidget(QWidget):
         pass
 
     def update_card(self):
-        pass
+        if len(self.cards) == 0:
+            self.question_label.text = "No more cards to review"
+            self.answer_label.hide()
+            self.show_answer_btn.hide()
+            self.pass_btn.hide()
+            self.fail_btn.hide()
+        else:
+            card = self.cards[0]
+            self.question_label.text = "Front: " + card.question
+            self.answer_label.text = ""
