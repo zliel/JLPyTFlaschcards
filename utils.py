@@ -13,7 +13,7 @@ def is_valid_filename(filename: str) -> bool:
     return re.match(r'^[\w\s-]+\.csv$', filename) is not None
 
 
-def is_safe_path(basedir, path, follow_symlinks=True):
+def is_valid_path(basedir, path, follow_symlinks=True):
     if follow_symlinks:
         abs_path = os.path.abspath(path)
     else:
@@ -77,7 +77,7 @@ def load_decks_from_csv(directory: str) -> List[Deck]:
     decks = []
     for filename in os.listdir(directory):
         filepath = os.path.join(directory, filename)
-        if is_safe_path(directory, filepath) and is_valid_filename(filename):
+        if is_valid_path(directory, filepath) and is_valid_filename(filename):
             deck = load_deck_from_csv(filepath)
             deck.is_modified = False
             decks.append(deck)
