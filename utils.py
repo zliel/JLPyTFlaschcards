@@ -1,9 +1,16 @@
 import os
+import re
 import csv
+
 from typing import List
 
 from models.Deck import Deck
 from models.Flashcard import Flashcard
+
+
+def is_valid_filename(filename: str) -> bool:
+    # Filename can only include alphanumeric characters, dashes, and hyphens, and must end with .csv
+    return re.match(r'^[\w-]+\.csv$', filename) is not None
 
 
 def save_deck_to_csv(deck: Deck, directory: str) -> None:
