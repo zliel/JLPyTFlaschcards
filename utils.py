@@ -10,7 +10,19 @@ from models.Flashcard import Flashcard
 
 def is_valid_filename(filename: str) -> bool:
     # Filename can only include alphanumeric characters, dashes, and hyphens, and must end with .csv
-    return re.match(r'^[\w-]+\.csv$', filename) is not None
+    return re.match(r'^[\w\s-]+\.csv$', filename) is not None
+
+
+def is_safe_path(basedir, path, follow_symlinks=True):
+    if follow_symlinks:
+        abs_path = os.path.abspath(path)
+    else:
+        abs_path = os.path.realpath(path)
+
+    basedir = os.path.abspath(basedir)
+
+    # Ensure the abs_path starts with basedir and that the next character is a path separator
+    return abs_path.startswith(os.path.join(basedir, ''))
 
 
 def save_deck_to_csv(deck: Deck, directory: str) -> None:
@@ -64,7 +76,8 @@ def load_deck_from_csv(filename: str) -> Deck:
 def load_decks_from_csv(directory: str) -> List[Deck]:
     decks = []
     for filename in os.listdir(directory):
-        if filename.endswith(".csv"):
-            deck = load_deck_from_csv(f"{directory}/{filename}")
+        filepath = os.path.join(directory, filename)
+        if is_safe_path(directory, filepath) and is_valid_filename(filename):
+            deck = load_deck_from_csv(filepath)
             decks.append(deck)
     return decks
