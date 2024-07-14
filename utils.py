@@ -79,5 +79,6 @@ def load_decks_from_csv(directory: str) -> List[Deck]:
         filepath = os.path.join(directory, filename)
         if is_safe_path(directory, filepath) and is_valid_filename(filename):
             deck = load_deck_from_csv(filepath)
+            deck.is_modified = False
             decks.append(deck)
     return decks
