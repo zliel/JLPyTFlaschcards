@@ -9,6 +9,12 @@ from models.Flashcard import Flashcard
 
 
 def is_valid_filename(filename: str) -> bool:
+    """
+    Check if a filename is valid. A valid filename can only include alphanumeric characters, dashes, and hyphens, and
+    must end with .csv
+    :param filename: The filename to check
+    :return: True if the filename is valid, False otherwise
+    """
     # Filename can only include alphanumeric characters, dashes, and hyphens, and must end with .csv
     return re.match(r'^[\w\s-]+\.csv$', filename) is not None
 
