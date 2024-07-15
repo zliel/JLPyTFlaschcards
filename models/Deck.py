@@ -2,6 +2,9 @@ from uuid import uuid4
 
 
 class Deck:
+    """
+    A class to represent a deck of Flashcard objects.
+    """
     def __init__(self, name, cards):
         self.id = str(uuid4())
         self.name = name
