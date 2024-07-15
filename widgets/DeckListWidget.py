@@ -50,6 +50,11 @@ class DeckListWidget(QWidget):
 
     @Slot()
     def view_deck(self, deck: Deck):
+        """
+        Switch to the CardWidget view for the selected deck.
+        :param deck: The deck to view
+        :return: None
+        """
         # Create a new widget to house the card widget
         flashcard_layout_widget = QWidget()
         flashcard_layout = QVBoxLayout(flashcard_layout_widget)
