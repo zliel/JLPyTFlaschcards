@@ -10,6 +10,11 @@ from models.Deck import Deck
 
 
 class CardWidget(QWidget):
+    """
+    This widget displays a flashcard for the user to review. The user can click a button to reveal the answer, and then
+    click one of two buttons to indicate whether they passed or failed the card. The card is then updated with the
+    appropriate review date and the next card is displayed.
+    """
     def __init__(self, deck: Deck):
         super().__init__()
         self.deck = deck
