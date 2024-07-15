@@ -16,6 +16,10 @@ class CardWidget(QWidget):
     appropriate review date and the next card is displayed.
     """
     def __init__(self, deck: Deck):
+        """
+        Initialize the CardWidget with a deck of flashcards.
+        :param deck: The deck of flashcards to review
+        """
         super().__init__()
         self.deck = deck
         self.cards = self.deck.cards
