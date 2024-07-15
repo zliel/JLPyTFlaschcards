@@ -79,6 +79,11 @@ def save_decks_to_csv(decks: List[Deck], directory: str) -> None:
 
 
 def load_deck_from_csv(filename: str) -> Deck:
+    """
+    Load a deck from a CSV file
+    :param filename: The filename to load the deck from, including the directory
+    :return: A Deck instance with the cards loaded from the CSV file
+    """
     with open(filename, mode='r', newline='', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         cards = []
