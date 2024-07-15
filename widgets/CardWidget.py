@@ -97,7 +97,10 @@ class CardWidget(QWidget):
         self.update_card()
 
     def update_card_list(self):
-        # Filter out cards that are not due for review
+        """
+        Update the list of cards to only include those that are due for review.
+        :return:  None
+        """
         self.cards = [card for card in self.cards if card.next_review_date <= datetime.now()]
         # Sort the cards by next review
         self.cards = sorted(self.cards, key=lambda card: card.next_review_date)
