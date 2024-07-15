@@ -10,7 +10,16 @@ from models.Deck import Deck
 
 
 class CardWidget(QWidget):
+    """
+    This widget displays a flashcard for the user to review. The user can click a button to reveal the answer, and then
+    click one of two buttons to indicate whether they passed or failed the card. The card is then updated with the
+    appropriate review date and the next card is displayed.
+    """
     def __init__(self, deck: Deck):
+        """
+        Initialize the CardWidget with a deck of flashcards.
+        :param deck: The deck of flashcards to review
+        """
         super().__init__()
         self.deck = deck
         self.cards = self.deck.cards
@@ -59,6 +68,10 @@ class CardWidget(QWidget):
 
     @Slot()
     def on_show_answer_click(self):
+        """
+        Show the answer to the current flashcard.
+        :return: None
+        """
         self.answer_label.text = ("<hr style=\"color: #fff; width: 50%;\">Back: " +
                                   self.cards[0].answer)
         self.answer_label.show()
@@ -68,6 +81,11 @@ class CardWidget(QWidget):
 
     @Slot()
     def on_review_click(self, grade: int):
+        """
+        Review the current flashcard with the given grade.
+        :param grade: The grade of the review (0-5)
+        :return: None
+        """
         self.cards[0].review(grade)
         # When a card is reviewed, the deck is modified, for the save function to know to save this particular deck
         self.deck.is_modified = True
@@ -79,12 +97,19 @@ class CardWidget(QWidget):
         self.update_card()
 
     def update_card_list(self):
-        # Filter out cards that are not due for review
+        """
+        Update the list of cards to only include those that are due for review.
+        :return:  None
+        """
         self.cards = [card for card in self.cards if card.next_review_date <= datetime.now()]
         # Sort the cards by next review
         self.cards = sorted(self.cards, key=lambda card: card.next_review_date)
 
     def update_card(self):
+        """
+        Update the current card being displayed.
+        :return: None
+        """
         # If there are no cards left, display a message
         if len(self.cards) == 0:
             self.question_label.text = "No more cards to review"

@@ -9,11 +9,26 @@ from models.Flashcard import Flashcard
 
 
 def is_valid_filename(filename: str) -> bool:
+    """
+    Check if a filename is valid. A valid filename can only include alphanumeric characters, dashes, and hyphens, and
+    must end with .csv
+    :param filename: The filename to check
+    :return: True if the filename is valid, False otherwise
+    """
     # Filename can only include alphanumeric characters, dashes, and hyphens, and must end with .csv
     return re.match(r'^[\w\s-]+\.csv$', filename) is not None
 
 
 def is_valid_path(basedir, path, follow_symlinks=True):
+    """
+    Check if a path is valid based on a base directory and whether to follow symlinks.
+    A path is considered valid if it is a subdirectory of the base directory and, if follow_symlinks is False, the path
+    is not a symlink.
+    :param basedir: The base directory to check against
+    :param path: The path to check
+    :param follow_symlinks: Whether to follow symlinks, like shortcuts
+    :return: True if the path is valid, False otherwise
+    """
     if follow_symlinks:
         abs_path = os.path.abspath(path)
     else:
@@ -26,6 +41,12 @@ def is_valid_path(basedir, path, follow_symlinks=True):
 
 
 def save_deck_to_csv(deck: Deck, directory: str) -> None:
+    """
+    Save a deck to a CSV file in the specified directory
+    :param deck: The deck to save, should be an instance of Deck and include Flashcard instances
+    :param directory: The directory to save the deck to
+    :return: None
+    """
     if not deck.is_modified:
         print(f"Deck {deck.name} has not been modified")
         return  # Skip saving if the deck hasn't been modified
@@ -47,11 +68,22 @@ def save_deck_to_csv(deck: Deck, directory: str) -> None:
 
 
 def save_decks_to_csv(decks: List[Deck], directory: str) -> None:
+    """
+    Save a list of decks to CSV files in the specified directory
+    :param decks: The list of decks to save
+    :param directory: The directory to save the decks to, will be validated by is_valid_path
+    :return: None
+    """
     for deck in decks:
         save_deck_to_csv(deck, directory)
 
 
 def load_deck_from_csv(filename: str) -> Deck:
+    """
+    Load a deck from a CSV file
+    :param filename: The filename to load the deck from, including the directory
+    :return: A Deck instance with the cards loaded from the CSV file
+    """
     with open(filename, mode='r', newline='', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         cards = []
@@ -74,6 +106,11 @@ def load_deck_from_csv(filename: str) -> Deck:
 
 
 def load_decks_from_csv(directory: str) -> List[Deck]:
+    """
+    Load all decks from a directory
+    :param directory: The directory to load the decks from, will be validated by is_valid_path
+    :return: A list of Deck instances with the cards loaded from the CSV files
+    """
     decks = []
     for filename in os.listdir(directory):
         filepath = os.path.join(directory, filename)

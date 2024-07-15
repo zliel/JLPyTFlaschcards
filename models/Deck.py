@@ -2,7 +2,15 @@ from uuid import uuid4
 
 
 class Deck:
+    """
+    A class to represent a deck of Flashcard objects.
+    """
     def __init__(self, name, cards):
+        """
+        Constructor for the Deck class.
+        :param name: The name of the deck, shown on the home page
+        :param cards: A list of Flashcard objects in the deck
+        """
         self.id = str(uuid4())
         self.name = name
         self.cards = cards

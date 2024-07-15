@@ -11,7 +11,15 @@ from widgets.CardWidget import CardWidget
 
 
 class DeckListWidget(QWidget):
+    """
+    This widget displays a list of decks that the user can choose from. When the user clicks a button, the deck is
+    displayed in a CardWidget for review.
+    """
     def __init__(self, decks: List[Deck]):
+        """
+        Initialize the DeckListWidget with a list of decks.
+        :param decks: The list of decks to display
+        """
         super().__init__()
         self.decks = decks
 
@@ -42,6 +50,11 @@ class DeckListWidget(QWidget):
 
     @Slot()
     def view_deck(self, deck: Deck):
+        """
+        Switch to the CardWidget view for the selected deck.
+        :param deck: The deck to view
+        :return: None
+        """
         # Create a new widget to house the card widget
         flashcard_layout_widget = QWidget()
         flashcard_layout = QVBoxLayout(flashcard_layout_widget)
