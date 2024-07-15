@@ -16,6 +16,10 @@ class DeckListWidget(QWidget):
     displayed in a CardWidget for review.
     """
     def __init__(self, decks: List[Deck]):
+        """
+        Initialize the DeckListWidget with a list of decks.
+        :param decks: The list of decks to display
+        """
         super().__init__()
         self.decks = decks
 
