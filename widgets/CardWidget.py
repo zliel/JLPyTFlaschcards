@@ -106,6 +106,10 @@ class CardWidget(QWidget):
         self.cards = sorted(self.cards, key=lambda card: card.next_review_date)
 
     def update_card(self):
+        """
+        Update the current card being displayed.
+        :return: None
+        """
         # If there are no cards left, display a message
         if len(self.cards) == 0:
             self.question_label.text = "No more cards to review"
