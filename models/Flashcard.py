@@ -57,6 +57,10 @@ class Flashcard:
         self.next_review_date = datetime.now() + timedelta(days=self.interval)
 
     def print_stats(self) -> None:
+        """
+        Print the flashcard's statistics
+        :return: None
+        """
         print(f"ID: {self.id}")
         print(f"Question: {self.question}")
         print(f"Answer: {self.answer}")
@@ -66,6 +70,10 @@ class Flashcard:
         print(f"Interval: {self.interval}")
 
     def get_stats(self) -> dict:
+        """
+        Get the flashcard's statistics
+        :return: A dictionary containing the flashcard's statistics
+        """
         return {
             "id": self.id,
             "question": self.question,
