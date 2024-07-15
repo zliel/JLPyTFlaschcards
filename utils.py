@@ -41,6 +41,12 @@ def is_valid_path(basedir, path, follow_symlinks=True):
 
 
 def save_deck_to_csv(deck: Deck, directory: str) -> None:
+    """
+    Save a deck to a CSV file in the specified directory
+    :param deck: The deck to save, should be an instance of Deck and include Flashcard instances
+    :param directory: The directory to save the deck to
+    :return: None
+    """
     if not deck.is_modified:
         print(f"Deck {deck.name} has not been modified")
         return  # Skip saving if the deck hasn't been modified
