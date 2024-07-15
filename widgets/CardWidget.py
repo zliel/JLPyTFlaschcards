@@ -68,6 +68,10 @@ class CardWidget(QWidget):
 
     @Slot()
     def on_show_answer_click(self):
+        """
+        Show the answer to the current flashcard.
+        :return: None
+        """
         self.answer_label.text = ("<hr style=\"color: #fff; width: 50%;\">Back: " +
                                   self.cards[0].answer)
         self.answer_label.show()
