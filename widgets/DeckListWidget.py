@@ -11,6 +11,10 @@ from widgets.CardWidget import CardWidget
 
 
 class DeckListWidget(QWidget):
+    """
+    This widget displays a list of decks that the user can choose from. When the user clicks a button, the deck is
+    displayed in a CardWidget for review.
+    """
     def __init__(self, decks: List[Deck]):
         super().__init__()
         self.decks = decks
