@@ -28,6 +28,11 @@ class Flashcard:
         self.interval = interval
 
     def review(self, quality: int) -> None:
+        """
+        Review the flashcard and update the next review date and easiness factor based on the quality/score of the review.
+        :param quality: The quality/score of the review, from 0 to 5.
+        :return: None
+        """
         # Simplified SM-2 Algorithm for spaced repetition
         # In our case, this is if the user clicks "Pass"
         if quality >= 3:
