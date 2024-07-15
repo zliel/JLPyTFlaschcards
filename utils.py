@@ -14,6 +14,15 @@ def is_valid_filename(filename: str) -> bool:
 
 
 def is_valid_path(basedir, path, follow_symlinks=True):
+    """
+    Check if a path is valid based on a base directory and whether to follow symlinks.
+    A path is considered valid if it is a subdirectory of the base directory and, if follow_symlinks is False, the path
+    is not a symlink.
+    :param basedir: The base directory to check against
+    :param path: The path to check
+    :param follow_symlinks: Whether to follow symlinks, like shortcuts
+    :return: True if the path is valid, False otherwise
+    """
     if follow_symlinks:
         abs_path = os.path.abspath(path)
     else:
