@@ -68,6 +68,12 @@ def save_deck_to_csv(deck: Deck, directory: str) -> None:
 
 
 def save_decks_to_csv(decks: List[Deck], directory: str) -> None:
+    """
+    Save a list of decks to CSV files in the specified directory
+    :param decks: The list of decks to save
+    :param directory: The directory to save the decks to, will be validated by is_valid_path
+    :return: None
+    """
     for deck in decks:
         save_deck_to_csv(deck, directory)
 
