@@ -3,6 +3,9 @@ from uuid import uuid4
 
 
 class Flashcard:
+    """
+    A class to represent a flashcard
+    """
     def __init__(self, question, answer, id=str(uuid4()), next_review_date=datetime.now(), repetitions=0,
                  easiness_factor=2.5, interval=0):
         self.id = id
