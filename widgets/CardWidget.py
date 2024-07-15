@@ -81,6 +81,11 @@ class CardWidget(QWidget):
 
     @Slot()
     def on_review_click(self, grade: int):
+        """
+        Review the current flashcard with the given grade.
+        :param grade: The grade of the review (0-5)
+        :return: None
+        """
         self.cards[0].review(grade)
         # When a card is reviewed, the deck is modified, for the save function to know to save this particular deck
         self.deck.is_modified = True
