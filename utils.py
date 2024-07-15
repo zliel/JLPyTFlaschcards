@@ -106,6 +106,11 @@ def load_deck_from_csv(filename: str) -> Deck:
 
 
 def load_decks_from_csv(directory: str) -> List[Deck]:
+    """
+    Load all decks from a directory
+    :param directory: The directory to load the decks from, will be validated by is_valid_path
+    :return: A list of Deck instances with the cards loaded from the CSV files
+    """
     decks = []
     for filename in os.listdir(directory):
         filepath = os.path.join(directory, filename)
