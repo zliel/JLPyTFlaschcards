@@ -1,5 +1,7 @@
 from uuid import uuid4
 
+from models.Flashcard import Flashcard
+
 
 class Deck:
     """
@@ -16,6 +18,15 @@ class Deck:
         self.cards = cards
         self.is_modified = True
         # When a new deck is created, it is automatically modified, as it has not been saved yet
+
+    def append_card(self, card: Flashcard) -> None:
+        """
+        Appends a Flashcard object to the deck.
+        :param card: The Flashcard object to append
+        :return: None
+        """
+        self.cards.append(card)
+        self.is_modified = True
 
     def __str__(self):
         return f"Deck: {self.name}\nID: {self.id}\nCards: {self.cards}"
