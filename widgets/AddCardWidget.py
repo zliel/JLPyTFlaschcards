@@ -11,6 +11,7 @@ class AddCardWidget(QWidget):
     def __init__(self, app_decks):
         super().__init__()
         self.layout = QVBoxLayout()
+        self.window_title = "Add Card"
 
         self.decks = app_decks
         self.deck_label = QLabel("Deck:")
