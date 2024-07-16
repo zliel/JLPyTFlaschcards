@@ -1,8 +1,8 @@
 import sys
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton
 
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
@@ -52,14 +52,30 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
-        deck_list_widget = DeckListWidget(app_decks)
+        self.decks = app_decks
+        deck_list_widget = DeckListWidget(self.decks)
         self.layout.add_widget(deck_list_widget)
+
+        # After clicking a "Add card" button, the AddCardWidget will be displayed
+        self.add_card_button = QPushButton("Add Card")
+        self.add_card_button.clicked.connect(self.show_add_card_widget)
+        self.layout.add_widget(self.add_card_button)
 
         self.set_layout(self.layout)
 
         self.window_title = "JLPyT Flashcards"
         self.resize(1200, 700)
         self.palette = Qt.black
+
+        self.show()
+
+    @Slot()
+    def show_add_card_widget(self):
+        """This method displays the AddCardWidget when the "Add Card" button is clicked."""
+        from widgets.AddCardWidget import AddCardWidget
+        add_card_widget = AddCardWidget(self.decks)
+
+
 
 
 main_window = MainWindow()
