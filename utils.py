@@ -87,10 +87,9 @@ def load_deck_from_csv(filename: str) -> Deck:
     with open(filename, mode='r', newline='', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         cards = []
-        deck_name = ""
+        deck_name = filename.split('\\')[-1].split('.')[0]
+        print(f"Loading deck {deck_name}")
         for row in reader:
-            if not deck_name:  # Get the deck name from the first row
-                deck_name = row['Deck Name']
             card = Flashcard(
                 question=row['Question'],
                 answer=row['Answer'],
