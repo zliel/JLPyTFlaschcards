@@ -82,11 +82,13 @@ class MainWindow(QWidget):
 
     @Slot()
     def show_add_deck_widget(self):
+        """ This method displays the AddDeckWidget when the "Add Deck" button is clicked. """
         from widgets.AddDeckWidget import AddDeckWidget
         add_deck_widget = AddDeckWidget(self.deck_list_widget)
         add_deck_widget.signals.deck_added.connect(self.reset_deck_list)
 
     def reset_deck_list(self):
+        """ This method resets the deck list widget after a new deck has been added. """
         new_deck_list_widget = DeckListWidget(self.decks)
         self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
         self.deck_list_widget.delete_later()
