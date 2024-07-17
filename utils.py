@@ -90,7 +90,7 @@ def load_deck_from_csv(filename: str) -> Deck:
         deck_name = ""
         for row in reader:
             if not deck_name:  # Get the deck name from the first row
-                deck_name = file.name.split('/')[-1].split('.')[0]
+                deck_name = file.name.split('\\')[-1].split('.')[0]
             card = Flashcard(
                 question=row['Question'],
                 answer=row['Answer'],
