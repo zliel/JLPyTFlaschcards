@@ -69,6 +69,7 @@ class Flashcard:
         print(f"Repetitions: {self.repetitions}")
         print(f"Easiness Factor: {self.easiness_factor}")
         print(f"Interval: {self.interval}")
+        print(f"Tags: {self.tags}")
 
     def get_stats(self) -> dict:
         """
@@ -82,7 +83,8 @@ class Flashcard:
             "next_review_date": self.next_review_date,
             "repetitions": self.repetitions,
             "easiness_factor": self.easiness_factor,
-            "interval": self.interval
+            "interval": self.interval,
+            "tags": self.tags
         }
 
     def __str__(self):
