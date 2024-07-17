@@ -9,10 +9,16 @@ from widgets.DeckListWidget import DeckListWidget
 
 
 class AddDeckWidgetSignals(QObject):
+    """
+    This class defines the signals that is emitted when a deck is added.
+    """
     deck_added = Signal()
 
 
 class AddDeckWidget(QWidget):
+    """
+    This widget allows the user to add a new deck to the deck list widget.
+    """
     signals = AddDeckWidgetSignals()
 
     def __init__(self, deck_list_widget: DeckListWidget):
@@ -38,6 +44,7 @@ class AddDeckWidget(QWidget):
 
     @Slot()
     def add_deck(self):
+        """ This method adds a new deck to the deck list widget """
         deck_name = self.deck_name_input.text
         self.deck_list_widget.decks.append(Deck(deck_name, []))
 
