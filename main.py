@@ -18,32 +18,14 @@ label_font.set_family("Times New Roman")
 label_font.set_point_size(24)
 my_app.set_font(label_font, "QLabel")
 
-# TODO: Remove this, it's for testing purposes
-n5_animal_deck = Deck("JLPT N5 Animals", [
-    Flashcard("犬", "いぬ - Dog"),
-    Flashcard("猫", "ねこ - Cat"),
-    Flashcard("鳥", "とり - Bird"),
-    Flashcard("馬", "うま - Horse")
-])
-
-n5_family_deck = Deck("JLPT N5 Family", [
-    Flashcard("家族", "かぞく - Family"),
-    Flashcard("父", "ちち - Father"),
-    Flashcard("母", "はは - Mother"),
-    Flashcard("兄", "あに - Older Brother"),
-    Flashcard("弟", "おとうと - Younger Brother"),
-    Flashcard("姉", "あね - Older Sister"),
-    Flashcard("妹", "いもうと - Younger Sister"),
-    Flashcard("祖父", "そふ - Grandfather"),
-    Flashcard("祖母", "そぼ - Grandmother"),
-    Flashcard("親戚", "しんせき - Relatives")
-])
-
 app_decks = utils.load_decks_from_csv("decks")
 
-# TODO: Default decks, remove later
+# If the user doesn't have any decks
 if not app_decks:
-    app_decks = [n5_animal_deck, n5_family_deck]
+    for i in range(1, 6):
+        utils.download_deck_from_url(f"https://jlpt-vocab-api.vercel.app/api/words/all?level={i}", f"JLPT N{i} Vocab", "decks")
+
+    app_decks = utils.load_decks_from_csv("decks")
 
 
 class MainWindow(QWidget):
