@@ -7,7 +7,7 @@ class Flashcard:
     A class to represent a flashcard
     """
     def __init__(self, question, answer, id=str(uuid4()), next_review_date=datetime.now(), repetitions=0,
-                 easiness_factor=2.5, interval=0):
+                 easiness_factor=2.5, interval=0, tags: list[str] = []):
         """
         Constructor for the Flashcard class
         :param question: The question to be answered, will be on the front of the card by default.
@@ -26,6 +26,7 @@ class Flashcard:
         self.repetitions = repetitions
         self.easiness_factor = easiness_factor
         self.interval = interval
+        self.tags = tags
 
     def review(self, quality: int) -> None:
         """
@@ -68,6 +69,7 @@ class Flashcard:
         print(f"Repetitions: {self.repetitions}")
         print(f"Easiness Factor: {self.easiness_factor}")
         print(f"Interval: {self.interval}")
+        print(f"Tags: {self.tags}")
 
     def get_stats(self) -> dict:
         """
@@ -81,7 +83,8 @@ class Flashcard:
             "next_review_date": self.next_review_date,
             "repetitions": self.repetitions,
             "easiness_factor": self.easiness_factor,
-            "interval": self.interval
+            "interval": self.interval,
+            "tags": self.tags
         }
 
     def __str__(self):

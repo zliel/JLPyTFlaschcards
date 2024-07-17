@@ -30,6 +30,11 @@ class AddCardWidget(QWidget):
         self.answer_input = QLineEdit()
         self.layout.add_widget(self.answer_input)
 
+        self.tags_label = QLabel("Tags (seperate by spaces):")
+        self.layout.add_widget(self.tags_label)
+        self.tags_input = QLineEdit()
+        self.layout.add_widget(self.tags_input)
+
         self.add_card_button = QPushButton("Add Card")
         self.add_card_button.clicked.connect(self.add_card)
         self.layout.add_widget(self.add_card_button)
@@ -43,9 +48,10 @@ class AddCardWidget(QWidget):
         deck_name = self.deck_dropdown.current_text
         question = self.question_input.text
         answer = self.answer_input.text
+        tags = self.tags_input.text.split(' ')
 
         for deck in self.decks:
             if deck.name == deck_name:
-                deck.append_card(Flashcard(question, answer))
+                deck.append_card(Flashcard(question, answer, tags=tags))
                 break
         self.close()
