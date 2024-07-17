@@ -1,6 +1,7 @@
 import os
 import re
 import csv
+import requests
 
 from typing import List
 
@@ -119,3 +120,33 @@ def load_decks_from_csv(directory: str) -> List[Deck]:
             deck.is_modified = False
             decks.append(deck)
     return decks
+
+
+# TODO: Consider making this more generic so it could be used with other APIs
+def download_deck_from_url(url: str, deck_name: str, directory: str) -> None:
+    """
+    Download a deck from a URL and save it to a directory. Note that this was written for a specific API, located at https://jlpt-vocab-api.vercel.app and may need
+    to be modified for other APIs.
+    :param url: The URL to download the deck from
+    :param deck_name: The name of the deck
+    :param directory: The directory to save the deck to
+    :return: None
+    """
+    response = requests.get(url)
+    if response.status_code == 200:
+        response = response.json()
+
+        cards = []
+        for card in response:
+            front = card["word"]
+            furigana = card["furigana"] + ' - ' if card["furigana"] != '' else ''
+            back = furigana + card["meaning"]
+            tags = [f'N{card["level"]}']
+
+            new_card = Flashcard(front, back, tags=tags)
+            cards.append(new_card)
+
+        deck = Deck(deck_name, cards)
+        save_deck_to_csv(deck, directory)
+    else:
+        print(f"Failed to download deck from {url}")
