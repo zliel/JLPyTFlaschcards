@@ -53,13 +53,17 @@ class MainWindow(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
         self.decks = app_decks
-        deck_list_widget = DeckListWidget(self.decks)
-        self.layout.add_widget(deck_list_widget)
+        self.deck_list_widget = DeckListWidget(self.decks)
+        self.layout.add_widget(self.deck_list_widget)
 
         # After clicking a "Add card" button, the AddCardWidget will be displayed
         self.add_card_button = QPushButton("Add Card")
         self.add_card_button.clicked.connect(self.show_add_card_widget)
         self.layout.add_widget(self.add_card_button)
+
+        self.add_deck_button = QPushButton("Add Deck")
+        self.add_deck_button.clicked.connect(self.show_add_deck_widget)
+        self.layout.add_widget(self.add_deck_button)
 
         self.set_layout(self.layout)
 
@@ -74,6 +78,19 @@ class MainWindow(QWidget):
         """This method displays the AddCardWidget when the "Add Card" button is clicked."""
         from widgets.AddCardWidget import AddCardWidget
         add_card_widget = AddCardWidget(self.decks)
+
+
+    @Slot()
+    def show_add_deck_widget(self):
+        from widgets.AddDeckWidget import AddDeckWidget
+        add_deck_widget = AddDeckWidget(self.deck_list_widget)
+        add_deck_widget.signals.deck_added.connect(self.reset_deck_list)
+
+    def reset_deck_list(self):
+        new_deck_list_widget = DeckListWidget(self.decks)
+        self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
+        self.deck_list_widget.delete_later()
+        self.deck_list_widget = new_deck_list_widget
 
 
 
