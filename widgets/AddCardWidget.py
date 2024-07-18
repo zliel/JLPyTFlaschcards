@@ -46,6 +46,7 @@ class AddCardWidget(QWidget):
 
     @Slot()
     def add_card(self):
+        """This method adds a new card to the selected deck"""
         deck_name = self.deck_dropdown.current_text
         question = self.question_input.text
         answer = self.answer_input.text
