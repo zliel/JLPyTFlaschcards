@@ -35,7 +35,6 @@ class Flashcard:
         :param quality: The quality/score of the review, from 0 to 5.
         :return: None
         """
-        # Simplified SM-2 Algorithm for spaced repetition
         # In our case, this is if the user clicks "Pass"
         if quality >= 3:
             if self.repetitions == 0:
