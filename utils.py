@@ -64,7 +64,7 @@ def save_deck_to_csv(deck: Deck, directory: str) -> None:
         for card in deck.cards:
             writer.writerow(
                 [deck.id, deck.name, card.id, card.question, card.answer, card.next_review_date, card.repetitions,
-                    card.easiness_factor, card.interval, card.tags])
+                 card.easiness_factor, card.interval, card.tags])
     deck.is_modified = False  # Reset the modified flag after saving
 
 

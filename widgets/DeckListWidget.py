@@ -15,6 +15,7 @@ class DeckListWidget(QWidget):
     This widget displays a list of decks that the user can choose from. When the user clicks a button, the deck is
     displayed in a CardWidget for review.
     """
+
     def __init__(self, decks: List[Deck]):
         """
         Initialize the DeckListWidget with a list of decks.
@@ -66,5 +67,3 @@ class DeckListWidget(QWidget):
         flashcard_layout.add_widget(card_widget)
         self.stacked_widget.add_widget(flashcard_layout_widget)
         self.stacked_widget.set_current_widget(flashcard_layout_widget)
-
-

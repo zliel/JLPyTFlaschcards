@@ -6,6 +6,7 @@ class Flashcard:
     """
     A class to represent a flashcard
     """
+
     def __init__(self, question, answer, id=str(uuid4()), next_review_date=datetime.now(), repetitions=0,
                  easiness_factor=2.5, interval=0, tags: list[str] = []):
         """
@@ -34,7 +35,6 @@ class Flashcard:
         :param quality: The quality/score of the review, from 0 to 5.
         :return: None
         """
-        # Simplified SM-2 Algorithm for spaced repetition
         # In our case, this is if the user clicks "Pass"
         if quality >= 3:
             if self.repetitions == 0:

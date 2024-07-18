@@ -7,6 +7,7 @@ class Deck:
     """
     A class to represent a deck of Flashcard objects.
     """
+
     def __init__(self, name, cards):
         """
         Constructor for the Deck class.

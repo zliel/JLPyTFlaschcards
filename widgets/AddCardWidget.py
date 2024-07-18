@@ -8,7 +8,13 @@ from models.Flashcard import Flashcard
 
 
 class AddCardWidget(QWidget):
+    """This class defines the widget that will be displayed when the user clicks the "Add Card" button."""
+
     def __init__(self, app_decks):
+        """
+        Initialize the AddCardWidget with a list of decks.
+        :param app_decks: The list of decks to choose from, to add the card to
+        """
         super().__init__()
         self.layout = QVBoxLayout()
         self.window_title = "Add Card"
@@ -45,6 +51,7 @@ class AddCardWidget(QWidget):
 
     @Slot()
     def add_card(self):
+        """This method adds a new card to the selected deck"""
         deck_name = self.deck_dropdown.current_text
         question = self.question_input.text
         answer = self.answer_input.text
