@@ -22,6 +22,10 @@ class AddDeckWidget(QWidget):
     signals = AddDeckWidgetSignals()
 
     def __init__(self, deck_list_widget: DeckListWidget):
+        """
+        Initialize the AddDeckWidget with the app's current DeckListWidget.
+        :param deck_list_widget: The DeckListWidget to add the new deck to
+        """
         super().__init__()
         self.window_title = "Add a deck"
         self.deck_list_widget = deck_list_widget
