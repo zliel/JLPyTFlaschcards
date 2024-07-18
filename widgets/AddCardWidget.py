@@ -11,6 +11,10 @@ class AddCardWidget(QWidget):
     """This class defines the widget that will be displayed when the user clicks the "Add Card" button."""
 
     def __init__(self, app_decks):
+        """
+        Initialize the AddCardWidget with a list of decks.
+        :param app_decks: The list of decks to choose from, to add the card to
+        """
         super().__init__()
         self.layout = QVBoxLayout()
         self.window_title = "Add Card"
