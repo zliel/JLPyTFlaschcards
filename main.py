@@ -2,14 +2,11 @@ import sys
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton
-
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
 
 import utils
-from models.Deck import Deck
-from models.Flashcard import Flashcard
 from widgets.DeckListWidget import DeckListWidget
 
 my_app = QApplication([])
