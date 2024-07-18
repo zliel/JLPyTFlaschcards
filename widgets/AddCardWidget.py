@@ -9,6 +9,7 @@ from models.Flashcard import Flashcard
 
 class AddCardWidget(QWidget):
     """This class defines the widget that will be displayed when the user clicks the "Add Card" button."""
+
     def __init__(self, app_decks):
         super().__init__()
         self.layout = QVBoxLayout()
