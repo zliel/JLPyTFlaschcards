@@ -15,6 +15,7 @@ class CardWidget(QWidget):
     click one of two buttons to indicate whether they passed or failed the card. The card is then updated with the
     appropriate review date and the next card is displayed.
     """
+
     def __init__(self, deck: Deck):
         """
         Initialize the CardWidget with a deck of flashcards.

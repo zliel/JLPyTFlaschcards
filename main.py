@@ -23,7 +23,8 @@ app_decks = utils.load_decks_from_csv("decks")
 # If the user doesn't have any decks
 if not app_decks:
     for i in range(1, 6):
-        utils.download_deck_from_url(f"https://jlpt-vocab-api.vercel.app/api/words/all?level={i}", f"JLPT N{i} Vocab", "decks")
+        utils.download_deck_from_url(f"https://jlpt-vocab-api.vercel.app/api/words/all?level={i}", f"JLPT N{i} Vocab",
+                                     "decks")
 
     app_decks = utils.load_decks_from_csv("decks")
 
@@ -61,7 +62,6 @@ class MainWindow(QWidget):
         from widgets.AddCardWidget import AddCardWidget
         add_card_widget = AddCardWidget(self.decks)
 
-
     @Slot()
     def show_add_deck_widget(self):
         """ This method displays the AddDeckWidget when the "Add Deck" button is clicked. """
@@ -75,8 +75,6 @@ class MainWindow(QWidget):
         self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
         self.deck_list_widget.delete_later()
         self.deck_list_widget = new_deck_list_widget
-
-
 
 
 main_window = MainWindow()

@@ -50,4 +50,3 @@ class AddDeckWidget(QWidget):
 
         self.signals.deck_added.emit()
         self.close()
-
