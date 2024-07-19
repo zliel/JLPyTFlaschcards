@@ -1,3 +1,4 @@
+from PySide6.QtGui import QShortcut, QKeySequence
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QComboBox
 from PySide6.QtCore import Qt, Slot
 
@@ -29,22 +30,27 @@ class AddCardWidget(QWidget):
         self.question_label = QLabel("Front:")
         self.layout.add_widget(self.question_label)
         self.question_input = QLineEdit()
+        self.question_input.returnPressed.connect(self.add_card)
         self.layout.add_widget(self.question_input)
 
         self.answer_label = QLabel("Back:")
         self.layout.add_widget(self.answer_label)
         self.answer_input = QLineEdit()
+        self.answer_input.returnPressed.connect(self.add_card)
         self.layout.add_widget(self.answer_input)
 
         self.tags_label = QLabel("Tags (seperate by spaces):")
         self.layout.add_widget(self.tags_label)
         self.tags_input = QLineEdit()
+        self.tags_input.returnPressed.connect(self.add_card)
         self.layout.add_widget(self.tags_input)
 
         self.add_card_button = QPushButton("Add Card")
+        self.add_card_button.tool_tip = "Shortcut: Enter"
         self.add_card_button.clicked.connect(self.add_card)
         self.layout.add_widget(self.add_card_button)
 
+        self.setup_shortcuts()
         self.set_layout(self.layout)
         self.resize(400, 300)
         self.show()
@@ -62,3 +68,13 @@ class AddCardWidget(QWidget):
                 deck.append_card(Flashcard(question, answer, tags=tags))
                 break
         self.close()
+
+    def setup_shortcuts(self):
+        """This method sets up the keyboard shortcuts for the AddCardWidget"""
+        shortcuts = {
+            "Esc": self.close
+        }
+
+        for key_sequence, action in shortcuts.items():
+            shortcut = QShortcut(QKeySequence(key_sequence), self)
+            shortcut.activated.connect(action)

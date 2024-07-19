@@ -1,5 +1,6 @@
 from typing import List
 
+from PySide6.QtGui import QShortcut, QKeySequence
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget
 from PySide6.QtCore import Qt, Slot
 
@@ -44,6 +45,9 @@ class DeckListWidget(QWidget):
         # Add the deck list widget to the stacked widget
         self.stacked_widget.add_widget(self.deck_list_widget)
         self.layout.add_widget(self.stacked_widget)
+
+        self.setup_shortcuts()
+
         self.set_layout(self.layout)
 
     @Slot()
@@ -60,6 +64,7 @@ class DeckListWidget(QWidget):
 
         # Create a back button to return to the deck list
         back_button = QPushButton("Back")
+        back_button.tool_tip = "Shortcut: Esc"
         back_button.clicked.connect(lambda: self.stacked_widget.set_current_widget(self.deck_list_widget))
 
         # Add the back button and card widget to the flashcard layout
@@ -67,3 +72,13 @@ class DeckListWidget(QWidget):
         flashcard_layout.add_widget(card_widget)
         self.stacked_widget.add_widget(flashcard_layout_widget)
         self.stacked_widget.set_current_widget(flashcard_layout_widget)
+
+    def setup_shortcuts(self):
+        """ This method sets up the keyboard shortcuts for the DeckListWidget. """
+        shortcuts = {
+            "Esc": lambda: self.stacked_widget.set_current_widget(self.deck_list_widget)
+        }
+
+        for key_sequence, action in shortcuts.items():
+            shortcut = QShortcut(QKeySequence(key_sequence), self)
+            shortcut.activated.connect(action)
