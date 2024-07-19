@@ -1,5 +1,6 @@
 from PySide6.QtGui import QShortcut, QKeySequence
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QComboBox
+from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QComboBox, QDialog, \
+    QMessageBox
 from PySide6.QtCore import Qt, Slot
 
 # noinspection PyUnresolvedReference
@@ -63,6 +64,16 @@ class AddCardWidget(QWidget):
         """This method adds a new card to the selected deck"""
         deck_name = self.deck_dropdown.current_text
         question = self.question_input.text
+        if not question:
+            error_msg = QMessageBox()
+            error_msg.text = 'The "Front" field cannot be blank.'
+            error_msg.icon = QMessageBox.Warning
+            error_msg.standard_buttons = QMessageBox.Ok
+
+            shortcut_exit = QShortcut(QKeySequence("Esc"), error_msg)
+            shortcut_exit.activated.connect(error_msg.close)
+            error_msg.exec_()
+            return
         answer = self.answer_input.text
         tags = self.tags_input.text.split(' ')
 

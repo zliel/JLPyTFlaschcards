@@ -1,5 +1,5 @@
 from PySide6.QtGui import QShortcut, QKeySequence
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit
+from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QMessageBox
 from PySide6.QtCore import Qt, Slot, Signal, QObject
 
 # noinspection PyUnresolvedReference
@@ -59,6 +59,17 @@ class AddDeckWidget(QWidget):
     def add_deck(self):
         """ This method adds a new deck to the deck list widget """
         deck_name = self.deck_name_input.text
+        if not deck_name:
+            error_msg = QMessageBox()
+            error_msg.text = "The deck name field cannot be blank."
+            error_msg.icon = QMessageBox.Warning
+            error_msg.standard_buttons = QMessageBox.Ok
+
+            shortcut_exit = QShortcut(QKeySequence("Esc"), error_msg)
+            shortcut_exit.activated.connect(error_msg.close)
+            error_msg.exec_()
+
+            return
         self.deck_list_widget.decks.append(Deck(deck_name, []))
 
         self.signals.deck_added.emit()
