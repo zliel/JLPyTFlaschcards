@@ -64,6 +64,9 @@ class AddDeckWidget(QWidget):
             error_msg.text = "The deck name field cannot be blank."
             error_msg.icon = QMessageBox.Warning
             error_msg.standard_buttons = QMessageBox.Ok
+
+            shortcut_exit = QShortcut(QKeySequence("Esc"), error_msg)
+            shortcut_exit.activated.connect(error_msg.close)
             error_msg.exec_()
 
             return
