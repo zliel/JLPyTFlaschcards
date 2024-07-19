@@ -84,7 +84,10 @@ class MainWindow(QWidget):
 
     def setup_shortcuts(self):
         shortcuts = {
-            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks, "decks")
+            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks, "decks"),
+            "Ctrl+N": self.show_add_card_widget,
+            "Ctrl+D": self.show_add_deck_widget,
+            "Ctrl+Q": self.close
         }
 
         for key_sequence, action in shortcuts.items():
