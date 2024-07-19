@@ -41,14 +41,17 @@ class MainWindow(QWidget):
         # After clicking a "Add card" button, the AddCardWidget will be displayed
         self.button_layout = QHBoxLayout()
         self.add_card_button = QPushButton("Add Card")
+        self.add_card_button.tool_tip = "Shortcut: Ctrl+N"
         self.add_card_button.clicked.connect(self.show_add_card_widget)
         self.button_layout.add_widget(self.add_card_button)
 
         self.add_deck_button = QPushButton("Add Deck")
+        self.add_deck_button.tool_tip = "Shortcut: Ctrl+D"
         self.add_deck_button.clicked.connect(self.show_add_deck_widget)
         self.button_layout.add_widget(self.add_deck_button)
 
         self.save_button = QPushButton("Save")
+        self.save_button.tool_tip = "Shortcut: Ctrl+S"
         self.save_button.clicked.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
         self.button_layout.add_widget(self.save_button)
 
