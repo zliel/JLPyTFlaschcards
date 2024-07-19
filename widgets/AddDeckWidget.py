@@ -36,6 +36,7 @@ class AddDeckWidget(QWidget):
         self.deck_name_label = QLabel("Deck Name:")
         form_layout.add_widget(self.deck_name_label)
         self.deck_name_input = QLineEdit()
+
         # Can't use "Enter" as a shortcut because of the way QLineEdit handles the "Enter" key, so we connect the
         # return_pressed signal to the add_deck method instead
         self.deck_name_input.returnPressed.connect(self.add_deck)
