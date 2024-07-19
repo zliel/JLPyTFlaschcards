@@ -1,3 +1,4 @@
+from PySide6.QtGui import QShortcut, QKeySequence
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit
 from PySide6.QtCore import Qt, Slot, Signal, QObject
 
@@ -35,6 +36,9 @@ class AddDeckWidget(QWidget):
         self.deck_name_label = QLabel("Deck Name:")
         form_layout.add_widget(self.deck_name_label)
         self.deck_name_input = QLineEdit()
+        # Can't use "Enter" as a shortcut because of the way QLineEdit handles the "Enter" key, so we connect the
+        # return_pressed signal to the add_deck method instead
+        self.deck_name_input.returnPressed.connect(self.add_deck)
         form_layout.add_widget(self.deck_name_input)
         self.layout.add_layout(form_layout)
 
@@ -42,6 +46,7 @@ class AddDeckWidget(QWidget):
         self.add_deck_button.clicked.connect(self.add_deck)
         self.layout.add_widget(self.add_deck_button)
 
+        self.setup_shortcuts()
         self.set_layout(self.layout)
         self.resize(400, 300)
         self.show()
@@ -54,3 +59,13 @@ class AddDeckWidget(QWidget):
 
         self.signals.deck_added.emit()
         self.close()
+
+    def setup_shortcuts(self):
+        """ This method sets up the keyboard shortcuts for the AddDeckWidget """
+        shortcuts = {
+            "Esc": self.close
+        }
+
+        for key_sequence, action in shortcuts.items():
+            shortcut = QShortcut(QKeySequence(key_sequence), self)
+            shortcut.activated.connect(action)
