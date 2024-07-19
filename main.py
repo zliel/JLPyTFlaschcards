@@ -8,6 +8,8 @@ from __feature__ import snake_case, true_property
 
 import utils
 from widgets.DeckListWidget import DeckListWidget
+from widgets.AddCardWidget import AddCardWidget
+from widgets.AddDeckWidget import AddDeckWidget
 
 my_app = QApplication([])
 label_font = QFont()
@@ -63,13 +65,11 @@ class MainWindow(QWidget):
     @Slot()
     def show_add_card_widget(self):
         """This method displays the AddCardWidget when the "Add Card" button is clicked."""
-        from widgets.AddCardWidget import AddCardWidget
         add_card_widget = AddCardWidget(self.decks)
 
     @Slot()
     def show_add_deck_widget(self):
         """ This method displays the AddDeckWidget when the "Add Deck" button is clicked. """
-        from widgets.AddDeckWidget import AddDeckWidget
         add_deck_widget = AddDeckWidget(self.deck_list_widget)
         add_deck_widget.signals.deck_added.connect(self.reset_deck_list)
 
