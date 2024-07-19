@@ -2,6 +2,7 @@ from datetime import datetime
 
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt, Slot
+from PySide6.QtGui import QKeySequence, QShortcut
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
@@ -24,6 +25,7 @@ class CardWidget(QWidget):
         super().__init__()
         self.deck = deck
         self.cards = self.deck.cards
+        self.answer_shown = False
 
         # Ensure that the only cards in the list are those that need to be reviewed, and sort them by review date
         self.update_card_list()
@@ -62,6 +64,7 @@ class CardWidget(QWidget):
 
         vbox.add_layout(button_box)
 
+        self.setup_shortcuts()
         self.set_layout(vbox)
 
         # Set up the first card
@@ -79,6 +82,7 @@ class CardWidget(QWidget):
         self.show_answer_btn.hide()
         self.pass_btn.show()
         self.fail_btn.show()
+        self.answer_shown = True
 
     @Slot()
     def on_review_click(self, grade: int):
@@ -87,6 +91,8 @@ class CardWidget(QWidget):
         :param grade: The grade of the review (0-5)
         :return: None
         """
+        if not self.answer_shown:
+            return
         self.cards[0].review(grade)
         # When a card is reviewed, the deck is modified, for the save function to know to save this particular deck
         self.deck.is_modified = True
@@ -96,6 +102,7 @@ class CardWidget(QWidget):
         self.pass_btn.hide()
         self.fail_btn.hide()
         self.update_card()
+        self.answer_shown = False
 
     def update_card_list(self):
         """
@@ -123,3 +130,19 @@ class CardWidget(QWidget):
             card = self.cards[0]
             self.question_label.text = "Front: " + card.question
             self.answer_label.text = ""
+
+    def setup_shortcuts(self):
+        """
+        Set up the keyboard shortcuts for the CardWidget.
+        :return: None
+        """
+        shortcuts = {
+            # Space will be to show answer or pass
+            "Space": self.on_show_answer_click if not self.answer_shown else self.on_review_click(3),
+            "1": lambda: self.on_review_click(0) if self.answer_shown else None,
+            "2": lambda: self.on_review_click(3) if self.answer_shown else None
+        }
+
+        for key_sequence, action in shortcuts.items():
+            shortcut = QShortcut(QKeySequence(key_sequence), self)
+            shortcut.activated.connect(action)
