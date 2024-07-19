@@ -1,7 +1,7 @@
 import sys
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QKeySequence, QShortcut
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
@@ -54,6 +54,8 @@ class MainWindow(QWidget):
 
         self.layout.add_layout(self.button_layout)
 
+        self.setup_shortcuts()
+
         self.set_layout(self.layout)
 
         self.window_title = "JLPyT Flashcards"
@@ -79,6 +81,15 @@ class MainWindow(QWidget):
         self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
         self.deck_list_widget.delete_later()
         self.deck_list_widget = new_deck_list_widget
+
+    def setup_shortcuts(self):
+        shortcuts = {
+            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks, "decks")
+        }
+
+        for key_sequence, action in shortcuts.items():
+            shortcut = QShortcut(QKeySequence(key_sequence), self)
+            shortcut.activated.connect(action)
 
 
 main_window = MainWindow()
