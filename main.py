@@ -57,7 +57,12 @@ class MainWindow(QWidget):
 
         self.layout.add_layout(self.button_layout)
 
-        self.setup_shortcuts()
+        utils.setup_shortcuts(self, shortcuts = {
+            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks, "decks"),
+            "Ctrl+N": self.show_add_card_widget,
+            "Ctrl+D": self.show_add_deck_widget,
+            "Ctrl+Q": self.close
+        })
 
         self.set_layout(self.layout)
 
@@ -84,18 +89,6 @@ class MainWindow(QWidget):
         self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
         self.deck_list_widget.delete_later()
         self.deck_list_widget = new_deck_list_widget
-
-    def setup_shortcuts(self):
-        shortcuts = {
-            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks, "decks"),
-            "Ctrl+N": self.show_add_card_widget,
-            "Ctrl+D": self.show_add_deck_widget,
-            "Ctrl+Q": self.close
-        }
-
-        for key_sequence, action in shortcuts.items():
-            shortcut = QShortcut(QKeySequence(key_sequence), self)
-            shortcut.activated.connect(action)
 
 
 main_window = MainWindow()
