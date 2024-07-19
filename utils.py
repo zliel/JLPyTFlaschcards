@@ -5,6 +5,9 @@ import requests
 
 from typing import List
 
+from PySide6.QtGui import QShortcut, QKeySequence
+from PySide6.QtWidgets import QWidget
+
 from models.Deck import Deck
 from models.Flashcard import Flashcard
 
@@ -150,3 +153,15 @@ def download_deck_from_url(url: str, deck_name: str, directory: str) -> None:
         save_deck_to_csv(deck, directory)
     else:
         print(f"Failed to download deck from {url}")
+
+
+def setup_shortcuts(widget: QWidget, shortcuts: dict) -> None:
+    """
+    Set up keyboard shortcuts for a widget
+    :param widget: The widget to set up the shortcuts for
+    :param shortcuts: A dictionary of shortcuts, where the key is the shortcut as a string and the value is the method to call
+    :return: None
+    """
+    for key_sequence, action in shortcuts.items():
+        shortcut = QShortcut(QKeySequence(key_sequence), widget)
+        shortcut.activated.connect(action)
