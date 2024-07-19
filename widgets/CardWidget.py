@@ -82,6 +82,8 @@ class CardWidget(QWidget):
         Show the answer to the current flashcard.
         :return: None
         """
+        if len(self.cards) == 0:
+            return
         self.answer_label.text = ("<hr style=\"color: #fff; width: 50%;\">Back: " +
                                   self.cards[0].answer)
         self.answer_label.show()
@@ -97,7 +99,7 @@ class CardWidget(QWidget):
         :param grade: The grade of the review (0-5)
         :return: None
         """
-        if not self.answer_shown:
+        if not self.answer_shown or len(self.cards) == 0:
             return
         self.cards[0].review(grade)
         # When a card is reviewed, the deck is modified, for the save function to know to save this particular deck
