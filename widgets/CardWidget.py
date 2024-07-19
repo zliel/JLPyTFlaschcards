@@ -8,6 +8,7 @@ from PySide6.QtGui import QKeySequence, QShortcut
 from __feature__ import snake_case, true_property
 
 from models.Deck import Deck
+import utils
 
 
 class CardWidget(QWidget):
@@ -64,7 +65,12 @@ class CardWidget(QWidget):
 
         vbox.add_layout(button_box)
 
-        self.setup_shortcuts()
+        utils.setup_shortcuts(self, shortcuts={
+            # Space will be to show answer or pass
+            "Space": self.on_show_answer_click if not self.answer_shown else self.on_review_click(3),
+            "1": lambda: self.on_review_click(0) if self.answer_shown else None,
+            "2": lambda: self.on_review_click(3) if self.answer_shown else None
+        })
         self.set_layout(vbox)
 
         # Set up the first card
@@ -130,19 +136,3 @@ class CardWidget(QWidget):
             card = self.cards[0]
             self.question_label.text = "Front: " + card.question
             self.answer_label.text = ""
-
-    def setup_shortcuts(self):
-        """
-        Set up the keyboard shortcuts for the CardWidget.
-        :return: None
-        """
-        shortcuts = {
-            # Space will be to show answer or pass
-            "Space": self.on_show_answer_click if not self.answer_shown else self.on_review_click(3),
-            "1": lambda: self.on_review_click(0) if self.answer_shown else None,
-            "2": lambda: self.on_review_click(3) if self.answer_shown else None
-        }
-
-        for key_sequence, action in shortcuts.items():
-            shortcut = QShortcut(QKeySequence(key_sequence), self)
-            shortcut.activated.connect(action)

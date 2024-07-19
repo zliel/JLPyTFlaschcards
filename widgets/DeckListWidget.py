@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt, Slot
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
 
+import utils
 from models.Deck import Deck
 from widgets.CardWidget import CardWidget
 
@@ -46,7 +47,9 @@ class DeckListWidget(QWidget):
         self.stacked_widget.add_widget(self.deck_list_widget)
         self.layout.add_widget(self.stacked_widget)
 
-        self.setup_shortcuts()
+        utils.setup_shortcuts(self, shortcuts={
+            "Esc": lambda: self.stacked_widget.set_current_widget(self.deck_list_widget)
+        })
 
         self.set_layout(self.layout)
 
@@ -72,13 +75,3 @@ class DeckListWidget(QWidget):
         flashcard_layout.add_widget(card_widget)
         self.stacked_widget.add_widget(flashcard_layout_widget)
         self.stacked_widget.set_current_widget(flashcard_layout_widget)
-
-    def setup_shortcuts(self):
-        """ This method sets up the keyboard shortcuts for the DeckListWidget. """
-        shortcuts = {
-            "Esc": lambda: self.stacked_widget.set_current_widget(self.deck_list_widget)
-        }
-
-        for key_sequence, action in shortcuts.items():
-            shortcut = QShortcut(QKeySequence(key_sequence), self)
-            shortcut.activated.connect(action)

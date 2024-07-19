@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt, Slot, Signal, QObject
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
 
+import utils
 from models.Deck import Deck
 from widgets.DeckListWidget import DeckListWidget
 
@@ -47,7 +48,9 @@ class AddDeckWidget(QWidget):
         self.add_deck_button.clicked.connect(self.add_deck)
         self.layout.add_widget(self.add_deck_button)
 
-        self.setup_shortcuts()
+        utils.setup_shortcuts(self, shortcuts={
+            "Esc": self.close
+        })
         self.set_layout(self.layout)
         self.resize(400, 300)
         self.show()
@@ -60,13 +63,3 @@ class AddDeckWidget(QWidget):
 
         self.signals.deck_added.emit()
         self.close()
-
-    def setup_shortcuts(self):
-        """ This method sets up the keyboard shortcuts for the AddDeckWidget """
-        shortcuts = {
-            "Esc": self.close
-        }
-
-        for key_sequence, action in shortcuts.items():
-            shortcut = QShortcut(QKeySequence(key_sequence), self)
-            shortcut.activated.connect(action)
