@@ -67,7 +67,7 @@ class CardWidget(QWidget):
 
         utils.setup_shortcuts(self, shortcuts={
             # Space will be to show answer or pass
-            "Space": self.on_show_answer_click if not self.answer_shown else self.on_review_click(3),
+            "Space": self.handle_space_bar,
             "1": lambda: self.on_review_click(0) if self.answer_shown else None,
             "2": lambda: self.on_review_click(3) if self.answer_shown else None
         })
@@ -138,3 +138,13 @@ class CardWidget(QWidget):
             card = self.cards[0]
             self.question_label.text = "Front: " + card.question
             self.answer_label.text = ""
+
+    def handle_space_bar(self):
+        """
+        Handle the space bar press to show the answer or pass the card.
+        :return: None
+        """
+        if self.answer_shown:
+            self.on_review_click(3)
+        else:
+            self.on_show_answer_click()
