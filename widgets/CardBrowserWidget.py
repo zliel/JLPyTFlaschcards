@@ -75,7 +75,6 @@ class CardBrowserWidget(QWidget):
             for card in deck.cards:
                 if card.id == updated_card.id:
                     deck.is_modified = True
-                    utils.save_deck_to_csv(deck, "decks")
 
         self.update_card_list(self.current_deck_list)
 
