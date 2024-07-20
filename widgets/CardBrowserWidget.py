@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QListWidget, QListWidgetItem
-from PySide6.QtCore import Qt, Slot, Signal, QObject
+from PySide6.QtCore import Qt, Slot, Signal, QObject, QEvent
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
@@ -10,7 +10,12 @@ from models.Flashcard import Flashcard
 from widgets.CardEditWidget import CardEditWidget
 
 
+class CardBrowserSignals(QObject):
+    closed = Signal()
+
+
 class CardBrowserWidget(QWidget):
+    signals = CardBrowserSignals()
 
     def __init__(self, app_decks: list[Deck]):
         super().__init__()
@@ -36,7 +41,21 @@ class CardBrowserWidget(QWidget):
 
         self.set_layout(self.layout)
 
+        # Handle closeEvents
+        self.install_event_filter(self)
+
         self.show()
+
+    def event_filter(self, obj, event):
+        # print(event.type())
+        if obj == self and event.type() == QEvent.Close:
+            # Ensure that the card editor is fully closed before emitting the signal
+            if self.card_edit_widget:
+                self.card_edit_widget.close()
+                self.card_edit_widget.delete_later()
+            self.signals.closed.emit()
+            super().close()
+        return False
 
     @Slot()
     def show_card_editor(self, item):
