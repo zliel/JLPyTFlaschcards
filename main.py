@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, Q
 from __feature__ import snake_case, true_property
 
 import utils
+from widgets.CardBrowserWidget import CardBrowserWidget
 from widgets.DeckListWidget import DeckListWidget
 from widgets.AddCardWidget import AddCardWidget
 from widgets.AddDeckWidget import AddDeckWidget
@@ -50,6 +51,11 @@ class MainWindow(QWidget):
         self.add_deck_button.clicked.connect(self.show_add_deck_widget)
         self.button_layout.add_widget(self.add_deck_button)
 
+        self.browse_cards_button = QPushButton("Browse Cards")
+        self.browse_cards_button.tool_tip = "Shortcut: Ctrl+B"
+        self.browse_cards_button.clicked.connect(self.show_card_browser_widget)
+        self.button_layout.add_widget(self.browse_cards_button)
+
         self.save_button = QPushButton("Save")
         self.save_button.tool_tip = "Shortcut: Ctrl+S"
         self.save_button.clicked.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
@@ -61,6 +67,7 @@ class MainWindow(QWidget):
             "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks, "decks"),
             "Ctrl+N": self.show_add_card_widget,
             "Ctrl+D": self.show_add_deck_widget,
+            "Ctrl+B": self.show_card_browser_widget,
             "Ctrl+Q": self.close
         })
 
@@ -82,6 +89,11 @@ class MainWindow(QWidget):
         """ This method displays the AddDeckWidget when the "Add Deck" button is clicked. """
         add_deck_widget = AddDeckWidget(self.deck_list_widget)
         add_deck_widget.signals.deck_added.connect(self.reset_deck_list)
+
+    @Slot()
+    def show_card_browser_widget(self):
+        """ This method displays the CardBrowserWidget when the "Browse Cards" button is clicked. """
+        card_browser_widget = CardBrowserWidget(self.decks)
 
     def reset_deck_list(self):
         """ This method resets the deck list widget after a new deck has been added. """
