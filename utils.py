@@ -1,6 +1,8 @@
 import os
 import re
 import csv
+from uuid import uuid4
+
 import requests
 
 from typing import List
@@ -146,7 +148,7 @@ def download_deck_from_url(url: str, deck_name: str, directory: str) -> None:
             back = furigana + card["meaning"]
             tags = [f'N{card["level"]}']
 
-            new_card = Flashcard(front, back, tags=tags)
+            new_card = Flashcard(front, back, tags=tags, id=str(uuid4()))
             cards.append(new_card)
 
         deck = Deck(deck_name, cards)
