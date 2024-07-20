@@ -1,17 +1,20 @@
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QListWidget, QListWidgetItem
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, Signal, QObject
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
 
+import utils
 from models.Deck import Deck
 from models.Flashcard import Flashcard
 from widgets.CardEditWidget import CardEditWidget
 
 
 class CardBrowserWidget(QWidget):
+
     def __init__(self, app_decks: list[Deck]):
         super().__init__()
+
         self.window_title = "Browse Cards"
         self.layout = QHBoxLayout()
         # Keep a copy of all decks for filtering
@@ -30,9 +33,9 @@ class CardBrowserWidget(QWidget):
         self.layout.add_widget(self.card_list_widget)
 
         self.card_edit_widget = CardEditWidget()
-        # self.layout.add_widget(self.card_edit_widget)
 
         self.set_layout(self.layout)
+
         self.show()
 
     @Slot()
@@ -40,6 +43,7 @@ class CardBrowserWidget(QWidget):
         card = item.data(Qt.UserRole)
         if self.card_edit_widget:
             self.card_edit_widget.close()
+            self.card_edit_widget.delete_later()
         self.card_edit_widget = CardEditWidget(card)
         self.card_edit_widget.signals.card_edited.connect(self.handle_card_update)
         self.layout.add_widget(self.card_edit_widget)
@@ -52,6 +56,7 @@ class CardBrowserWidget(QWidget):
             for card in deck.cards:
                 if card.id == updated_card.id:
                     deck.is_modified = True
+                    utils.save_deck_to_csv(deck, "decks")
 
         self.update_card_list(self.current_deck_list)
 
@@ -67,5 +72,3 @@ class CardBrowserWidget(QWidget):
         self.card_list_widget.set_current_index(last_card_selected)
         # NOTE: This could pose a problem when we allow deleting cards, as the index could be out of bounds
         # This could also be a problem when filtering
-
-
