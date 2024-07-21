@@ -263,12 +263,19 @@ class CardBrowserWidget(QWidget):
                 if selected_card in deck.cards:
                     deck.cards.remove(selected_card)
                     deck.is_modified = True
-                    break
-            self.all_cards.remove(selected_card)
 
-            self.update_filter_cache(set(selected_card.tags))
+                    # Cards seemingly have to be removed from the all_cards list as well as the current_card_list
+                    self.all_cards.remove(selected_card)
+                    if selected_card in self.current_card_list:
+
+                        self.current_card_list.remove(selected_card)
 
             self.update_card_list(self.current_card_list)
+            # Update the filter list just in case the card deleted was the only one with a certain tag
+            self.update_filter_list(self.all_decks)
+            # Update the filter cache and tag-to-card index to remove the card from any tag filters
+            self.update_filter_cache(selected_card.tags)
+            self.build_tag_index()
 
     def delete_tag(self):
         """
