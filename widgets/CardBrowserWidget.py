@@ -33,7 +33,9 @@ class CardBrowserWidget(QWidget):
         # Keep a copy of all decks for filtering
         self.all_decks = app_decks
         # Starts with all decks
-        self.current_deck_list = app_decks
+        self.all_cards = [card for deck in app_decks for card in deck.cards]
+        self.current_card_list = self.all_cards
+
         self.deck_lookup = {deck.name: deck for deck in self.all_decks}
         self.filter_cache = {}
         self.build_tag_index()
@@ -50,7 +52,7 @@ class CardBrowserWidget(QWidget):
         self.card_tree_widget = QTreeWidget()
         self.card_tree_widget.set_header_labels(["Front", "Back", "Tags"])
         self.card_tree_widget.clicked.connect(self.on_card_list_clicked)
-        self.update_card_list(self.current_deck_list)
+        self.update_card_list(self.current_card_list)
         self.card_tree_widget.itemDoubleClicked.connect(lambda item: self.show_card_editor(item))
         self.layout.add_widget(self.card_tree_widget)
 
@@ -90,20 +92,19 @@ class CardBrowserWidget(QWidget):
         item_text = item.text()
 
         if item_text in ("-- All Decks --", "-- All Tags --"):
-            self.current_deck_list = self.all_decks
+            self.current_card_list = self.all_cards
         else:
             # Check if the item is a deck name or a tag
             if item_text in self.deck_lookup:
-                self.current_deck_list = [self.deck_lookup[item_text]]
+                self.current_card_list = [card for card in self.deck_lookup[item_text].cards]
             elif item_text in self.tag_list:
-                self.current_deck_list = [deck for deck in self.all_decks if
-                                          any(card in self.tag_to_cards[item_text] for card in deck.cards)]
+                self.current_card_list = self.filter_cards_by_tag(item_text)
             else:
-                self.current_deck_list = []
+                self.current_card_list = []
 
         if item_text != "-- All Decks --" and item_text != "-- All Tags --":
-            self.filter_cache[item_text] = self.current_deck_list
-        self.update_card_list(self.current_deck_list)
+            self.filter_cache[item_text] = self.current_card_list
+        self.update_card_list(self.current_card_list)
 
     def event_filter(self, obj, event):
         """
@@ -157,7 +158,7 @@ class CardBrowserWidget(QWidget):
         # Update cache accordingly
         self.update_filter_cache(affected_filters)
 
-        self.update_card_list(self.current_deck_list)
+        self.update_card_list(self.current_card_list)
 
     def update_card_list(self, current_deck_list):
         """
@@ -252,7 +253,7 @@ class CardBrowserWidget(QWidget):
 
             self.update_filter_cache(set(selected_card.tags))
 
-            self.update_card_list(self.current_deck_list)
+            self.update_card_list(self.current_card_list)
 
     def delete_tag(self):
         """
@@ -277,7 +278,7 @@ class CardBrowserWidget(QWidget):
                             card.tags.remove(selected_tag)
                             deck.is_modified = True
                 self.build_tag_index()
-                self.update_card_list(self.current_deck_list)
+                self.update_card_list(self.current_card_list)
                 self.update_filter_list(self.all_decks)
 
 
