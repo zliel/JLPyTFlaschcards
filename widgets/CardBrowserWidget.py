@@ -37,8 +37,11 @@ class CardBrowserWidget(QWidget):
         self.current_card_list = self.all_cards
 
         self.deck_lookup = {deck.name: deck for deck in self.all_decks}
-        self.filter_cache = {}
         self.build_tag_index()
+        self.tag_list = self.generate_tag_list(app_decks)
+        self.filter_cache = {}
+        for tag in self.tag_list:
+            self.filter_cache[tag] = self.filter_cards_by_tag(tag)
         self.focused_widget = None
 
         # Note: when filtering, you should update the current_deck_list to some subset of app_decks, so they stay in sync
@@ -139,7 +142,7 @@ class CardBrowserWidget(QWidget):
         self.layout.add_widget(self.card_edit_widget)
 
     @Slot(Flashcard)
-    def handle_card_update(self, updated_card):
+    def handle_card_update(self, updated_card, old_card):
         """
         Updates the card in the deck and refreshes the card list.
         :param updated_card: The updated card
@@ -148,22 +151,34 @@ class CardBrowserWidget(QWidget):
         # The card will automatically be updated in the deck, as the card is passed by reference,
         # but we need to make sure the deck it belongs to is marked as modified
         affected_filters = set(updated_card.tags)
-        # Optionally, add the deck name if it's relevant to your filtering logic
+        affected_filters.update(old_card.tags)
         for deck in self.all_decks:
             if updated_card in deck.cards:
-                affected_filters.add(deck.name)
                 deck.is_modified = True
                 break
 
         # Update cache accordingly
         self.update_filter_cache(affected_filters)
 
+        if updated_card.tags != old_card.tags:
+            self.build_tag_index()
+
         self.update_card_list(self.current_card_list)
 
-    def update_card_list(self, current_deck_list):
+    def update_filter_cache(self, affected_filters):
+        """
+        Updates the filter cache with the given set of affected filters.
+        :param affected_filters: The set of filters that have been affected
+        :return: None
+        """
+        for filter in affected_filters:
+            if filter in self.filter_cache:
+                self.filter_cache[filter] = self.filter_cards_by_tag(filter)
+
+    def update_card_list(self, current_card_list):
         """
         Updates the card list widget with the cards from the current deck list, and sets the selected index to the last card selected.
-        :param current_deck_list: The list of decks to display cards from
+        :param current_card_list: The list of decks to display cards from
         :return: None
         """
         # figure out which card, if any, is currently selected
@@ -172,14 +187,14 @@ class CardBrowserWidget(QWidget):
             selected_card = self.card_tree_widget.current_item().data(0, Qt.UserRole)
 
         self.card_tree_widget.clear()
-        for deck in current_deck_list:
-            for card in deck.cards:
-                card_item = QTreeWidgetItem()
-                card_item.set_text(0, card.question)
-                card_item.set_text(1, card.answer)
-                card_item.set_text(2, ", ".join(card.tags))
-                card_item.set_data(0, Qt.UserRole, card)
-                self.card_tree_widget.add_top_level_item(card_item)
+
+        for card in current_card_list:
+            card_item = QTreeWidgetItem()
+            card_item.set_text(0, card.question)
+            card_item.set_text(1, card.answer)
+            card_item.set_text(2, ", ".join(card.tags))
+            card_item.set_data(0, Qt.UserRole, card)
+            self.card_tree_widget.add_top_level_item(card_item)
 
         # Select the last selected card
         if selected_card:
@@ -249,6 +264,7 @@ class CardBrowserWidget(QWidget):
                     deck.cards.remove(selected_card)
                     deck.is_modified = True
                     break
+            self.all_cards.remove(selected_card)
 
             self.update_filter_cache(set(selected_card.tags))
 
@@ -268,23 +284,12 @@ class CardBrowserWidget(QWidget):
                 self.filter_list_widget.remove_item_widget(selected_item)
                 for deck in self.all_decks:
                     for card in deck.cards:
-                        if "初め" in card.question:
-                            print("FOUND")
-                            print(card.question)
-                            print(card.answer)
-                            print(card.tags)
                         if selected_tag in card.tags:
                             card.tags.remove(selected_tag)
                             deck.is_modified = True
                 self.build_tag_index()
                 self.update_card_list(self.current_card_list)
                 self.update_filter_list(self.all_decks)
-
-
-    def update_filter_cache(self, affected_filters):
-        for filter_key in list(self.filter_cache.keys()):
-            if filter_key in affected_filters or filter_key == "-- All Decks --":
-                self.filter_cache.pop(filter_key, None)
 
     def update_filter_list(self, app_decks):
         """
@@ -299,11 +304,3 @@ class CardBrowserWidget(QWidget):
         self.filter_list_widget.add_item("-- All Tags --")
         self.tag_list = self.generate_tag_list(app_decks)
         self.filter_list_widget.add_items(self.tag_list)
-
-
-
-# Instead of adding whole decks when filtering by tag, you could add the cards that have that tag to the current_deck_list
-# Other problem
-"""
-When I add "Test" as a tag to a card in the "N5" deck, and then remove the tag, the tag isn't removed from the "N5" card
-"""
