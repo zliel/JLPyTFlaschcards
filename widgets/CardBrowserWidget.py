@@ -267,7 +267,6 @@ class CardBrowserWidget(QWidget):
                     # Cards seemingly have to be removed from the all_cards list as well as the current_card_list
                     self.all_cards.remove(selected_card)
                     if selected_card in self.current_card_list:
-
                         self.current_card_list.remove(selected_card)
 
             self.update_card_list(self.current_card_list)
