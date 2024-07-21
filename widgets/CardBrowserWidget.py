@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QListWidget, QListWidgetItem
+from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QListWidget, QListWidgetItem, \
+    QTreeWidget, QTreeWidgetItem
 from PySide6.QtCore import Qt, Slot, Signal, QObject, QEvent
 
 # noinspection PyUnresolvedReference
@@ -33,6 +34,8 @@ class CardBrowserWidget(QWidget):
         # Starts with all decks
         self.current_deck_list = app_decks
         self.deck_lookup = {deck.name: deck for deck in self.all_decks}
+        self.filter_cache = {}
+        self.build_tag_index()
 
         # Note: when filtering, you should update the current_deck_list to some subset of app_decks, so they stay in sync
         self.filter_list_widget = QListWidget()
@@ -46,11 +49,12 @@ class CardBrowserWidget(QWidget):
 
         self.layout.add_widget(self.filter_list_widget)
 
-        self.card_list_widget = QListWidget()
+        self.card_tree_widget = QTreeWidget()
+        self.card_tree_widget.set_header_labels(["Front", "Back", "Tags"])
         self.update_card_list(self.current_deck_list)
 
-        self.card_list_widget.itemDoubleClicked.connect(lambda item: self.show_card_editor(item))
-        self.layout.add_widget(self.card_list_widget)
+        self.card_tree_widget.itemDoubleClicked.connect(lambda item: self.show_card_editor(item))
+        self.layout.add_widget(self.card_tree_widget)
 
         self.card_edit_widget = CardEditWidget()
 
@@ -89,15 +93,13 @@ class CardBrowserWidget(QWidget):
             if item_text in self.deck_lookup:
                 self.current_deck_list = [self.deck_lookup[item_text]]
             elif item_text in self.tag_list:
-                filtered_decks = set()
-                for deck in self.all_decks:
-                    # Check if any card in the deck has the tag
-                    if any(item_text in card.tags for card in deck.cards):
-                        filtered_decks.add(deck)
-                self.current_deck_list = list(filtered_decks)
+                self.current_deck_list = [deck for deck in self.all_decks if
+                                          any(card in self.tag_to_cards[item_text] for card in deck.cards)]
             else:
                 self.current_deck_list = []
 
+        if item_text != "-- All Decks --" and item_text != "-- All Tags --":
+            self.filter_cache[item_text] = self.current_deck_list
         self.update_card_list(self.current_deck_list)
 
     def event_filter(self, obj, event):
@@ -124,7 +126,7 @@ class CardBrowserWidget(QWidget):
         :param item: The item that was double-clicked in the QListWidget
         :return: None
         """
-        card = item.data(Qt.UserRole)
+        card = item.data(0, Qt.UserRole)
         if self.card_edit_widget:
             self.card_edit_widget.close()
             self.card_edit_widget.delete_later()
@@ -141,10 +143,18 @@ class CardBrowserWidget(QWidget):
         """
         # The card will automatically be updated in the deck, as the card is passed by reference,
         # but we need to make sure the deck it belongs to is marked as modified
+        affected_filters = set(updated_card.tags)
+        # Optionally, add the deck name if it's relevant to your filtering logic
         for deck in self.all_decks:
-            for card in deck.cards:
-                if card.id == updated_card.id:
-                    deck.is_modified = True
+            if updated_card in deck.cards:
+                affected_filters.add(deck.name)
+                deck.is_modified = True
+                break
+
+        # Update cache accordingly
+        for filter_key in list(self.filter_cache.keys()):
+            if filter_key in affected_filters or filter_key == "-- All Decks --":
+                self.filter_cache.pop(filter_key, None)
 
         self.update_card_list(self.current_deck_list)
 
@@ -154,14 +164,51 @@ class CardBrowserWidget(QWidget):
         :param current_deck_list: The list of decks to display cards from
         :return: None
         """
-        last_card_selected = self.card_list_widget.current_index()
-        self.card_list_widget.clear()
+        # figure out which card, if any, is currently selected
+        selected_card = None
+        if self.card_tree_widget.current_item():
+            selected_card = self.card_tree_widget.current_item().data(0, Qt.UserRole)
+
+        self.card_tree_widget.clear()
         for deck in current_deck_list:
             for card in deck.cards:
-                item = QListWidgetItem(f"{card.question} - {card.answer}")
-                item.set_data(Qt.UserRole, card)
-                self.card_list_widget.add_item(item)
+                card_item = QTreeWidgetItem()
+                card_item.set_text(0, card.question)
+                card_item.set_text(1, card.answer)
+                card_item.set_text(2, ", ".join(card.tags))
+                card_item.set_data(0, Qt.UserRole, card)
+                self.card_tree_widget.add_top_level_item(card_item)
 
-        self.card_list_widget.set_current_index(last_card_selected)
+        # Select the last selected card
+        if selected_card:
+
+            for i in range(self.card_tree_widget.top_level_item_count):
+                item = self.card_tree_widget.top_level_item(i)
+                if item.data(0, Qt.UserRole).id == selected_card.id:
+                    self.card_tree_widget.set_current_item(item)
+                    break
+        else:
+            # Select the first card
+            self.card_tree_widget.set_current_item(self.card_tree_widget.top_level_item(0))
         # NOTE: This could pose a problem when we allow deleting cards, as the index could be out of bounds
         # This could also be a problem when filtering
+
+    def build_tag_index(self):
+        """
+        Builds a reverse index from tags to cards.
+        """
+        self.tag_to_cards = {}
+        for deck in self.all_decks:
+            for card in deck.cards:
+                for tag in card.tags:
+                    if tag not in self.tag_to_cards:
+                        self.tag_to_cards[tag] = set()
+                    self.tag_to_cards[tag].add(card)
+
+    def filter_cards_by_tag(self, tag):
+        """
+        Returns a list of cards that have the specified tag, using the reverse index.
+        """
+        if tag in self.tag_to_cards:
+            return list(self.tag_to_cards[tag])
+        return []

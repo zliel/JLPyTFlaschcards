@@ -91,7 +91,7 @@ class Flashcard:
         return f"Question: {self.question}\nAnswer: {self.answer}\nNext Review Date: {self.next_review_date}"
 
     def __eq__(self, other):
-        return self.question == other.question and self.answer == other.answer
+        return (self.question == other.question and self.answer == other.answer) or self.id == other.id
 
     def __ne__(self, other):
         return not self == other
@@ -110,3 +110,6 @@ class Flashcard:
 
     def __repr__(self):
         return f"Flashcard({self.question}, {self.answer}, {self.next_review_date})"
+
+    def __hash__(self):
+        return hash(self.id)
