@@ -8,7 +8,7 @@ from models.Flashcard import Flashcard
 
 
 class CardEditSignals(QObject):
-    card_edited = Signal(Flashcard)
+    card_edited = Signal(Flashcard, Flashcard)
 
 
 class CardEditWidget(QWidget):
@@ -52,9 +52,10 @@ class CardEditWidget(QWidget):
 
     @Slot()
     def save_card(self):
+        old_card = Flashcard(question=self.card.question, answer=self.card.answer, tags=self.card.tags)
         self.card.question = self.front_input.plain_text
         self.card.answer = self.back_input.plain_text
         self.card.tags = self.tags_input.text.split()
 
-        self.signals.card_edited.emit(self.card)
+        self.signals.card_edited.emit(self.card, old_card)
         self.close()
