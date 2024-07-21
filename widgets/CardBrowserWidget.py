@@ -200,12 +200,11 @@ class CardBrowserWidget(QWidget):
         Builds a reverse index from tags to cards.
         """
         self.tag_to_cards = {}
-        for deck in self.all_decks:
-            for card in deck.cards:
-                for tag in card.tags:
-                    if tag not in self.tag_to_cards:
-                        self.tag_to_cards[tag] = set()
-                    self.tag_to_cards[tag].add(card)
+        for card in self.all_cards:
+            for tag in card.tags:
+                if tag not in self.tag_to_cards:
+                    self.tag_to_cards[tag] = set()
+                self.tag_to_cards[tag].add(card)
 
     def filter_cards_by_tag(self, tag):
         """
