@@ -37,32 +37,30 @@ class CardBrowserWidget(QWidget):
         self.deck_lookup = {deck.name: deck for deck in self.all_decks}
         self.filter_cache = {}
         self.build_tag_index()
+        self.focused_widget = None
 
         # Note: when filtering, you should update the current_deck_list to some subset of app_decks, so they stay in sync
         self.filter_list_widget = QListWidget()
-        self.filter_list_widget.add_item("-- All Decks --")
-        for deck in app_decks:
-            self.filter_list_widget.add_item(deck.name)
-        self.filter_list_widget.add_item("-- All Tags --")
-        self.tag_list = self.generate_tag_list(app_decks)
-        self.filter_list_widget.add_items(self.tag_list)
+        self.filter_list_widget.clicked.connect(self.on_filter_list_clicked)
+        self.update_filter_list(app_decks)
         self.filter_list_widget.itemDoubleClicked.connect(lambda item: self.select_filter(item))
 
         self.layout.add_widget(self.filter_list_widget)
 
         self.card_tree_widget = QTreeWidget()
         self.card_tree_widget.set_header_labels(["Front", "Back", "Tags"])
+        self.card_tree_widget.clicked.connect(self.on_card_list_clicked)
         self.update_card_list(self.current_deck_list)
-
         self.card_tree_widget.itemDoubleClicked.connect(lambda item: self.show_card_editor(item))
         self.layout.add_widget(self.card_tree_widget)
 
         self.card_edit_widget = CardEditWidget()
 
         self.set_layout(self.layout)
+
         utils.setup_shortcuts(self, shortcuts={
             "Esc": self.close,
-            "Del": self.delete_card
+            "Del": self.handle_delete_shortcut
         })
 
         # Handle closeEvents
@@ -216,6 +214,29 @@ class CardBrowserWidget(QWidget):
             return list(self.tag_to_cards[tag])
         return []
 
+    @Slot()
+    def on_card_list_clicked(self):
+        """
+        Handles the card list click event by updating the focused widget.
+        """
+        self.focused_widget = self.card_tree_widget
+
+    @Slot()
+    def on_filter_list_clicked(self):
+        """
+        Handles the filter list click event by updating the focused widget.
+        """
+        self.focused_widget = self.filter_list_widget
+
+    def handle_delete_shortcut(self):
+        """
+        Handles the delete shortcut by deleting the selected item in the focused widget.
+        """
+        if self.focused_widget == self.card_tree_widget:
+            self.delete_card()
+        elif self.focused_widget == self.filter_list_widget:
+            self.delete_tag()
+
     def delete_card(self):
         """
         Deletes the selected card from the deck and refreshes the card list.
@@ -233,7 +254,56 @@ class CardBrowserWidget(QWidget):
 
             self.update_card_list(self.current_deck_list)
 
+    def delete_tag(self):
+        """
+        Deletes the selected tag from the deck and refreshes the card list.
+        """
+        selected_item = self.filter_list_widget.current_item()
+        print(selected_item)
+
+        if selected_item:
+            selected_tag = selected_item.text()
+            if selected_tag in self.tag_list:
+                self.tag_list.remove(selected_tag)
+                self.filter_list_widget.remove_item_widget(selected_item)
+                for deck in self.all_decks:
+                    for card in deck.cards:
+                        if "初め" in card.question:
+                            print("FOUND")
+                            print(card.question)
+                            print(card.answer)
+                            print(card.tags)
+                        if selected_tag in card.tags:
+                            card.tags.remove(selected_tag)
+                            deck.is_modified = True
+                self.build_tag_index()
+                self.update_card_list(self.current_deck_list)
+                self.update_filter_list(self.all_decks)
+
+
     def update_filter_cache(self, affected_filters):
         for filter_key in list(self.filter_cache.keys()):
             if filter_key in affected_filters or filter_key == "-- All Decks --":
                 self.filter_cache.pop(filter_key, None)
+
+    def update_filter_list(self, app_decks):
+        """
+        Updates the filter list widget with the given list of decks.
+        :param app_decks: The list of decks to pull the names and tags from
+        :return: None
+        """
+        self.filter_list_widget.clear()
+        self.filter_list_widget.add_item("-- All Decks --")
+        for deck in app_decks:
+            self.filter_list_widget.add_item(deck.name)
+        self.filter_list_widget.add_item("-- All Tags --")
+        self.tag_list = self.generate_tag_list(app_decks)
+        self.filter_list_widget.add_items(self.tag_list)
+
+
+
+# Instead of adding whole decks when filtering by tag, you could add the cards that have that tag to the current_deck_list
+# Other problem
+"""
+When I add "Test" as a tag to a card in the "N5" deck, and then remove the tag, the tag isn't removed from the "N5" card
+"""
