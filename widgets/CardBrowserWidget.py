@@ -1,3 +1,4 @@
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QListWidget, QListWidgetItem, \
     QTreeWidget, QTreeWidgetItem
 from PySide6.QtCore import Qt, Slot, Signal, QObject, QEvent
@@ -59,6 +60,10 @@ class CardBrowserWidget(QWidget):
         self.card_edit_widget = CardEditWidget()
 
         self.set_layout(self.layout)
+        utils.setup_shortcuts(self, shortcuts={
+            "Esc": self.close,
+            "Del": self.delete_card
+        })
 
         # Handle closeEvents
         self.install_event_filter(self)
@@ -152,9 +157,7 @@ class CardBrowserWidget(QWidget):
                 break
 
         # Update cache accordingly
-        for filter_key in list(self.filter_cache.keys()):
-            if filter_key in affected_filters or filter_key == "-- All Decks --":
-                self.filter_cache.pop(filter_key, None)
+        self.update_filter_cache(affected_filters)
 
         self.update_card_list(self.current_deck_list)
 
@@ -212,3 +215,25 @@ class CardBrowserWidget(QWidget):
         if tag in self.tag_to_cards:
             return list(self.tag_to_cards[tag])
         return []
+
+    def delete_card(self):
+        """
+        Deletes the selected card from the deck and refreshes the card list.
+        """
+        selected_item = self.card_tree_widget.current_item()
+        if selected_item:
+            selected_card = selected_item.data(0, Qt.UserRole)
+            for deck in self.all_decks:
+                if selected_card in deck.cards:
+                    deck.cards.remove(selected_card)
+                    deck.is_modified = True
+                    break
+
+            self.update_filter_cache(set(selected_card.tags))
+
+            self.update_card_list(self.current_deck_list)
+
+    def update_filter_cache(self, affected_filters):
+        for filter_key in list(self.filter_cache.keys()):
+            if filter_key in affected_filters or filter_key == "-- All Decks --":
+                self.filter_cache.pop(filter_key, None)
