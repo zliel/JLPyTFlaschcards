@@ -52,3 +52,6 @@ class Deck:
 
     def __repr__(self):
         return f"Deck({self.id}, {self.name}, {self.cards})"
+
+    def __hash__(self):
+        return hash(self.id)

@@ -69,7 +69,7 @@ def save_deck_to_csv(deck: Deck, directory: str) -> None:
         for card in deck.cards:
             writer.writerow(
                 [deck.id, deck.name, card.id, card.question, card.answer, card.next_review_date, card.repetitions,
-                 card.easiness_factor, card.interval, card.tags])
+                 card.easiness_factor, card.interval, ' '.join(card.tags)])
     deck.is_modified = False  # Reset the modified flag after saving
 
 
@@ -104,7 +104,7 @@ def load_deck_from_csv(filename: str) -> Deck:
                 easiness_factor=float(row['Easiness Factor']),
                 interval=int(row['Interval']),
                 id=row['Card ID'],
-                tags=row['Tags']
+                tags=row['Tags'].split(' ')
             )
             cards.append(card)
         deck = Deck(name=deck_name, cards=cards)
