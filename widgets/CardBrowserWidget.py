@@ -26,9 +26,18 @@ class CardBrowserWidget(QWidget):
         self.all_decks = app_decks
         # Starts with all decks
         self.current_deck_list = app_decks
+        self.deck_lookup = {deck.name: deck for deck in self.all_decks}
 
         # Note: when filtering, you should update the current_deck_list to some subset of app_decks, so they stay in sync
         self.filter_list_widget = QListWidget()
+        self.filter_list_widget.add_item("-- All Decks --")
+        for deck in app_decks:
+            self.filter_list_widget.add_item(deck.name)
+        self.filter_list_widget.add_item("-- All Tags --")
+        self.tag_list = self.generate_tag_list(app_decks)
+        self.filter_list_widget.add_items(self.tag_list)
+        self.filter_list_widget.itemDoubleClicked.connect(lambda item: self.select_filter(item))
+
         self.layout.add_widget(self.filter_list_widget)
 
         self.card_list_widget = QListWidget()
@@ -45,6 +54,34 @@ class CardBrowserWidget(QWidget):
         self.install_event_filter(self)
 
         self.show()
+
+    def generate_tag_list(self, app_decks):
+        tags = set()
+        for deck in app_decks:
+            for card in deck.cards:
+                tags.update(card.tags)
+        return sorted(list(tags))
+
+    def select_filter(self, item: QListWidgetItem):
+        item_text = item.text()
+
+        if item_text in ("-- All Decks --", "-- All Tags --"):
+            self.current_deck_list = self.all_decks
+        else:
+            # Check if the item is a deck name or a tag
+            if item_text in self.deck_lookup:
+                self.current_deck_list = [self.deck_lookup[item_text]]
+            elif item_text in self.tag_list:
+                filtered_decks = set()
+                for deck in self.all_decks:
+                    # Check if any card in the deck has the tag
+                    if any(item_text in card.tags for card in deck.cards):
+                        filtered_decks.add(deck)
+                self.current_deck_list = list(filtered_decks)
+            else:
+                self.current_deck_list = []
+
+        self.update_card_list(self.current_deck_list)
 
     def event_filter(self, obj, event):
         # print(event.type())
@@ -79,6 +116,7 @@ class CardBrowserWidget(QWidget):
         self.update_card_list(self.current_deck_list)
 
     def update_card_list(self, current_deck_list):
+
         last_card_selected = self.card_list_widget.current_index()
         self.card_list_widget.clear()
         for deck in current_deck_list:
