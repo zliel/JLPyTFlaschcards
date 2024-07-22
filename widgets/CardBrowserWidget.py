@@ -260,7 +260,7 @@ class CardBrowserWidget(QWidget):
         if self.focused_widget == self.card_tree_widget:
             self.delete_card()
         elif self.focused_widget == self.filter_list_widget:
-            self.delete_tag()
+            self.delete_filter()
 
     def delete_card(self):
         """
@@ -286,7 +286,7 @@ class CardBrowserWidget(QWidget):
             self.update_filter_cache(selected_card.tags)
             self.build_tag_index()
 
-    def delete_tag(self):
+    def delete_filter(self):
         """
         Deletes the selected tag from the deck and refreshes the card list.
         """
@@ -294,19 +294,30 @@ class CardBrowserWidget(QWidget):
         print(selected_item)
 
         if selected_item:
-            selected_tag = selected_item.text()
-            if selected_tag in self.tag_list:
-                self.tag_list.remove(selected_tag)
+            selected_filter = selected_item.text()
+            if selected_filter in self.tag_list:
+                self.tag_list.remove(selected_filter)
                 self.filter_list_widget.remove_item_widget(selected_item)
                 for deck in self.all_decks:
                     for card in deck.cards:
-                        if selected_tag in card.tags:
-                            card.tags.remove(selected_tag)
+                        if selected_filter in card.tags:
+                            card.tags.remove(selected_filter)
                             deck.is_modified = True
                 self.build_tag_index()
                 self.update_card_list(self.current_card_list)
                 self.update_filter_list(self.all_decks)
+            elif selected_filter in self.deck_lookup:
+                self.filter_list_widget.remove_item_widget(selected_item)
+                deck = self.deck_lookup[selected_filter]
+                self.all_cards = [card for card in self.all_cards if card not in deck.cards]
+                self.current_card_list = [card for card in self.current_card_list if card not in deck.cards]
 
+                self.all_decks.remove(deck)
+                self.deck_lookup.pop(selected_filter)
+
+                self.update_card_list(self.current_card_list)
+                self.update_filter_list(self.all_decks)
+                self.build_tag_index()
     def update_filter_list(self, app_decks):
         """
         Updates the filter list widget with the given list of decks.
