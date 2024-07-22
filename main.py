@@ -109,6 +109,31 @@ class MainWindow(QWidget):
         self.deck_list_widget.delete_later()
         self.deck_list_widget = new_deck_list_widget
 
+    @Slot()
+    def show_generation_dialog(self):
+        """ This method generates default decks for JLPT N5-N1. """
+        # make a dialog box to ask the user which decks they want to generate
+        generate_decks_dialog = QDialog()
+        generate_decks_dialog.window_title = "Generate Default Decks"
+        generate_decks_dialog.layout = QVBoxLayout()
+
+        generate_decks_dialog.layout.add_widget(dialog_label)
+
+        default_deck_name_list = ["JLPT N5", "JLPT N4", "JLPT N3", "JLPT N2", "JLPT N1"]
+        check_box_list = []
+        for deck_name in default_deck_name_list:
+            check_box = QCheckBox(deck_name)
+            check_box.checked = True
+            check_box_list.append(check_box)
+            generate_decks_dialog.layout.add_widget(check_box)
+
+        generate_button = QPushButton("Generate")
+        generate_button.clicked.connect(lambda: self.generate_selected_decks(check_box_list, dialog=generate_decks_dialog))
+        generate_decks_dialog.layout.add_widget(generate_button)
+        generate_decks_dialog.set_layout(generate_decks_dialog.layout)
+        generate_decks_dialog.resize(300, 200)
+        generate_decks_dialog.exec()
+
 
 main_window = MainWindow()
 main_window.show()
