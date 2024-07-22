@@ -323,6 +323,12 @@ class CardBrowserWidget(QWidget):
         self.build_tag_index()
 
     def delete_tag(self, selected_filter, selected_item):
+        """
+        Deletes the selected tag from the tag list and refreshes the card list.
+        :param selected_filter: The tag to delete, taken from the filter list
+        :param selected_item: The QListWidgetItem to delete, whose text should match the selected_filter
+        :return: None
+        """
         # Remove the tag from the filter list and tag list
         self.tag_list.remove(selected_filter)
         self.filter_list_widget.remove_item_widget(selected_item)
