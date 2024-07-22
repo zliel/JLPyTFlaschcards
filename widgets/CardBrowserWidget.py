@@ -163,6 +163,16 @@ class CardBrowserWidget(QWidget):
         if updated_card.tags != old_card.tags:
             self.build_tag_index()
 
+        # Handle if a new tag was added
+        new_tag_exists = False
+        for tag in updated_card.tags:
+            if tag not in self.tag_list:
+                new_tag_exists = True
+                self.tag_list.append(tag)
+
+        if new_tag_exists:
+            self.update_filter_list(self.all_decks)
+
         self.update_card_list(self.current_card_list)
 
     def update_filter_cache(self, affected_filters):
