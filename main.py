@@ -28,6 +28,10 @@ class MainWindow(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
         self.decks = app_decks
+        self.no_decks_label = QLabel('No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
+        self.no_decks_label.font = QFont("Arial", 12)
+        if not self.decks:
+            self.layout.add_widget(self.no_decks_label)
         self.deck_list_widget = DeckListWidget(self.decks)
         self.layout.add_widget(self.deck_list_widget)
 
@@ -96,6 +100,10 @@ class MainWindow(QWidget):
 
     def reset_deck_list(self):
         """ This method resets the deck list widget after a new deck has been added. """
+        if self.decks and self.no_decks_label.visible:
+            self.no_decks_label.hide()
+        elif not self.decks and not self.no_decks_label.visible:
+            self.no_decks_label.show()
         new_deck_list_widget = DeckListWidget(self.decks)
         self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
         self.deck_list_widget.delete_later()
