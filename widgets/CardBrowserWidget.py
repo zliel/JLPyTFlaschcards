@@ -256,6 +256,7 @@ class CardBrowserWidget(QWidget):
     def handle_delete_shortcut(self):
         """
         Handles the delete shortcut by deleting the selected item in the focused widget.
+        :return: None
         """
         if self.focused_widget == self.card_tree_widget:
             self.delete_card()
@@ -265,6 +266,7 @@ class CardBrowserWidget(QWidget):
     def delete_card(self):
         """
         Deletes the selected card from the deck and refreshes the card list.
+        :return: None
         """
         selected_item = self.card_tree_widget.current_item()
         if selected_item:
@@ -289,6 +291,7 @@ class CardBrowserWidget(QWidget):
     def delete_filter(self):
         """
         Deletes the selected tag from the deck and refreshes the card list.
+        :return: None
         """
         selected_item = self.filter_list_widget.current_item()
 
