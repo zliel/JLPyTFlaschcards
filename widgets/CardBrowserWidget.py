@@ -301,6 +301,12 @@ class CardBrowserWidget(QWidget):
                 self.delete_deck(selected_filter, selected_item)
 
     def delete_deck(self, selected_filter, selected_item):
+        """
+        Deletes the selected deck from the deck list and refreshes the card list.
+        :param selected_filter: The deck name to delete, taken from the filter list
+        :param selected_item: The QListWidgetItem to delete, whose text should match the selected_filter
+        :return: None
+        """
         # Remove the deck from the filter list
         self.filter_list_widget.remove_item_widget(selected_item)
 
