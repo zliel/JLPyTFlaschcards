@@ -256,6 +256,7 @@ class CardBrowserWidget(QWidget):
     def handle_delete_shortcut(self):
         """
         Handles the delete shortcut by deleting the selected item in the focused widget.
+        :return: None
         """
         if self.focused_widget == self.card_tree_widget:
             self.delete_card()
@@ -265,6 +266,7 @@ class CardBrowserWidget(QWidget):
     def delete_card(self):
         """
         Deletes the selected card from the deck and refreshes the card list.
+        :return: None
         """
         selected_item = self.card_tree_widget.current_item()
         if selected_item:
@@ -289,6 +291,7 @@ class CardBrowserWidget(QWidget):
     def delete_filter(self):
         """
         Deletes the selected tag from the deck and refreshes the card list.
+        :return: None
         """
         selected_item = self.filter_list_widget.current_item()
 
@@ -301,6 +304,12 @@ class CardBrowserWidget(QWidget):
                 self.delete_deck(selected_filter, selected_item)
 
     def delete_deck(self, selected_filter, selected_item):
+        """
+        Deletes the selected deck from the deck list and refreshes the card list.
+        :param selected_filter: The deck name to delete, taken from the filter list
+        :param selected_item: The QListWidgetItem to delete, whose text should match the selected_filter
+        :return: None
+        """
         # Remove the deck from the filter list
         self.filter_list_widget.remove_item_widget(selected_item)
 
@@ -317,6 +326,12 @@ class CardBrowserWidget(QWidget):
         self.build_tag_index()
 
     def delete_tag(self, selected_filter, selected_item):
+        """
+        Deletes the selected tag from the tag list and refreshes the card list.
+        :param selected_filter: The tag to delete, taken from the filter list
+        :param selected_item: The QListWidgetItem to delete, whose text should match the selected_filter
+        :return: None
+        """
         # Remove the tag from the filter list and tag list
         self.tag_list.remove(selected_filter)
         self.filter_list_widget.remove_item_widget(selected_item)
