@@ -2,7 +2,7 @@ import sys
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont, QKeySequence, QShortcut
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
 
@@ -117,6 +117,8 @@ class MainWindow(QWidget):
         generate_decks_dialog.window_title = "Generate Default Decks"
         generate_decks_dialog.layout = QVBoxLayout()
 
+        dialog_label = QLabel("Select the decks you would like to generate (note that it will overwrite existing decks):")
+        dialog_label.font = QFont("Arial", 12)
         generate_decks_dialog.layout.add_widget(dialog_label)
 
         default_deck_name_list = ["JLPT N5", "JLPT N4", "JLPT N3", "JLPT N2", "JLPT N1"]
