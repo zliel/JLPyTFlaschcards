@@ -134,6 +134,18 @@ class MainWindow(QWidget):
         generate_decks_dialog.resize(300, 200)
         generate_decks_dialog.exec()
 
+    def generate_selected_decks(self, check_box_list, dialog):
+        """ This method generates the selected decks. """
+        dialog.find_child(QPushButton).text = "Downloading..."
+        for check_box in check_box_list:
+            level = int(check_box.text[-1])
+            if check_box.checked:
+                utils.download_deck_from_url(f"https://jlpt-vocab-api.vercel.app/api/words/all?level={level}",
+                                             f"{check_box.text} Vocab", "decks")
+
+        self.decks = utils.load_decks_from_csv("decks")
+        self.reset_deck_list()
+        dialog.delete_later()
 
 main_window = MainWindow()
 main_window.show()
