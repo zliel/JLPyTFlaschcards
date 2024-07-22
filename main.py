@@ -95,7 +95,7 @@ class MainWindow(QWidget):
     def show_card_browser_widget(self):
         """ This method displays the CardBrowserWidget when the "Browse Cards" button is clicked. """
         card_browser_widget = CardBrowserWidget(self.decks)
-        card_browser_widget.signals.closed.connect(self.reset_deck_list())
+        card_browser_widget.signals.closed.connect(self.reset_deck_list)
         card_browser_widget.signals.closed.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
 
     def reset_deck_list(self):
