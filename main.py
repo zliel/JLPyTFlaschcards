@@ -20,14 +20,6 @@ my_app.set_font(label_font, "QLabel")
 
 app_decks = utils.load_decks_from_csv("decks")
 
-# If the user doesn't have any decks
-if not app_decks:
-    for i in range(1, 6):
-        utils.download_deck_from_url(f"https://jlpt-vocab-api.vercel.app/api/words/all?level={i}", f"JLPT N{i} Vocab",
-                                     "decks")
-
-    app_decks = utils.load_decks_from_csv("decks")
-
 
 class MainWindow(QWidget):
     """This class defines the main window of the application, which will house all other necessary widgets."""
