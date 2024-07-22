@@ -61,6 +61,11 @@ class MainWindow(QWidget):
         self.save_button.clicked.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
         self.button_layout.add_widget(self.save_button)
 
+        self.generate_default_decks_button = QPushButton("Generate Default Decks")
+        self.generate_default_decks_button.clicked.connect(self.show_generation_dialog)
+        self.generate_default_decks_button.tool_tip = "Generate default decks for JLPT N5-N1"
+        self.button_layout.add_widget(self.generate_default_decks_button)
+
         self.layout.add_layout(self.button_layout)
 
         utils.setup_shortcuts(self, shortcuts = {
