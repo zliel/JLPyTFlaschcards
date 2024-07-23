@@ -1,7 +1,7 @@
 import sys
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont, QKeySequence, QShortcut
+from PySide6.QtGui import QFont, QKeySequence, QShortcut, QPalette
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
@@ -11,12 +11,14 @@ from widgets.CardBrowserWidget import CardBrowserWidget
 from widgets.DeckListWidget import DeckListWidget
 from widgets.AddCardWidget import AddCardWidget
 from widgets.AddDeckWidget import AddDeckWidget
+from palettes import blue_dark_palette
 
 my_app = QApplication([])
 label_font = QFont()
 label_font.set_family("Times New Roman")
 label_font.set_point_size(24)
 my_app.set_font(label_font, "QLabel")
+my_app.set_palette(blue_dark_palette)
 
 app_decks = utils.load_decks_from_csv("decks")
 
@@ -76,7 +78,7 @@ class MainWindow(QWidget):
 
         self.window_title = "JLPyT Flashcards"
         self.resize(1200, 700)
-        self.palette = Qt.black
+        # self.palette = Qt.black
 
         self.show()
 
