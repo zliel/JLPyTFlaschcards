@@ -5,6 +5,7 @@ from __feature__ import snake_case, true_property
 
 large_label_font = QFont("Times New Roman", 18)
 default_text_font = QFont("Times New Roman", 12)
+list_item_font = QFont("Times New Roman", 14)
 
 palette = {
     'primary_100': QColor('#76c4e8'),
