@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt, Slot, Signal, QObject
 from __feature__ import snake_case, true_property
 
 from models.Flashcard import Flashcard
+from palettes import default_text_font
 
 
 class CardEditSignals(QObject):
@@ -20,18 +21,24 @@ class CardEditWidget(QWidget):
         self.card = card
 
         self.front_label = QLabel("Front:")
+        self.front_label.font = default_text_font
         self.layout.add_widget(self.front_label)
         self.front_input = QTextEdit()
+        self.front_input.font = default_text_font
         self.layout.add_widget(self.front_input)
 
         self.back_label = QLabel("Back:")
+        self.back_label.font = default_text_font
         self.layout.add_widget(self.back_label)
         self.back_input = QTextEdit()
+        self.back_input.font = default_text_font
         self.layout.add_widget(self.back_input)
 
         self.tags_label = QLabel("Tags (seperate by spaces):")
+        self.tags_label.font = default_text_font
         self.layout.add_widget(self.tags_label)
         self.tags_input = QLineEdit()
+        self.tags_input.font = default_text_font
         self.layout.add_widget(self.tags_input)
 
         self.save_button = QPushButton("Save")
