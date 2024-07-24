@@ -6,7 +6,9 @@ from __feature__ import snake_case, true_property
 large_label_font = QFont("Times New Roman", 18)
 default_text_font = QFont("Times New Roman", 12)
 card_text_font = QFont("Times New Roman", 18)
-list_item_font = QFont("Times New Roman", 14)
+deck_list_item_font = QFont("Times New Roman", 14)
+card_list_item_font = QFont("Times New Roman", 14)
+filter_list_item_font = QFont("Times New Roman", 12)
 button_font = QFont("Times New Roman", 12)
 
 palette = {
