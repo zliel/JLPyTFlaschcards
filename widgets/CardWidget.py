@@ -8,7 +8,7 @@ from __feature__ import snake_case, true_property
 
 from models.Deck import Deck
 import utils
-from palettes import palette, card_text_font
+from theme import palette, card_text_font
 
 
 class CardWidget(QWidget):

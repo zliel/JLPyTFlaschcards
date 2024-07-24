@@ -9,7 +9,7 @@ from __feature__ import snake_case, true_property
 import utils
 from models.Deck import Deck
 from widgets.CardWidget import CardWidget
-from palettes import deck_list_item_font
+from theme import deck_list_item_font
 
 
 class DeckListWidget(QWidget):

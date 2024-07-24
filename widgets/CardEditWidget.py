@@ -5,7 +5,7 @@ from PySide6.QtCore import Slot, Signal, QObject
 from __feature__ import snake_case, true_property
 
 from models.Flashcard import Flashcard
-from palettes import default_text_font
+from theme import default_text_font
 
 
 class CardEditSignals(QObject):

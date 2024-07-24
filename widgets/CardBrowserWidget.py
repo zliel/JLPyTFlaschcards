@@ -9,7 +9,7 @@ import utils
 from models.Deck import Deck
 from models.Flashcard import Flashcard
 from widgets.CardEditWidget import CardEditWidget
-from palettes import filter_list_item_font, card_list_item_font
+from theme import filter_list_item_font, card_list_item_font
 
 
 class CardBrowserSignals(QObject):

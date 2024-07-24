@@ -11,7 +11,7 @@ from widgets.CardBrowserWidget import CardBrowserWidget
 from widgets.DeckListWidget import DeckListWidget
 from widgets.AddCardWidget import AddCardWidget
 from widgets.AddDeckWidget import AddDeckWidget
-from palettes import blue_dark_palette, default_text_font, button_font
+from theme import blue_dark_palette, default_text_font, button_font
 
 my_app = QApplication([])
 my_app.set_palette(blue_dark_palette)
