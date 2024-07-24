@@ -14,10 +14,6 @@ from widgets.AddDeckWidget import AddDeckWidget
 from palettes import blue_dark_palette
 
 my_app = QApplication([])
-label_font = QFont()
-label_font.set_family("Times New Roman")
-label_font.set_point_size(24)
-my_app.set_font(label_font, "QLabel")
 my_app.set_palette(blue_dark_palette)
 
 app_decks = utils.load_decks_from_csv("decks")
@@ -31,7 +27,6 @@ class MainWindow(QWidget):
         self.layout = QVBoxLayout()
         self.decks = app_decks
         self.no_decks_label = QLabel('No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
-        self.no_decks_label.font = QFont("Arial", 12)
         if not self.decks:
             self.layout.add_widget(self.no_decks_label)
         self.deck_list_widget = DeckListWidget(self.decks)
