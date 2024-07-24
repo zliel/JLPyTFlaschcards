@@ -11,12 +11,14 @@ from widgets.CardBrowserWidget import CardBrowserWidget
 from widgets.DeckListWidget import DeckListWidget
 from widgets.AddCardWidget import AddCardWidget
 from widgets.AddDeckWidget import AddDeckWidget
-from palettes import blue_dark_palette, default_text_font
+from palettes import blue_dark_palette, default_text_font, button_font
 
 my_app = QApplication([])
 my_app.set_palette(blue_dark_palette)
 
 app_decks = utils.load_decks_from_csv("decks")
+# Set button font for my_app
+my_app.set_font(button_font, "QPushButton")
 
 
 class MainWindow(QWidget):
