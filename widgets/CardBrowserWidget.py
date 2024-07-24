@@ -31,6 +31,7 @@ class CardBrowserWidget(QWidget):
         self.window_title = "Browse Cards"
         self.layout_container = QHBoxLayout()
         self.splitter = QSplitter(Qt.Horizontal)
+
         # Keep a copy of all decks for filtering
         self.all_decks = app_decks
         # Starts with all decks
@@ -47,6 +48,7 @@ class CardBrowserWidget(QWidget):
 
         # Note: when filtering, you should update the current_deck_list to some subset of app_decks, so they stay in sync
         self.filter_list_widget = QListWidget()
+        self.filter_list_widget.maximum_width = 200
         self.filter_list_widget.font = filter_list_item_font
         self.filter_list_widget.clicked.connect(self.on_filter_list_clicked)
         self.update_filter_list(app_decks)
