@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QListWidget, QListWidgetItem, \
-    QTreeWidget, QTreeWidgetItem
+    QTreeWidget, QTreeWidgetItem, QSplitter
 from PySide6.QtCore import Qt, Slot, Signal, QObject, QEvent
 
 # noinspection PyUnresolvedReference
@@ -29,7 +29,9 @@ class CardBrowserWidget(QWidget):
         super().__init__()
 
         self.window_title = "Browse Cards"
-        self.layout = QHBoxLayout()
+        self.layout_container = QHBoxLayout()
+        self.splitter = QSplitter(Qt.Horizontal)
+
         # Keep a copy of all decks for filtering
         self.all_decks = app_decks
         # Starts with all decks
@@ -46,12 +48,13 @@ class CardBrowserWidget(QWidget):
 
         # Note: when filtering, you should update the current_deck_list to some subset of app_decks, so they stay in sync
         self.filter_list_widget = QListWidget()
+        self.filter_list_widget.maximum_width = 200
         self.filter_list_widget.font = filter_list_item_font
         self.filter_list_widget.clicked.connect(self.on_filter_list_clicked)
         self.update_filter_list(app_decks)
         self.filter_list_widget.itemDoubleClicked.connect(lambda item: self.select_filter(item))
 
-        self.layout.add_widget(self.filter_list_widget)
+        self.splitter.add_widget(self.filter_list_widget)
 
         self.card_tree_widget = QTreeWidget()
         self.card_tree_widget.font = card_list_item_font
@@ -62,11 +65,12 @@ class CardBrowserWidget(QWidget):
         self.card_tree_widget.clicked.connect(self.on_card_list_clicked)
         self.update_card_list(self.current_card_list)
         self.card_tree_widget.itemDoubleClicked.connect(lambda item: self.show_card_editor(item))
-        self.layout.add_widget(self.card_tree_widget)
+        self.splitter.add_widget(self.card_tree_widget)
 
         self.card_edit_widget = CardEditWidget()
 
-        self.set_layout(self.layout)
+        self.layout_container.add_widget(self.splitter)
+        self.set_layout(self.layout_container)
 
         utils.setup_shortcuts(self, shortcuts={
             "Esc": self.close,
@@ -145,7 +149,7 @@ class CardBrowserWidget(QWidget):
             self.card_edit_widget.delete_later()
         self.card_edit_widget = CardEditWidget(card)
         self.card_edit_widget.signals.card_edited.connect(self.handle_card_update)
-        self.layout.add_widget(self.card_edit_widget)
+        self.splitter.add_widget(self.card_edit_widget)
 
     @Slot(Flashcard)
     def handle_card_update(self, updated_card, old_card):
