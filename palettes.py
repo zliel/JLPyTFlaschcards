@@ -5,6 +5,11 @@ from __feature__ import snake_case, true_property
 
 large_label_font = QFont("Times New Roman", 18)
 default_text_font = QFont("Times New Roman", 12)
+card_text_font = QFont("Times New Roman", 18)
+deck_list_item_font = QFont("Times New Roman", 14)
+card_list_item_font = QFont("Times New Roman", 14)
+filter_list_item_font = QFont("Times New Roman", 12)
+button_font = QFont("Times New Roman", 12)
 
 palette = {
     'primary_100': QColor('#76c4e8'),
@@ -20,7 +25,9 @@ palette = {
     'dark_500': QColor('#717171'),
     'dark_600': QColor('#8b8b8b'),
     'text': QColor('#e8eaf6'),
-    'highlight': QColor('#0a74a6')
+    'highlight': QColor('#0a74a6'),
+    'pass': QColor('#23ebcd'),
+    'fail': QColor('#ff599c'),
 }
 
 role_to_color_map = {
@@ -31,7 +38,7 @@ role_to_color_map = {
     QPalette.ColorRole.ToolTipBase: palette['dark_300'],
     QPalette.ColorRole.ToolTipText: palette['text'],
     QPalette.ColorRole.Text: palette['text'],
-    QPalette.ColorRole.Button: palette['dark_300'],
+    QPalette.ColorRole.Button: palette['dark_200'],
     QPalette.ColorRole.ButtonText: palette['primary_500'],
     QPalette.ColorRole.BrightText: palette['primary_500'],
     QPalette.ColorRole.Highlight: palette['highlight'],

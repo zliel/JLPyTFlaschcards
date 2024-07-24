@@ -9,6 +9,7 @@ from __feature__ import snake_case, true_property
 
 from models.Deck import Deck
 import utils
+from palettes import palette, card_text_font
 
 
 class CardWidget(QWidget):
@@ -32,14 +33,17 @@ class CardWidget(QWidget):
         self.update_card_list()
 
         vbox = QVBoxLayout()
-        btn_style = "background-color: #5a6363; color: #fff;"
+        pass_btn_style = f"background-color: { palette['dark_300'].name()}; color: {palette['pass'].name()};"
+        fail_btn_style = f"background-color: {palette['dark_300'].name()}; color: {palette['fail'].name()};"
 
         # Question and Answer Labels
         self.question_label = QLabel("")
+        self.question_label.font = card_text_font
         self.question_label.alignment = Qt.AlignCenter
         vbox.add_widget(self.question_label)
 
         self.answer_label = QLabel()
+        self.answer_label.font = card_text_font
         self.answer_label.alignment = Qt.AlignCenter
         vbox.add_widget(self.answer_label)
 
@@ -48,18 +52,18 @@ class CardWidget(QWidget):
 
         self.show_answer_btn = QPushButton("Show Answer")
         self.show_answer_btn.clicked.connect(self.on_show_answer_click)
-        self.show_answer_btn.style_sheet = btn_style
+        # self.show_answer_btn.style_sheet = btn_style
         button_box.add_widget(self.show_answer_btn)
 
         self.fail_btn = QPushButton("Fail")
         self.fail_btn.clicked.connect(lambda: self.on_review_click(0))
-        self.fail_btn.style_sheet = btn_style
+        self.fail_btn.style_sheet = fail_btn_style
         self.fail_btn.hide()
         button_box.add_widget(self.fail_btn)
 
         self.pass_btn = QPushButton("Pass")
         self.pass_btn.clicked.connect(lambda: self.on_review_click(3))
-        self.pass_btn.style_sheet = btn_style
+        self.pass_btn.style_sheet = pass_btn_style
         self.pass_btn.hide()
         button_box.add_widget(self.pass_btn)
 

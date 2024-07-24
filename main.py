@@ -11,12 +11,14 @@ from widgets.CardBrowserWidget import CardBrowserWidget
 from widgets.DeckListWidget import DeckListWidget
 from widgets.AddCardWidget import AddCardWidget
 from widgets.AddDeckWidget import AddDeckWidget
-from palettes import blue_dark_palette
+from palettes import blue_dark_palette, default_text_font, button_font
 
 my_app = QApplication([])
 my_app.set_palette(blue_dark_palette)
 
 app_decks = utils.load_decks_from_csv("decks")
+# Set button font for my_app
+my_app.set_font(button_font, "QPushButton")
 
 
 class MainWindow(QWidget):
@@ -27,10 +29,15 @@ class MainWindow(QWidget):
         self.layout = QVBoxLayout()
         self.decks = app_decks
         self.no_decks_label = QLabel('No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
+        self.no_decks_label.font = default_text_font
+        self.no_decks_label.alignment = Qt.AlignCenter
         if not self.decks:
             self.layout.add_widget(self.no_decks_label)
         self.deck_list_widget = DeckListWidget(self.decks)
         self.layout.add_widget(self.deck_list_widget)
+        if not self.decks:
+            self.no_decks_label.show()
+            self.deck_list_widget.hide()
 
         # After clicking a "Add card" button, the AddCardWidget will be displayed
         self.button_layout = QHBoxLayout()

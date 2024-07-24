@@ -10,6 +10,7 @@ import utils
 from models.Deck import Deck
 from models.Flashcard import Flashcard
 from widgets.CardEditWidget import CardEditWidget
+from palettes import filter_list_item_font, card_list_item_font
 
 
 class CardBrowserSignals(QObject):
@@ -46,6 +47,7 @@ class CardBrowserWidget(QWidget):
 
         # Note: when filtering, you should update the current_deck_list to some subset of app_decks, so they stay in sync
         self.filter_list_widget = QListWidget()
+        self.filter_list_widget.font = filter_list_item_font
         self.filter_list_widget.clicked.connect(self.on_filter_list_clicked)
         self.update_filter_list(app_decks)
         self.filter_list_widget.itemDoubleClicked.connect(lambda item: self.select_filter(item))
@@ -53,7 +55,11 @@ class CardBrowserWidget(QWidget):
         self.layout.add_widget(self.filter_list_widget)
 
         self.card_tree_widget = QTreeWidget()
+        self.card_tree_widget.font = card_list_item_font
         self.card_tree_widget.set_header_labels(["Front", "Back", "Tags"])
+        # Give more space for the "Back" column, so it's easier to see the answer
+        self.card_tree_widget.set_column_width(0, 120)
+        self.card_tree_widget.set_column_width(1, 200)
         self.card_tree_widget.clicked.connect(self.on_card_list_clicked)
         self.update_card_list(self.current_card_list)
         self.card_tree_widget.itemDoubleClicked.connect(lambda item: self.show_card_editor(item))
@@ -71,6 +77,7 @@ class CardBrowserWidget(QWidget):
         # Handle closeEvents
         self.install_event_filter(self)
 
+        self.resize(840, 400)
         self.show()
 
     def generate_tag_list(self, app_decks: list[Deck]) -> list[str]:
