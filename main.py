@@ -33,6 +33,9 @@ class MainWindow(QWidget):
             self.layout.add_widget(self.no_decks_label)
         self.deck_list_widget = DeckListWidget(self.decks)
         self.layout.add_widget(self.deck_list_widget)
+        if not self.decks:
+            self.no_decks_label.show()
+            self.deck_list_widget.hide()
 
         # After clicking a "Add card" button, the AddCardWidget will be displayed
         self.button_layout = QHBoxLayout()
