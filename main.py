@@ -11,6 +11,7 @@ from widgets.CardBrowserWidget import CardBrowserWidget
 from widgets.DeckListWidget import DeckListWidget
 from widgets.AddCardWidget import AddCardWidget
 from widgets.AddDeckWidget import AddDeckWidget
+from widgets.Toast import Toast
 from theme import blue_dark_palette, default_text_font, button_font
 
 my_app = QApplication([])
@@ -27,6 +28,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
+        self.toast = Toast()
         self.decks = app_decks
         self.no_decks_label = QLabel(
             'No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
@@ -95,6 +97,7 @@ class MainWindow(QWidget):
         """ This method displays the AddDeckWidget when the "Add Deck" button is clicked. """
         add_deck_widget = AddDeckWidget(self.deck_list_widget)
         add_deck_widget.signals.deck_added.connect(self.reset_deck_list)
+        add_deck_widget.signals.deck_added.connect(lambda: self.toast.show_toast("Deck added!"))
 
     @Slot()
     def show_card_browser_widget(self):
