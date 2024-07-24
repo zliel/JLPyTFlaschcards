@@ -28,7 +28,8 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
-        self.toast = Toast()
+        self.toast = Toast(self)
+        self.toast.hide()
         self.decks = app_decks
         self.no_decks_label = QLabel(
             'No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
