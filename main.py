@@ -27,6 +27,8 @@ class MainWindow(QWidget):
         self.layout = QVBoxLayout()
         self.decks = app_decks
         self.no_decks_label = QLabel('No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
+        self.no_decks_label.font = default_text_font
+        self.no_decks_label.alignment = Qt.AlignCenter
         if not self.decks:
             self.layout.add_widget(self.no_decks_label)
         self.deck_list_widget = DeckListWidget(self.decks)
