@@ -1,5 +1,5 @@
 from PySide6.QtGui import QShortcut, QKeySequence
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QLineEdit, QComboBox, QMessageBox
+from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QLineEdit, QComboBox, QMessageBox, QTextEdit
 from PySide6.QtCore import Slot
 
 # noinspection PyUnresolvedReference
@@ -42,9 +42,8 @@ class AddCardWidget(QWidget):
         self.answer_label = QLabel("Back:")
         self.answer_label.font = default_text_font
         self.layout.add_widget(self.answer_label)
-        self.answer_input = QLineEdit()
+        self.answer_input = QTextEdit()
         self.answer_input.font = default_text_font
-        self.answer_input.returnPressed.connect(self.add_card)
         self.layout.add_widget(self.answer_input)
 
         self.tags_label = QLabel("Tags (seperate by spaces):")
