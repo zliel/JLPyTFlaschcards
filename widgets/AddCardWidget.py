@@ -7,6 +7,7 @@ from __feature__ import snake_case, true_property
 
 import utils
 from models.Flashcard import Flashcard
+from theme import default_text_font
 
 
 class AddCardWidget(QWidget):
@@ -23,26 +24,34 @@ class AddCardWidget(QWidget):
 
         self.decks = app_decks
         self.deck_label = QLabel("Deck:")
+        self.deck_label.font = default_text_font
         self.layout.add_widget(self.deck_label)
         self.deck_dropdown = QComboBox()
+        self.deck_dropdown.font = default_text_font
         self.deck_dropdown.add_items([deck.name for deck in self.decks])
         self.layout.add_widget(self.deck_dropdown)
 
         self.question_label = QLabel("Front:")
+        self.question_label.font = default_text_font
         self.layout.add_widget(self.question_label)
         self.question_input = QLineEdit()
+        self.question_input.font = default_text_font
         self.question_input.returnPressed.connect(self.add_card)
         self.layout.add_widget(self.question_input)
 
         self.answer_label = QLabel("Back:")
+        self.answer_label.font = default_text_font
         self.layout.add_widget(self.answer_label)
         self.answer_input = QLineEdit()
+        self.answer_input.font = default_text_font
         self.answer_input.returnPressed.connect(self.add_card)
         self.layout.add_widget(self.answer_input)
 
         self.tags_label = QLabel("Tags (seperate by spaces):")
+        self.tags_label.font = default_text_font
         self.layout.add_widget(self.tags_label)
         self.tags_input = QLineEdit()
+        self.tags_input.font = default_text_font
         self.tags_input.returnPressed.connect(self.add_card)
         self.layout.add_widget(self.tags_input)
 
