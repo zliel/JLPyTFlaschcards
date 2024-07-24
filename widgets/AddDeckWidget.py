@@ -8,6 +8,7 @@ from __feature__ import snake_case, true_property
 import utils
 from models.Deck import Deck
 from widgets.DeckListWidget import DeckListWidget
+from theme import default_text_font
 
 
 class AddDeckWidgetSignals(QObject):
@@ -35,8 +36,10 @@ class AddDeckWidget(QWidget):
 
         form_layout = QHBoxLayout()
         self.deck_name_label = QLabel("Deck Name:")
+        self.deck_name_label.font = default_text_font
         form_layout.add_widget(self.deck_name_label)
         self.deck_name_input = QLineEdit()
+        self.deck_name_input.font = default_text_font
 
         # Can't use "Enter" as a shortcut because of the way QLineEdit handles the "Enter" key, so we connect the
         # return_pressed signal to the add_deck method instead
