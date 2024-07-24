@@ -1,10 +1,11 @@
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
-from PySide6.QtCore import Qt, Slot, QTimer
+from PySide6.QtWidgets import QLabel
+from PySide6.QtCore import Qt, QTimer
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
 
 from theme import default_text_font, palette
+
 
 class Toast(QLabel):
     def __init__(self, parent=None):
@@ -26,4 +27,3 @@ class Toast(QLabel):
         self.move(self.parent().width - self.width - margin_right, self.parent().height - self.height - margin_bottom)
         self.show()
         self.timer.start(duration)
-
