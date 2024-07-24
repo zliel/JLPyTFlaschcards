@@ -16,10 +16,9 @@ from theme import blue_dark_palette, default_text_font, button_font
 
 my_app = QApplication([])
 my_app.set_palette(blue_dark_palette)
+my_app.set_font(button_font, "QPushButton")
 
 app_decks = utils.load_decks_from_csv("decks")
-# Set button font for my_app
-my_app.set_font(button_font, "QPushButton")
 
 
 class MainWindow(QWidget):
@@ -92,6 +91,7 @@ class MainWindow(QWidget):
     def show_add_card_widget(self):
         """This method displays the AddCardWidget when the "Add Card" button is clicked."""
         add_card_widget = AddCardWidget(self.decks)
+        add_card_widget.signals.card_added.connect(lambda: self.toast.show_toast("Card added!"))
 
     @Slot()
     def show_add_deck_widget(self):
