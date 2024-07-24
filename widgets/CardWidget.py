@@ -32,7 +32,7 @@ class CardWidget(QWidget):
         self.update_card_list()
 
         vbox = QVBoxLayout()
-        pass_btn_style = f"background-color: { palette['dark_300'].name()}; color: {palette['pass'].name()};"
+        pass_btn_style = f"background-color: {palette['dark_300'].name()}; color: {palette['pass'].name()};"
         fail_btn_style = f"background-color: {palette['dark_300'].name()}; color: {palette['fail'].name()};"
 
         # Question and Answer Labels

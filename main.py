@@ -28,7 +28,8 @@ class MainWindow(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
         self.decks = app_decks
-        self.no_decks_label = QLabel('No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
+        self.no_decks_label = QLabel(
+            'No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
         self.no_decks_label.font = default_text_font
         self.no_decks_label.alignment = Qt.AlignCenter
         if not self.decks:
@@ -68,7 +69,7 @@ class MainWindow(QWidget):
 
         self.layout.add_layout(self.button_layout)
 
-        utils.setup_shortcuts(self, shortcuts = {
+        utils.setup_shortcuts(self, shortcuts={
             "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks, "decks"),
             "Ctrl+N": self.show_add_card_widget,
             "Ctrl+D": self.show_add_deck_widget,
@@ -121,7 +122,8 @@ class MainWindow(QWidget):
         generate_decks_dialog.window_title = "Generate Default Decks"
         generate_decks_dialog.layout = QVBoxLayout()
 
-        dialog_label = QLabel("Select the decks you would like to generate (note that it will overwrite existing decks):")
+        dialog_label = QLabel(
+            "Select the decks you would like to generate (note that it will overwrite existing decks):")
         dialog_label.font = QFont("Arial", 12)
         generate_decks_dialog.layout.add_widget(dialog_label)
 
@@ -134,7 +136,8 @@ class MainWindow(QWidget):
             generate_decks_dialog.layout.add_widget(check_box)
 
         generate_button = QPushButton("Generate")
-        generate_button.clicked.connect(lambda: self.generate_selected_decks(check_box_list, dialog=generate_decks_dialog))
+        generate_button.clicked.connect(
+            lambda: self.generate_selected_decks(check_box_list, dialog=generate_decks_dialog))
         generate_decks_dialog.layout.add_widget(generate_button)
         generate_decks_dialog.set_layout(generate_decks_dialog.layout)
         generate_decks_dialog.resize(300, 200)
@@ -152,6 +155,7 @@ class MainWindow(QWidget):
         self.decks = utils.load_decks_from_csv("decks")
         self.reset_deck_list()
         dialog.delete_later()
+
 
 main_window = MainWindow()
 main_window.show()

@@ -13,8 +13,8 @@ class CardEditSignals(QObject):
 
 
 class CardEditWidget(QWidget):
-
     signals = CardEditSignals()
+
     def __init__(self, card: Flashcard = None) -> None:
         super().__init__()
         self.layout = QVBoxLayout()
