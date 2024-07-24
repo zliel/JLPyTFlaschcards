@@ -9,7 +9,7 @@ from __feature__ import snake_case, true_property
 
 from models.Deck import Deck
 import utils
-from palettes import palette
+from palettes import palette, card_text_font
 
 
 class CardWidget(QWidget):
@@ -38,10 +38,12 @@ class CardWidget(QWidget):
 
         # Question and Answer Labels
         self.question_label = QLabel("")
+        self.question_label.font = card_text_font
         self.question_label.alignment = Qt.AlignCenter
         vbox.add_widget(self.question_label)
 
         self.answer_label = QLabel()
+        self.answer_label.font = card_text_font
         self.answer_label.alignment = Qt.AlignCenter
         vbox.add_widget(self.answer_label)
 
