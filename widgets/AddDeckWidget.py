@@ -73,6 +73,17 @@ class AddDeckWidget(QWidget):
             error_msg.exec_()
 
             return
+        elif not utils.is_valid_filename(f"{deck_name}.csv"):
+            error_msg = QMessageBox()
+            error_msg.text = "The deck name cannot contain any of the following characters: / \\ : * ? \" ' < > |"
+            error_msg.icon = QMessageBox.Warning
+            error_msg.standard_buttons = QMessageBox.Ok
+
+            shortcut_exit = QShortcut(QKeySequence("Esc"), error_msg)
+            shortcut_exit.activated.connect(error_msg.close)
+            error_msg.exec_()
+
+            return
         self.deck_list_widget.decks.append(Deck(deck_name, []))
 
         self.signals.deck_added.emit()
