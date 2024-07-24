@@ -87,7 +87,7 @@ class AddCardWidget(QWidget):
             shortcut_exit.activated.connect(error_msg.close)
             error_msg.exec_()
             return
-        answer = self.answer_input.text
+        answer = self.answer_input.plain_text
         tags = self.tags_input.text.split(' ')
 
         for deck in self.decks:
