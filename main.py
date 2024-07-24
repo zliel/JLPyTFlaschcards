@@ -98,6 +98,7 @@ class MainWindow(QWidget):
         """ This method displays the AddDeckWidget when the "Add Deck" button is clicked. """
         add_deck_widget = AddDeckWidget(self.deck_list_widget)
         add_deck_widget.signals.deck_added.connect(self.reset_deck_list)
+        add_deck_widget.signals.deck_added.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
         add_deck_widget.signals.deck_added.connect(lambda: self.toast.show_toast("Deck added!"))
 
     @Slot()
@@ -156,6 +157,7 @@ class MainWindow(QWidget):
                 utils.download_deck_from_url(f"https://jlpt-vocab-api.vercel.app/api/words/all?level={level}",
                                              f"{check_box.text} Vocab", "decks")
 
+        print([deck.name for deck in self.decks])
         self.decks = utils.load_decks_from_csv("decks")
         self.reset_deck_list()
         self.toast.show_toast("Decks generated!")
