@@ -11,6 +11,7 @@ class Toast(QLabel):
         super().__init__(parent)
         self.window_flag = Qt.ToolTip
         self.font = default_text_font
+        self.style_sheet = f"background-color: {palette['dark_200'].name()}; color: {palette['text'].name()}; border-radius: 5px; padding: 3px;"
 
         self.alignment = Qt.AlignCenter
         self.timer = QTimer(parent=self)
