@@ -10,7 +10,7 @@ from __feature__ import snake_case, true_property
 import utils
 from models.Deck import Deck
 from widgets.CardWidget import CardWidget
-from palettes import list_item_font
+from palettes import deck_list_item_font
 
 
 class DeckListWidget(QWidget):
@@ -29,7 +29,7 @@ class DeckListWidget(QWidget):
         self.decks = decks
         self.layout = QVBoxLayout()
         self.deck_list_widget = QWidget()
-        self.deck_list_widget.font = list_item_font
+        self.deck_list_widget.font = deck_list_item_font
         self.deck_list = QVBoxLayout(self.deck_list_widget)
         # Create a stacked widget to switch between the deck list and the card view
         self.stacked_widget = QStackedWidget()
