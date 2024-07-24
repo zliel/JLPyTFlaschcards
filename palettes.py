@@ -22,7 +22,9 @@ palette = {
     'dark_500': QColor('#717171'),
     'dark_600': QColor('#8b8b8b'),
     'text': QColor('#e8eaf6'),
-    'highlight': QColor('#0a74a6')
+    'highlight': QColor('#0a74a6'),
+    'pass': QColor('#23ebcd'),
+    'fail': QColor('#ff599c'),
 }
 
 role_to_color_map = {
@@ -33,7 +35,7 @@ role_to_color_map = {
     QPalette.ColorRole.ToolTipBase: palette['dark_300'],
     QPalette.ColorRole.ToolTipText: palette['text'],
     QPalette.ColorRole.Text: palette['text'],
-    QPalette.ColorRole.Button: palette['dark_300'],
+    QPalette.ColorRole.Button: palette['dark_200'],
     QPalette.ColorRole.ButtonText: palette['primary_500'],
     QPalette.ColorRole.BrightText: palette['primary_500'],
     QPalette.ColorRole.Highlight: palette['highlight'],
