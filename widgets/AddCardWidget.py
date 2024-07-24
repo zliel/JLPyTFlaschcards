@@ -1,6 +1,6 @@
 from PySide6.QtGui import QShortcut, QKeySequence
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QLineEdit, QComboBox, QMessageBox, QTextEdit
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QObject, Signal
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
@@ -10,8 +10,14 @@ from models.Flashcard import Flashcard
 from theme import default_text_font
 
 
+class AddCardWidgetSignals(QObject):
+    card_added = Signal()
+
+
 class AddCardWidget(QWidget):
     """This class defines the widget that will be displayed when the user clicks the "Add Card" button."""
+
+    signals = AddCardWidgetSignals()
 
     def __init__(self, app_decks):
         """
@@ -88,4 +94,6 @@ class AddCardWidget(QWidget):
             if deck.name == deck_name:
                 deck.append_card(Flashcard(question, answer, tags=tags))
                 break
+
+        self.signals.card_added.emit()
         self.close()
