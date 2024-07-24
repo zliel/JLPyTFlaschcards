@@ -1,7 +1,7 @@
 import sys
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont, QKeySequence, QShortcut, QPalette
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property

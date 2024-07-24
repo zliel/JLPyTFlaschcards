@@ -2,7 +2,6 @@ from datetime import datetime
 
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QKeySequence, QShortcut
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property

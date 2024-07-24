@@ -1,5 +1,4 @@
-from PySide6.QtGui import QCloseEvent
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QListWidget, QListWidgetItem, \
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QListWidget, QListWidgetItem, \
     QTreeWidget, QTreeWidgetItem
 from PySide6.QtCore import Qt, Slot, Signal, QObject, QEvent
 

@@ -1,6 +1,5 @@
 from typing import List
 
-from PySide6.QtGui import QShortcut, QKeySequence
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget
 from PySide6.QtCore import Qt, Slot
 

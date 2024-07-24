@@ -1,7 +1,6 @@
 from PySide6.QtGui import QShortcut, QKeySequence
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QComboBox, QDialog, \
-    QMessageBox
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QLineEdit, QComboBox, QMessageBox
+from PySide6.QtCore import Slot
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
