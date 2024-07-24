@@ -158,6 +158,7 @@ class MainWindow(QWidget):
 
         self.decks = utils.load_decks_from_csv("decks")
         self.reset_deck_list()
+        self.toast.show_toast("Decks generated!")
         dialog.delete_later()
 
 
