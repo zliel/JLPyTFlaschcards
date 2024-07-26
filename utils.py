@@ -170,6 +170,16 @@ def setup_shortcuts(widget: QWidget, shortcuts: dict) -> None:
         shortcut.activated.connect(action)
 
 
+# CONFIGURATION
+default_config = configparser.ConfigParser()
+default_config['DEFAULT'] = {
+    'decks_directory': 'decks',
+    'daily_reviews_limit': 100,
+    'new_card_limit': 20,
+    'theme': 'blue_dark'
+}
+
+
 def load_config(filename: str) -> configparser.ConfigParser:
     """
     Load a configuration file
@@ -178,6 +188,10 @@ def load_config(filename: str) -> configparser.ConfigParser:
     """
     config = configparser.ConfigParser()
     config.read(filename)
+    # If the configuration file is empty, load the default configuration
+    if not config.sections():
+        config.read_dict(default_config)
+        save_config(config, filename)
     return config
 
 
