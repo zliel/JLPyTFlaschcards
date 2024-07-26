@@ -24,6 +24,7 @@ class SettingsDialog(QDialog):
         review_layout.add_widget(self.review_limit_label)
         self.review_limit_input = QLineEdit()
         self.review_limit_input.font = default_text_font
+        self.review_limit_input.text = self.settings['USER']['daily_reviews_limit'] if 'USER' in self.settings.sections() else '100'
         only_int_validator = QIntValidator()
         only_int_validator.set_range(0, 1000)
         self.review_limit_input.set_validator(only_int_validator)
@@ -37,6 +38,7 @@ class SettingsDialog(QDialog):
         self.new_cards_limit_input = QLineEdit()
         self.new_cards_limit_input.font = default_text_font
         self.new_cards_limit_input.set_validator(only_int_validator)
+        self.new_cards_limit_input.text = self.settings['USER']['new_card_limit'] if 'USER' in self.settings.sections() else '20'
         new_cards_layout.add_widget(self.new_cards_limit_input)
         self.layout.add_layout(new_cards_layout)
 
