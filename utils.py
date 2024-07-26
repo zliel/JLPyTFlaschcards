@@ -1,6 +1,7 @@
 import os
 import re
 import csv
+import configparser
 from uuid import uuid4
 
 import requests
@@ -167,3 +168,9 @@ def setup_shortcuts(widget: QWidget, shortcuts: dict) -> None:
     for key_sequence, action in shortcuts.items():
         shortcut = QShortcut(QKeySequence(key_sequence), widget)
         shortcut.activated.connect(action)
+
+
+def load_config(filename: str):
+    config = configparser.ConfigParser()
+    config.read(filename)
+    return config
