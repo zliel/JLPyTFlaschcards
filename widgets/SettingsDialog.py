@@ -10,7 +10,6 @@ from __feature__ import snake_case, true_property
 from theme import default_text_font
 
 
-
 class SettingsDialog(QDialog):
     def __init__(self, settings: ConfigParser):
         super().__init__()
@@ -27,7 +26,7 @@ class SettingsDialog(QDialog):
         self.review_limit_input.font = default_text_font
         only_int_validator = QIntValidator()
         only_int_validator.set_range(0, 1000)
-        self.review_limit_input.validator = only_int_validator
+        self.review_limit_input.set_validator(only_int_validator)
         review_layout.add_widget(self.review_limit_input)
         self.layout.add_layout(review_layout)
 
@@ -37,7 +36,7 @@ class SettingsDialog(QDialog):
         new_cards_layout.add_widget(self.new_cards_limit_label)
         self.new_cards_limit_input = QLineEdit()
         self.new_cards_limit_input.font = default_text_font
-        self.new_cards_limit_input.validator = only_int_validator
+        self.new_cards_limit_input.set_validator(only_int_validator)
         new_cards_layout.add_widget(self.new_cards_limit_input)
         self.layout.add_layout(new_cards_layout)
 
