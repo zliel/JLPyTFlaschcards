@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt, Slot
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
 
+import utils
 from theme import default_text_font
 
 
@@ -43,7 +44,18 @@ class SettingsDialog(QDialog):
         self.layout.add_layout(new_cards_layout)
 
         self.save_button = QPushButton("Save")
+        self.save_button.clicked.connect(self.save_settings)
         self.layout.add_widget(self.save_button)
 
         self.resize(300, 200)
         self.set_layout(self.layout)
+
+    @Slot()
+    def save_settings(self):
+        # If the user section doesn't exist, it will be a copy of the default settings
+        if 'USER' not in self.settings.sections():
+            self.settings['USER'] = self.settings['DEFAULT']
+        self.settings['USER']['daily_reviews_limit'] = self.review_limit_input.text
+        self.settings['USER']['new_card_limit'] = self.new_cards_limit_input.text
+        utils.save_config(self.settings, "settings.ini")
+        self.close()
