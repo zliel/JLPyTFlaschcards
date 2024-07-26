@@ -171,6 +171,11 @@ def setup_shortcuts(widget: QWidget, shortcuts: dict) -> None:
 
 
 def load_config(filename: str) -> configparser.ConfigParser:
+    """
+    Load a configuration file
+    :param filename: The filename of the configuration file
+    :return: A ConfigParser instance with the configuration loaded
+    """
     config = configparser.ConfigParser()
     config.read(filename)
     return config
