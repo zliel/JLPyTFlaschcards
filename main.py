@@ -12,6 +12,7 @@ from widgets.DeckListWidget import DeckListWidget
 from widgets.AddCardWidget import AddCardWidget
 from widgets.AddDeckWidget import AddDeckWidget
 from widgets.Toast import Toast
+from widgets.SettingsDialog import SettingsDialog
 from theme import blue_dark_palette, default_text_font, button_font
 
 my_app = QApplication([])
@@ -19,6 +20,7 @@ my_app.set_palette(blue_dark_palette)
 my_app.set_font(button_font, "QPushButton")
 
 app_decks = utils.load_decks_from_csv("decks")
+settings = utils.load_config("settings.ini")
 
 
 class MainWindow(QWidget):
@@ -64,6 +66,11 @@ class MainWindow(QWidget):
         self.save_button.clicked.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
         self.button_layout.add_widget(self.save_button)
 
+        self.settings_button = QPushButton("Settings")
+        self.settings_button.tool_tip = "Shortcut: Alt+S"
+        self.settings_button.clicked.connect(self.show_settings_dialog)
+        self.button_layout.add_widget(self.settings_button)
+
         self.generate_default_decks_button = QPushButton("Generate Default Decks")
         self.generate_default_decks_button.clicked.connect(self.show_generation_dialog)
         self.generate_default_decks_button.tool_tip = "Generate default decks for JLPT N5-N1"
@@ -76,7 +83,8 @@ class MainWindow(QWidget):
             "Ctrl+N": self.show_add_card_widget,
             "Ctrl+D": self.show_add_deck_widget,
             "Ctrl+B": self.show_card_browser_widget,
-            "Ctrl+Q": self.close
+            "Ctrl+Q": self.close,
+            "Alt+S": self.show_settings_dialog
         })
 
         self.set_layout(self.layout)
@@ -162,6 +170,13 @@ class MainWindow(QWidget):
         self.reset_deck_list()
         self.toast.show_toast("Decks generated!")
         dialog.delete_later()
+
+    @Slot()
+    def show_settings_dialog(self):
+        """ This method displays the settings widget. """
+        settings_dialog = SettingsDialog(settings)
+        settings_dialog.exec()
+
 
 
 main_window = MainWindow()

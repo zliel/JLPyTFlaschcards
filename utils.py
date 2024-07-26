@@ -1,6 +1,7 @@
 import os
 import re
 import csv
+import configparser
 from uuid import uuid4
 
 import requests
@@ -167,3 +168,41 @@ def setup_shortcuts(widget: QWidget, shortcuts: dict) -> None:
     for key_sequence, action in shortcuts.items():
         shortcut = QShortcut(QKeySequence(key_sequence), widget)
         shortcut.activated.connect(action)
+
+
+# CONFIGURATION
+default_config = configparser.ConfigParser()
+default_config['DEFAULT'] = {
+    'decks_directory': 'decks',
+    'daily_reviews_limit': 100,
+    'new_card_limit': 20,
+    'theme': 'blue_dark'
+}
+
+
+def load_config(filename: str) -> configparser.ConfigParser:
+    """
+    Load a configuration file
+    :param filename: The filename of the configuration file
+    :return: A ConfigParser instance with the configuration loaded
+    """
+    os.path.exists(filename) or save_config(default_config, filename)
+    config = configparser.ConfigParser()
+    config.read(filename)
+    # If the configuration file is empty, load the default configuration
+    if not config.sections():
+        config.read_dict(default_config)
+        save_config(config, filename)
+
+    return config
+
+
+def save_config(config: configparser.ConfigParser, filename: str) -> None:
+    """
+    Save a configuration file
+    :param config: The ConfigParser instance to save
+    :param filename: The filename to save the configuration to
+    :return: None
+    """
+    with open(filename, 'w') as file:
+        config.write(file)
