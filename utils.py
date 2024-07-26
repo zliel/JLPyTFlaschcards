@@ -179,3 +179,8 @@ def load_config(filename: str) -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     config.read(filename)
     return config
+
+
+def save_config(config: configparser.ConfigParser, filename: str):
+    with open(filename, 'w') as file:
+        config.write(file)
