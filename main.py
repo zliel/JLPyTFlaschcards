@@ -19,6 +19,7 @@ my_app.set_palette(blue_dark_palette)
 my_app.set_font(button_font, "QPushButton")
 
 app_decks = utils.load_decks_from_csv("decks")
+settings = utils.load_config("settings.ini")
 
 
 class MainWindow(QWidget):
