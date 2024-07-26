@@ -72,7 +72,7 @@ class SettingsDialog(QDialog):
         self.save_button.clicked.connect(self.save_settings)
         self.layout.add_widget(self.save_button)
 
-        self.resize(300, 200)
+        self.resize(700, 250)
         self.set_layout(self.layout)
 
     @Slot()
