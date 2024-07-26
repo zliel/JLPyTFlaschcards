@@ -170,7 +170,7 @@ def setup_shortcuts(widget: QWidget, shortcuts: dict) -> None:
         shortcut.activated.connect(action)
 
 
-def load_config(filename: str):
+def load_config(filename: str) -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     config.read(filename)
     return config
