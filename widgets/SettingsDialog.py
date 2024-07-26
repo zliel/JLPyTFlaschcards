@@ -34,6 +34,15 @@ class SettingsDialog(QDialog):
         directory_layout.add_widget(self.select_directory_button)
         self.layout.add_layout(directory_layout)
 
+        themes_layout = QHBoxLayout()
+        self.themes_label = QLabel("Themes:")
+        self.themes_label.font = default_text_font
+        themes_layout.add_widget(self.themes_label)
+        self.themes_input = QComboBox(self)
+        self.themes_input.font = default_text_font
+        self.themes_input.add_items(["Blue Dark"])
+        themes_layout.add_widget(self.themes_input)
+        self.layout.add_layout(themes_layout)
 
         review_layout = QHBoxLayout()
         self.review_limit_label = QLabel("Review Limit:")
@@ -74,6 +83,7 @@ class SettingsDialog(QDialog):
         self.settings['USER']['decks_directory'] = self.directory_input.text
         self.settings['USER']['daily_reviews_limit'] = self.review_limit_input.text
         self.settings['USER']['new_card_limit'] = self.new_cards_limit_input.text
+        self.settings['USER']['theme'] = self.themes_input.current_text.lower().replace(' ', '_')
         utils.save_config(self.settings, "settings.ini")
         self.close()
 
