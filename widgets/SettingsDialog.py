@@ -1,7 +1,8 @@
 from configparser import ConfigParser
 
 from PySide6.QtGui import QIntValidator
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QDialog
+from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QDialog, QFileDialog, \
+    QComboBox
 from PySide6.QtCore import Qt, Slot
 
 # noinspection PyUnresolvedReference
@@ -18,6 +19,21 @@ class SettingsDialog(QDialog):
         self.settings = settings
         self.layout = QVBoxLayout()
         self.layout.alignment = Qt.AlignCenter
+
+        directory_layout = QHBoxLayout()
+        self.directory_label = QLabel("Decks Directory:")
+        self.directory_label.font = default_text_font
+        directory_layout.add_widget(self.directory_label)
+        self.directory_input = QLineEdit()
+        self.directory_input.font = default_text_font
+        self.directory_input.text = self.settings['USER']['decks_directory'] if 'USER' in self.settings.sections() else 'decks'
+        directory_layout.add_widget(self.directory_input)
+
+        self.select_directory_button = QPushButton("Select Directory")
+        self.select_directory_button.clicked.connect(self.get_directory)
+        directory_layout.add_widget(self.select_directory_button)
+        self.layout.add_layout(directory_layout)
+
 
         review_layout = QHBoxLayout()
         self.review_limit_label = QLabel("Review Limit:")
@@ -55,7 +71,16 @@ class SettingsDialog(QDialog):
         # If the user section doesn't exist, it will be a copy of the default settings
         if 'USER' not in self.settings.sections():
             self.settings['USER'] = self.settings['DEFAULT']
+        self.settings['USER']['decks_directory'] = self.directory_input.text
         self.settings['USER']['daily_reviews_limit'] = self.review_limit_input.text
         self.settings['USER']['new_card_limit'] = self.new_cards_limit_input.text
         utils.save_config(self.settings, "settings.ini")
         self.close()
+
+    @Slot()
+    def get_directory(self):
+        dialog = QFileDialog()
+        dialog.file_mode = QFileDialog.Directory
+        dialog.option = QFileDialog.ShowDirsOnly
+        directory = dialog.get_existing_directory()
+        self.directory_input.text = directory
