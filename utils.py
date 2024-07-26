@@ -186,12 +186,14 @@ def load_config(filename: str) -> configparser.ConfigParser:
     :param filename: The filename of the configuration file
     :return: A ConfigParser instance with the configuration loaded
     """
+    os.path.exists(filename) or save_config(default_config, filename)
     config = configparser.ConfigParser()
     config.read(filename)
     # If the configuration file is empty, load the default configuration
     if not config.sections():
         config.read_dict(default_config)
         save_config(config, filename)
+
     return config
 
 
