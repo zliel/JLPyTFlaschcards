@@ -181,6 +181,12 @@ def load_config(filename: str) -> configparser.ConfigParser:
     return config
 
 
-def save_config(config: configparser.ConfigParser, filename: str):
+def save_config(config: configparser.ConfigParser, filename: str) -> None:
+    """
+    Save a configuration file
+    :param config: The ConfigParser instance to save
+    :param filename: The filename to save the configuration to
+    :return: None
+    """
     with open(filename, 'w') as file:
         config.write(file)
