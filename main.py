@@ -44,7 +44,7 @@ class MainWindow(QWidget):
             self.no_decks_label.show()
             self.deck_list_widget.hide()
 
-        # After clicking a "Add card" button, the AddCardWidget will be displayed
+        # After clicking an "Add card" button, the AddCardWidget will be displayed
         self.button_layout = QHBoxLayout()
         self.add_card_button = QPushButton("Add Card")
         self.add_card_button.tool_tip = "Shortcut: Ctrl+N"
