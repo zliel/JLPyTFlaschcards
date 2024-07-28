@@ -63,7 +63,8 @@ class MainWindow(QWidget):
 
         self.save_button = QPushButton("Save")
         self.save_button.tool_tip = "Shortcut: Ctrl+S"
-        self.save_button.clicked.connect(lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")))
+        self.save_button.clicked.connect(
+            lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")))
         self.button_layout.add_widget(self.save_button)
 
         self.settings_button = QPushButton("Settings")
@@ -79,7 +80,8 @@ class MainWindow(QWidget):
         self.layout.add_layout(self.button_layout)
 
         utils.setup_shortcuts(self, shortcuts={
-            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks, settings.get("DEFAULT", "decks_directory", fallback="decks")),
+            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks,
+                                                      settings.get("DEFAULT", "decks_directory", fallback="decks")),
             "Ctrl+N": self.show_add_card_widget,
             "Ctrl+D": self.show_add_deck_widget,
             "Ctrl+B": self.show_card_browser_widget,
@@ -163,7 +165,8 @@ class MainWindow(QWidget):
             level = int(check_box.text[-1])
             if check_box.checked:
                 utils.download_deck_from_url(f"https://jlpt-vocab-api.vercel.app/api/words/all?level={level}",
-                                             f"{check_box.text} Vocab", settings.get("USER", "decks_directory", fallback="decks"))
+                                             f"{check_box.text} Vocab",
+                                             settings.get("USER", "decks_directory", fallback="decks"))
 
         print([deck.name for deck in self.decks])
         self.decks = utils.load_decks_from_csv(settings.get("USER", "decks_directory", fallback="decks"))
@@ -176,7 +179,6 @@ class MainWindow(QWidget):
         """ This method displays the settings widget. """
         settings_dialog = SettingsDialog(settings)
         settings_dialog.exec()
-
 
 
 main_window = MainWindow()
