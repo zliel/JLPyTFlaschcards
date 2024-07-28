@@ -1,5 +1,5 @@
 from uuid import uuid4
-
+from datetime import datetime
 from models.Flashcard import Flashcard
 
 
@@ -29,29 +29,51 @@ class Deck:
         self.cards.append(card)
         self.is_modified = True
 
+    def get_filtered_cards(self, max_reviews: int, max_new: int):
+        """
+        Get a filtered list of cards based on the number of reviews and new cards.
+        :param max_reviews: Maximum number of review cards
+        :param max_new: Maximum number of new cards
+        :return: List of filtered cards
+        """
+        today = datetime.now().date()
+        review_cards = [card for card in self.cards if card.next_review_date.date() <= today and card.repetitions > 0]
+        new_cards = [card for card in self.cards if card.next_review_date.date() >= today and card.repetitions == 0]
+
+        return review_cards[:max_reviews] + new_cards[:max_new]
+
+
     def __str__(self):
         return f"Deck: {self.name}\nID: {self.id}\nCards: {self.cards}"
+
 
     def __eq__(self, other):
         return self.name == other.name and self.cards == other.cards
 
+
     def __ne__(self, other):
         return not self == other
+
 
     def __lt__(self, other):
         return self.name < other.name
 
+
     def __le__(self, other):
         return self.name <= other.name
+
 
     def __gt__(self, other):
         return not self <= other
 
+
     def __ge__(self, other):
         return not self < other
 
+
     def __repr__(self):
         return f"Deck({self.id}, {self.name}, {self.cards})"
+
 
     def __hash__(self):
         return hash(self.id)
