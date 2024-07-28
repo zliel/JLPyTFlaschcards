@@ -24,6 +24,9 @@ class DeckListWidget(QWidget):
         :param decks: The list of decks to display
         """
         super().__init__()
+        self.settings = utils.load_config("settings.ini")
+        self.max_reviews = self.settings.getint("USER", "daily_reviews_limit", fallback=100)
+        self.max_new = self.settings.getint("USER", "new_card_limit", fallback=10)
 
         self.decks = decks
         self.layout = QVBoxLayout()
@@ -61,10 +64,15 @@ class DeckListWidget(QWidget):
         :param deck: The deck to view
         :return: None
         """
+
+        filtered_cards = deck.get_filtered_cards(self.max_reviews, self.max_new)
+        filtered_deck = Deck(deck.name, filtered_cards)
+        # Mark the deck as modified so that it is saved when the user exits the application
+        deck.is_modified = True
         # Create a new widget to house the card widget
         flashcard_layout_widget = QWidget()
         flashcard_layout = QVBoxLayout(flashcard_layout_widget)
-        card_widget = CardWidget(deck)
+        card_widget = CardWidget(filtered_deck)
 
         # Create a back button to return to the deck list
         back_button = QPushButton("Back")
