@@ -1,7 +1,7 @@
 import sys
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont, QAction, QIcon
+from PySide6.QtGui import QFont, QAction
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel, \
     QMenuBar, QFileDialog
 # noinspection PyUnresolvedReferences
@@ -96,7 +96,6 @@ class MainWindow(QWidget):
 
         self.window_title = "JLPyT Flashcards"
         self.resize(1200, 700)
-        # self.palette = Qt.black
 
         self.show()
 
@@ -104,7 +103,6 @@ class MainWindow(QWidget):
         """ This method saves the decks to CSV files. """
         utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks"))
         self.toast.show_toast("Saved Successfully")
-
 
     def import_from_file(self):
         """ This method imports decks from a CSV file. """
