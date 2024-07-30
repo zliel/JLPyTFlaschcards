@@ -81,18 +81,17 @@ class MainWindow(QWidget):
 
         self.layout.add_layout(self.button_layout)
 
-        utils.setup_shortcuts(self, shortcuts={
-            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks,
-                                                      settings.get("DEFAULT", "decks_directory", fallback="decks")),
-            "Ctrl+N": self.show_add_card_widget,
-            "Ctrl+D": self.show_add_deck_widget,
-            "Ctrl+B": self.show_card_browser_widget,
-            "Ctrl+Q": self.close,
-            "Alt+S": self.show_settings_dialog,
-            "F9": lambda: self.show_normal(),
-            "F10": lambda: self.show_maximized(),
-            "F11": lambda: self.show_full_screen()
-        })
+        # Shortcuts are being overridden by the menu bar, so they are commented out unless a shortcut not present in the menu bar
+        # is needed.
+        # utils.setup_shortcuts(self, shortcuts={
+        #     "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks,
+        #                                               settings.get("DEFAULT", "decks_directory", fallback="decks")),
+        #     "Ctrl+N": self.show_add_card_widget,
+        #     "Ctrl+D": self.show_add_deck_widget,
+        #     "Ctrl+B": self.show_card_browser_widget,
+        #     "Ctrl+Q": self.close,
+        #     "Alt+S": self.show_settings_dialog
+        # })
 
         self.set_layout(self.layout)
 
@@ -112,8 +111,8 @@ class MainWindow(QWidget):
                     lambda: utils.save_decks_to_csv(app_decks,
                                                     settings.get("USER", "decks_directory", fallback="decks")),
                     "Ctrl+S"),
+                "Exit": (self.close, "Ctrl+Q"),
                 "Settings": (self.show_settings_dialog, "Alt+S"),
-                "Exit": (self.close, "Ctrl+Q")
             },
             "Edit": {
                 "Add Card": (self.show_add_card_widget, "Ctrl+N"),
