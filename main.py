@@ -1,9 +1,9 @@
 import sys
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont, QAction, QIcon
+from PySide6.QtGui import QFont, QAction
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel, \
-    QMenuBar
+    QMenuBar, QFileDialog
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
 
@@ -96,7 +96,6 @@ class MainWindow(QWidget):
 
         self.window_title = "JLPyT Flashcards"
         self.resize(1200, 700)
-        # self.palette = Qt.black
 
         self.show()
 
@@ -105,6 +104,25 @@ class MainWindow(QWidget):
         utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks"))
         self.toast.show_toast("Saved Successfully")
 
+    def import_from_file(self):
+        """ This method imports decks from a CSV file. """
+        file_dialog = QFileDialog()
+        file_filter = "CSV File (*.csv)"
+        file_dialog.set_directory(settings.get("USER", "decks_directory", fallback="decks"))
+        file_paths = file_dialog.get_open_file_names(
+            caption="Select a Deck",
+            filter=file_filter
+        )
+
+        # Add all selected decks to the app_decks list
+        for file_path in file_paths[0]:
+            deck = utils.load_deck_from_csv(file_path)
+            if deck:
+                deck.name = file_path.split("/")[-1].split(".")[0]
+                self.decks.append(deck)
+        self.reset_deck_list()
+        self.toast.show_toast("Decks imported!")
+
     def setup_menu(self):
         """ This method sets up the menu bar for the main window, using a dictionary to map menu names to actions. """
         menu_bar = QMenuBar(self)
@@ -112,6 +130,7 @@ class MainWindow(QWidget):
         # Each menu is a dictionary of actions, where the key is the action name and the value is a tuple of the action and its shortcut
         menu_map = {
             "File": {
+                "Import From File": (self.import_from_file, "Ctrl+I"),
                 "Save": (self.save, "Ctrl+S"),
                 "Settings": (self.show_settings_dialog, "Alt+S"),
                 "Exit": (self.close, "Ctrl+Q")
