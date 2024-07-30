@@ -129,6 +129,7 @@ class MainWindow(QWidget):
         # Each menu is a dictionary of actions, where the key is the action name and the value is a tuple of the action and its shortcut
         menu_map = {
             "File": {
+                "Import From File": (self.import_from_file, "Ctrl+I"),
                 "Save": (self.save, "Ctrl+S"),
                 "Settings": (self.show_settings_dialog, "Alt+S"),
                 "Exit": (self.close, "Ctrl+Q")
