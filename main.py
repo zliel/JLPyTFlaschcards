@@ -65,8 +65,7 @@ class MainWindow(QWidget):
 
         self.save_button = QPushButton("Save")
         self.save_button.tool_tip = "Shortcut: Ctrl+S"
-        self.save_button.clicked.connect(
-            lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")))
+        self.save_button.clicked.connect(self.save)
         self.button_layout.add_widget(self.save_button)
 
         self.settings_button = QPushButton("Settings")
@@ -112,10 +111,7 @@ class MainWindow(QWidget):
         # Each menu is a dictionary of actions, where the key is the action name and the value is a tuple of the action and its shortcut
         menu_map = {
             "File": {
-                "Save": (
-                    lambda: utils.save_decks_to_csv(app_decks,
-                                                    settings.get("USER", "decks_directory", fallback="decks")),
-                    "Ctrl+S"),
+                "Save": (self.save, "Ctrl+S"),
                 "Settings": (self.show_settings_dialog, "Alt+S"),
                 "Exit": (self.close, "Ctrl+Q")
             },
@@ -160,7 +156,7 @@ class MainWindow(QWidget):
         """ This method displays the AddDeckWidget when the "Add Deck" button is clicked. """
         add_deck_widget = AddDeckWidget(self.deck_list_widget)
         add_deck_widget.signals.deck_added.connect(self.reset_deck_list)
-        add_deck_widget.signals.deck_added.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
+        add_deck_widget.signals.deck_added.connect(self.save)
         add_deck_widget.signals.deck_added.connect(lambda: self.toast.show_toast("Deck added!"))
 
     @Slot()
@@ -168,7 +164,7 @@ class MainWindow(QWidget):
         """ This method displays the CardBrowserWidget when the "Browse Cards" button is clicked. """
         card_browser_widget = CardBrowserWidget(self.decks)
         card_browser_widget.signals.closed.connect(self.reset_deck_list)
-        card_browser_widget.signals.closed.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
+        card_browser_widget.signals.closed.connect(self.save)
 
     def reset_deck_list(self):
         """ This method resets the deck list widget after a new deck has been added. """
