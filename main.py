@@ -101,6 +101,7 @@ class MainWindow(QWidget):
         self.show()
 
     def save(self):
+        """ This method saves the decks to CSV files. """
         utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks"))
         self.toast.show_toast("Saved Successfully")
 
