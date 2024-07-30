@@ -35,7 +35,7 @@ class MainWindow(QWidget):
         self.toast.hide()
         self.decks = app_decks
         self.no_decks_label = QLabel(
-            'No decks found. Click "Add Deck" to create a new deck, go to "File > Import From File" to import a deck, or go to "Tools > Generate Default Decks" to generate decks for JLPT N5-N1.')
+            'No decks found. <br> Click "Add Deck" to create a new deck, go to "File > Import From File" to import a deck, or go to "Tools > Generate Default Decks" to generate decks for JLPT N5-N1.')
         self.no_decks_label.font = default_text_font
         self.no_decks_label.alignment = Qt.AlignCenter
         if not self.decks:
