@@ -73,11 +73,6 @@ class MainWindow(QWidget):
         self.settings_button.clicked.connect(self.show_settings_dialog)
         self.button_layout.add_widget(self.settings_button)
 
-        self.generate_default_decks_button = QPushButton("Generate Default Decks")
-        self.generate_default_decks_button.clicked.connect(self.show_generation_dialog)
-        self.generate_default_decks_button.tool_tip = "Generate default decks for JLPT N5-N1"
-        self.button_layout.add_widget(self.generate_default_decks_button)
-
         self.layout.add_layout(self.button_layout)
 
         # Shortcuts are being overridden by the menu bar, so they are commented out unless a shortcut not present in the menu bar
