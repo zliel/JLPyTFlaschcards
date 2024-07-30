@@ -107,6 +107,7 @@ class MainWindow(QWidget):
 
 
     def import_from_file(self):
+        """ This method imports decks from a CSV file. """
         file_dialog = QFileDialog()
         file_filter = "CSV File (*.csv)"
         file_dialog.set_directory(settings.get("USER", "decks_directory", fallback="decks"))
