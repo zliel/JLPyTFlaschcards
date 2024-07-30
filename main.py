@@ -101,6 +101,11 @@ class MainWindow(QWidget):
 
         self.show()
 
+
+    def save(self):
+        utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks"))
+        self.toast.show_toast("Saved Successfully")
+
     def setup_menu(self):
         menu_bar = QMenuBar(self)
 
