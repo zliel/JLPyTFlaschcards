@@ -1,8 +1,9 @@
 import sys
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel
+from PySide6.QtGui import QFont, QAction, QIcon
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel, \
+    QMenuBar
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
 
@@ -29,6 +30,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
+        self.setup_menu()
         self.toast = Toast(self)
         self.toast.hide()
         self.decks = app_decks
@@ -79,15 +81,17 @@ class MainWindow(QWidget):
 
         self.layout.add_layout(self.button_layout)
 
-        utils.setup_shortcuts(self, shortcuts={
-            "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks,
-                                                      settings.get("DEFAULT", "decks_directory", fallback="decks")),
-            "Ctrl+N": self.show_add_card_widget,
-            "Ctrl+D": self.show_add_deck_widget,
-            "Ctrl+B": self.show_card_browser_widget,
-            "Ctrl+Q": self.close,
-            "Alt+S": self.show_settings_dialog
-        })
+        # Shortcuts are being overridden by the menu bar, so they are commented out unless a shortcut not present in the menu bar
+        # is needed.
+        # utils.setup_shortcuts(self, shortcuts={
+        #     "Ctrl+S": lambda: utils.save_decks_to_csv(app_decks,
+        #                                               settings.get("DEFAULT", "decks_directory", fallback="decks")),
+        #     "Ctrl+N": self.show_add_card_widget,
+        #     "Ctrl+D": self.show_add_deck_widget,
+        #     "Ctrl+B": self.show_card_browser_widget,
+        #     "Ctrl+Q": self.close,
+        #     "Alt+S": self.show_settings_dialog
+        # })
 
         self.set_layout(self.layout)
 
@@ -96,6 +100,49 @@ class MainWindow(QWidget):
         # self.palette = Qt.black
 
         self.show()
+
+    def setup_menu(self):
+        menu_bar = QMenuBar(self)
+
+        # Each menu is a dictionary of actions, where the key is the action name and the value is a tuple of the action and its shortcut
+        menu_map = {
+            "File": {
+                "Save": (
+                    lambda: utils.save_decks_to_csv(app_decks,
+                                                    settings.get("USER", "decks_directory", fallback="decks")),
+                    "Ctrl+S"),
+                "Settings": (self.show_settings_dialog, "Alt+S"),
+                "Exit": (self.close, "Ctrl+Q")
+            },
+            "Edit": {
+                "Add Card": (self.show_add_card_widget, "Ctrl+N"),
+                "Add Deck": (self.show_add_deck_widget, "Ctrl+D"),
+                "Browse Cards": (self.show_card_browser_widget, "Ctrl+B")
+            },
+            "View": {
+                "Show Normal": (self.show_normal, "F9"),
+                "Show Maximized": (self.show_maximized, "F10"),
+                "Show Full Screen": (self.show_full_screen, "F11")
+            },
+            "Tools": {
+                "Generate Default Decks": (self.show_generation_dialog, None)
+            },
+            "Help": {
+                "About": (lambda: self.toast.show_toast("JLPyT Flashcards v1.0.0"), None)
+            }
+        }
+
+        # Loop through the map and build each menu
+        for menu_name, actions in menu_map.items():
+            menu = menu_bar.add_menu(menu_name)
+            for action_name, (action, shortcut) in actions.items():
+                menu_action = QAction(action_name, self)
+                menu_action.triggered.connect(action)
+                if shortcut:
+                    menu_action.shortcut = shortcut
+                menu.add_action(menu_action)
+
+        self.layout.set_menu_bar(menu_bar)
 
     @Slot()
     def show_add_card_widget(self):
