@@ -123,6 +123,9 @@ class MainWindow(QWidget):
                 "Show Normal": (self.show_normal, "F9"),
                 "Show Maximized": (self.show_maximized, "F10"),
                 "Show Full Screen": (self.show_full_screen, "F11")
+            },
+            "Tools": {
+                "Generate Default Decks": (self.show_generation_dialog, None)
             }
         }
 
