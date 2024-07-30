@@ -105,7 +105,9 @@ class MainWindow(QWidget):
         # Each menu is a dictionary of actions, where the key is the action name and the value is a tuple of the action and its shortcut
         menu_map = {
             "File": {
-                "Save": (lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")), "Ctrl+S"),
+                "Save": (
+                lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")),
+                "Ctrl+S"),
                 "Exit": (self.close, "Ctrl+Q"),
                 "Settings": (self.show_settings_dialog, "Alt+S"),
             },
@@ -127,7 +129,6 @@ class MainWindow(QWidget):
                 menu.add_action(menu_action)
 
         self.layout.set_menu_bar(menu_bar)
-
 
     @Slot()
     def show_add_card_widget(self):
@@ -211,6 +212,7 @@ class MainWindow(QWidget):
         """ This method displays the settings widget. """
         settings_dialog = SettingsDialog(settings)
         settings_dialog.exec()
+
 
 main_window = MainWindow()
 main_window.show()
