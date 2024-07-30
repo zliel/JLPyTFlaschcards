@@ -88,7 +88,10 @@ class MainWindow(QWidget):
             "Ctrl+D": self.show_add_deck_widget,
             "Ctrl+B": self.show_card_browser_widget,
             "Ctrl+Q": self.close,
-            "Alt+S": self.show_settings_dialog
+            "Alt+S": self.show_settings_dialog,
+            "F9": lambda: self.show_normal(),
+            "F10": lambda: self.show_maximized(),
+            "F11": lambda: self.show_full_screen()
         })
 
         self.set_layout(self.layout)
