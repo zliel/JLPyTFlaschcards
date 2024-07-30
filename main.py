@@ -53,15 +53,15 @@ class MainWindow(QWidget):
         self.add_card_button.clicked.connect(self.show_add_card_widget)
         self.button_layout.add_widget(self.add_card_button)
 
-        self.add_deck_button = QPushButton("Add Deck")
-        self.add_deck_button.tool_tip = "Shortcut: Ctrl+D"
-        self.add_deck_button.clicked.connect(self.show_add_deck_widget)
-        self.button_layout.add_widget(self.add_deck_button)
-
         self.browse_cards_button = QPushButton("Browse Cards")
         self.browse_cards_button.tool_tip = "Shortcut: Ctrl+B"
         self.browse_cards_button.clicked.connect(self.show_card_browser_widget)
         self.button_layout.add_widget(self.browse_cards_button)
+
+        self.add_deck_button = QPushButton("Add Deck")
+        self.add_deck_button.tool_tip = "Shortcut: Ctrl+D"
+        self.add_deck_button.clicked.connect(self.show_add_deck_widget)
+        self.button_layout.add_widget(self.add_deck_button)
 
         self.layout.add_layout(self.button_layout)
 
