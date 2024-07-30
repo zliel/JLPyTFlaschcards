@@ -106,6 +106,7 @@ class MainWindow(QWidget):
         self.toast.show_toast("Saved Successfully")
 
     def setup_menu(self):
+        """ This method sets up the menu bar for the main window, using a dictionary to map menu names to actions. """
         menu_bar = QMenuBar(self)
 
         # Each menu is a dictionary of actions, where the key is the action name and the value is a tuple of the action and its shortcut
