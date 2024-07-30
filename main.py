@@ -119,7 +119,7 @@ class MainWindow(QWidget):
         for file_path in file_paths[0]:
             deck = utils.load_deck_from_csv(file_path)
             if deck:
-
+                deck.name = file_path.split("/")[-1].split(".")[0]
                 self.decks.append(deck)
         self.reset_deck_list()
         self.toast.show_toast("Decks imported!")
