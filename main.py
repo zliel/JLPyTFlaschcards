@@ -1,7 +1,7 @@
 import sys
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont, QAction
+from PySide6.QtGui import QFont, QAction, QIcon
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel, \
     QMenuBar
 # noinspection PyUnresolvedReferences
@@ -102,32 +102,29 @@ class MainWindow(QWidget):
     def setup_menu(self):
         menu_bar = QMenuBar(self)
 
-        file_menu = menu_bar.add_menu("File")
-        save_action = QAction("Save", self)
-        save_action.triggered.connect(
-            lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")))
-        file_menu.add_action(save_action)
+        # Each menu is a dictionary of actions, where the key is the action name and the value is a tuple of the action and its shortcut
+        menu_map = {
+            "File": {
+                "Save": (lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")), "Ctrl+S"),
+                "Exit": (self.close, "Ctrl+Q"),
+                "Settings": (self.show_settings_dialog, "Alt+S"),
+            },
+            "Edit": {
+                "Add Card": (self.show_add_card_widget, "Ctrl+N"),
+                "Add Deck": (self.show_add_deck_widget, "Ctrl+D"),
+                "Browse Cards": (self.show_card_browser_widget, "Ctrl+B")
+            }
+        }
 
-        exit_action = QAction("Exit", self)
-        exit_action.triggered.connect(self.close)
-        file_menu.add_action(exit_action)
-
-        preferences_action = QAction("Preferences", self)
-        preferences_action.triggered.connect(self.show_settings_dialog)
-        file_menu.add_action(preferences_action)
-
-        edit_menu = menu_bar.add_menu("Edit")
-        add_card_action = QAction("Add Card", self)
-        add_card_action.triggered.connect(self.show_add_card_widget)
-        edit_menu.add_action(add_card_action)
-
-        add_deck_action = QAction("Add Deck", self)
-        add_deck_action.triggered.connect(self.show_add_deck_widget)
-        edit_menu.add_action(add_deck_action)
-
-        browse_cards_action = QAction("Browse Cards", self)
-        browse_cards_action.triggered.connect(self.show_card_browser_widget)
-        edit_menu.add_action(browse_cards_action)
+        # Loop through the map and build each menu
+        for menu_name, actions in menu_map.items():
+            menu = menu_bar.add_menu(menu_name)
+            for action_name, (action, shortcut) in actions.items():
+                menu_action = QAction(action_name, self)
+                menu_action.triggered.connect(action)
+                if shortcut:
+                    menu_action.shortcut = shortcut
+                menu.add_action(menu_action)
 
         self.layout.set_menu_bar(menu_bar)
 
