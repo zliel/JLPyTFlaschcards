@@ -146,7 +146,7 @@ class MainWindow(QWidget):
                 "Show Full Screen": (self.show_full_screen, "F11")
             },
             "Tools": {
-                "Generate Default Decks": (self.show_generation_dialog, None)
+                "Generate Default Decks": (self.show_generation_dialog, "Ctrl+G")
             },
             "Help": {
                 "About": (lambda: self.toast.show_toast("JLPyT Flashcards v1.0.0"), None)
