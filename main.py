@@ -112,6 +112,10 @@ class MainWindow(QWidget):
         exit_action.triggered.connect(self.close)
         file_menu.add_action(exit_action)
 
+        preferences_action = QAction("Preferences", self)
+        preferences_action.triggered.connect(self.show_settings_dialog)
+        file_menu.add_action(preferences_action)
+
 
 
         self.layout.set_menu_bar(menu_bar)
@@ -199,7 +203,6 @@ class MainWindow(QWidget):
         """ This method displays the settings widget. """
         settings_dialog = SettingsDialog(settings)
         settings_dialog.exec()
-
 
 main_window = MainWindow()
 main_window.show()
