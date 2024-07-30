@@ -63,11 +63,6 @@ class MainWindow(QWidget):
         self.browse_cards_button.clicked.connect(self.show_card_browser_widget)
         self.button_layout.add_widget(self.browse_cards_button)
 
-        self.save_button = QPushButton("Save")
-        self.save_button.tool_tip = "Shortcut: Ctrl+S"
-        self.save_button.clicked.connect(self.save)
-        self.button_layout.add_widget(self.save_button)
-
         self.layout.add_layout(self.button_layout)
 
         # Shortcuts are being overridden by the menu bar, so they are commented out unless a shortcut not present in the menu bar
