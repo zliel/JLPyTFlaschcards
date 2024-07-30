@@ -68,11 +68,6 @@ class MainWindow(QWidget):
         self.save_button.clicked.connect(self.save)
         self.button_layout.add_widget(self.save_button)
 
-        self.settings_button = QPushButton("Settings")
-        self.settings_button.tool_tip = "Shortcut: Alt+S"
-        self.settings_button.clicked.connect(self.show_settings_dialog)
-        self.button_layout.add_widget(self.settings_button)
-
         self.layout.add_layout(self.button_layout)
 
         # Shortcuts are being overridden by the menu bar, so they are commented out unless a shortcut not present in the menu bar
