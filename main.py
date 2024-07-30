@@ -125,6 +125,10 @@ class MainWindow(QWidget):
         add_deck_action.triggered.connect(self.show_add_deck_widget)
         edit_menu.add_action(add_deck_action)
 
+        browse_cards_action = QAction("Browse Cards", self)
+        browse_cards_action.triggered.connect(self.show_card_browser_widget)
+        edit_menu.add_action(browse_cards_action)
+
         self.layout.set_menu_bar(menu_bar)
 
 
