@@ -118,6 +118,11 @@ class MainWindow(QWidget):
                 "Add Card": (self.show_add_card_widget, "Ctrl+N"),
                 "Add Deck": (self.show_add_deck_widget, "Ctrl+D"),
                 "Browse Cards": (self.show_card_browser_widget, "Ctrl+B")
+            },
+            "View": {
+                "Show Normal": (self.show_normal, "F9"),
+                "Show Maximized": (self.show_maximized, "F10"),
+                "Show Full Screen": (self.show_full_screen, "F11")
             }
         }
 
