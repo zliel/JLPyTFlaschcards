@@ -119,8 +119,10 @@ class MainWindow(QWidget):
         for file_path in file_paths[0]:
             deck = utils.load_deck_from_csv(file_path)
             if deck:
+
                 self.decks.append(deck)
         self.reset_deck_list()
+        self.toast.show_toast("Decks imported!")
 
     def setup_menu(self):
         """ This method sets up the menu bar for the main window, using a dictionary to map menu names to actions. """
