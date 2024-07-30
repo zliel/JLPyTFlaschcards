@@ -1,8 +1,9 @@
 import sys
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel
+from PySide6.QtGui import QFont, QAction
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QDialog, QCheckBox, QLabel, \
+    QMenuBar
 # noinspection PyUnresolvedReferences
 from __feature__ import snake_case, true_property
 
@@ -29,6 +30,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
+        self.setup_menu()
         self.toast = Toast(self)
         self.toast.hide()
         self.decks = app_decks
@@ -96,6 +98,24 @@ class MainWindow(QWidget):
         # self.palette = Qt.black
 
         self.show()
+
+    def setup_menu(self):
+        menu_bar = QMenuBar(self)
+
+        file_menu = menu_bar.add_menu("File")
+        save_action = QAction("Save", self)
+        save_action.triggered.connect(
+            lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")))
+        file_menu.add_action(save_action)
+
+        exit_action = QAction("Exit", self)
+        exit_action.triggered.connect(self.close)
+        file_menu.add_action(exit_action)
+
+
+
+        self.layout.set_menu_bar(menu_bar)
+
 
     @Slot()
     def show_add_card_widget(self):
