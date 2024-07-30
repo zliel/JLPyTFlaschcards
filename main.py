@@ -109,8 +109,9 @@ class MainWindow(QWidget):
         menu_map = {
             "File": {
                 "Save": (
-                lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")),
-                "Ctrl+S"),
+                    lambda: utils.save_decks_to_csv(app_decks,
+                                                    settings.get("USER", "decks_directory", fallback="decks")),
+                    "Ctrl+S"),
                 "Exit": (self.close, "Ctrl+Q"),
                 "Settings": (self.show_settings_dialog, "Alt+S"),
             },
@@ -126,6 +127,9 @@ class MainWindow(QWidget):
             },
             "Tools": {
                 "Generate Default Decks": (self.show_generation_dialog, None)
+            },
+            "Help": {
+                "About": (lambda: self.toast.show_toast("JLPyT Flashcards v1.0.0"), None)
             }
         }
 
