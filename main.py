@@ -116,7 +116,14 @@ class MainWindow(QWidget):
         preferences_action.triggered.connect(self.show_settings_dialog)
         file_menu.add_action(preferences_action)
 
+        edit_menu = menu_bar.add_menu("Edit")
+        add_card_action = QAction("Add Card", self)
+        add_card_action.triggered.connect(self.show_add_card_widget)
+        edit_menu.add_action(add_card_action)
 
+        add_deck_action = QAction("Add Deck", self)
+        add_deck_action.triggered.connect(self.show_add_deck_widget)
+        edit_menu.add_action(add_deck_action)
 
         self.layout.set_menu_bar(menu_bar)
 
