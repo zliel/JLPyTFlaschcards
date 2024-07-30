@@ -232,6 +232,6 @@ class MainWindow(QWidget):
 main_window = MainWindow()
 main_window.show()
 
-my_app.aboutToQuit.connect(lambda: utils.save_decks_to_csv(app_decks, "decks"))
+my_app.aboutToQuit.connect(lambda: utils.save_decks_to_csv(app_decks, settings.get("USER", "decks_directory", fallback="decks")))
 
 sys.exit(my_app.exec())
