@@ -112,8 +112,8 @@ class MainWindow(QWidget):
                     lambda: utils.save_decks_to_csv(app_decks,
                                                     settings.get("USER", "decks_directory", fallback="decks")),
                     "Ctrl+S"),
-                "Exit": (self.close, "Ctrl+Q"),
                 "Settings": (self.show_settings_dialog, "Alt+S"),
+                "Exit": (self.close, "Ctrl+Q")
             },
             "Edit": {
                 "Add Card": (self.show_add_card_widget, "Ctrl+N"),
