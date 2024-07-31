@@ -9,7 +9,7 @@ from __feature__ import snake_case, true_property
 import utils
 from models.Deck import Deck
 from widgets.CardWidget import CardWidget
-from theme import deck_list_item_font
+from theme import deck_list_item_font, palette, default_text_font
 
 
 class DeckListWidget(QWidget):
@@ -52,6 +52,9 @@ class DeckListWidget(QWidget):
         self.layout.add_widget(self.stacked_widget)
 
         self.remaining_card_count = QLabel()
+        self.remaining_card_count.alignment = Qt.AlignCenter
+        self.remaining_card_count.font = default_text_font
+        self.remaining_card_count.style_sheet = f"color: {palette['text'].name()}"
         self.layout.add_widget(self.remaining_card_count)
 
         utils.setup_shortcuts(self, shortcuts={
