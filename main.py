@@ -35,7 +35,7 @@ class MainWindow(QWidget):
         self.toast.hide()
         self.decks = app_decks
         self.no_decks_label = QLabel(
-            'No decks found. Click "Add Deck" to create a new deck, or "Generate Default Decks" to generate decks for JLPT N5-N1.')
+            'No decks found. <br> Click "Add Deck" to create a new deck, go to "File > Import From File" to import a deck, or go to "Tools > Generate Default Decks" to generate decks for JLPT N5-N1.')
         self.no_decks_label.font = default_text_font
         self.no_decks_label.alignment = Qt.AlignCenter
         if not self.decks:
@@ -53,30 +53,15 @@ class MainWindow(QWidget):
         self.add_card_button.clicked.connect(self.show_add_card_widget)
         self.button_layout.add_widget(self.add_card_button)
 
-        self.add_deck_button = QPushButton("Add Deck")
-        self.add_deck_button.tool_tip = "Shortcut: Ctrl+D"
-        self.add_deck_button.clicked.connect(self.show_add_deck_widget)
-        self.button_layout.add_widget(self.add_deck_button)
-
         self.browse_cards_button = QPushButton("Browse Cards")
         self.browse_cards_button.tool_tip = "Shortcut: Ctrl+B"
         self.browse_cards_button.clicked.connect(self.show_card_browser_widget)
         self.button_layout.add_widget(self.browse_cards_button)
 
-        self.save_button = QPushButton("Save")
-        self.save_button.tool_tip = "Shortcut: Ctrl+S"
-        self.save_button.clicked.connect(self.save)
-        self.button_layout.add_widget(self.save_button)
-
-        self.settings_button = QPushButton("Settings")
-        self.settings_button.tool_tip = "Shortcut: Alt+S"
-        self.settings_button.clicked.connect(self.show_settings_dialog)
-        self.button_layout.add_widget(self.settings_button)
-
-        self.generate_default_decks_button = QPushButton("Generate Default Decks")
-        self.generate_default_decks_button.clicked.connect(self.show_generation_dialog)
-        self.generate_default_decks_button.tool_tip = "Generate default decks for JLPT N5-N1"
-        self.button_layout.add_widget(self.generate_default_decks_button)
+        self.add_deck_button = QPushButton("Add Deck")
+        self.add_deck_button.tool_tip = "Shortcut: Ctrl+D"
+        self.add_deck_button.clicked.connect(self.show_add_deck_widget)
+        self.button_layout.add_widget(self.add_deck_button)
 
         self.layout.add_layout(self.button_layout)
 
@@ -146,7 +131,7 @@ class MainWindow(QWidget):
                 "Show Full Screen": (self.show_full_screen, "F11")
             },
             "Tools": {
-                "Generate Default Decks": (self.show_generation_dialog, None)
+                "Generate Default Decks": (self.show_generation_dialog, "Ctrl+G")
             },
             "Help": {
                 "About": (lambda: self.toast.show_toast("JLPyT Flashcards v1.0.0"), None)
