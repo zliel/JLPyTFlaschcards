@@ -51,11 +51,11 @@ class DeckListWidget(QWidget):
         self.stacked_widget.add_widget(self.deck_list_widget)
         self.layout.add_widget(self.stacked_widget)
 
-        self.remaining_card_count = QLabel()
-        self.remaining_card_count.alignment = Qt.AlignCenter
-        self.remaining_card_count.font = default_text_font
-        self.remaining_card_count.style_sheet = f"color: {palette['text'].name()}"
-        self.layout.add_widget(self.remaining_card_count)
+        self.remaining_card_count_label = QLabel()
+        self.remaining_card_count_label.alignment = Qt.AlignCenter
+        self.remaining_card_count_label.font = default_text_font
+        self.remaining_card_count_label.style_sheet = f"color: {palette['text'].name()}"
+        self.layout.add_widget(self.remaining_card_count_label)
 
         utils.setup_shortcuts(self, shortcuts={
             "Esc": lambda: self.stacked_widget.set_current_widget(self.deck_list_widget)
@@ -71,10 +71,10 @@ class DeckListWidget(QWidget):
         :return: None
         """
 
-        filtered_cards, num_of_cards = deck.get_filtered_cards(self.max_reviews, self.max_new)
+        filtered_cards, self.remaining_card_count = deck.get_filtered_cards(self.max_reviews, self.max_new)
         filtered_deck = Deck(deck.name, filtered_cards)
 
-        self.remaining_card_count.text = f"Remaining cards: {num_of_cards}"
+        self.remaining_card_count_label.text = f'Remaining cards: <span style="color: {palette["primary_400"].name()}">{self.remaining_card_count}</span>'
         # Mark the deck as modified so that it is saved when the user exits the application
         deck.is_modified = True
         # Create a new widget to house the card widget
