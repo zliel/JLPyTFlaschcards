@@ -27,6 +27,7 @@ class DeckListWidget(QWidget):
         self.settings = utils.load_config("settings.ini")
         self.max_reviews = self.settings.getint("USER", "daily_reviews_limit", fallback=100)
         self.max_new = self.settings.getint("USER", "new_card_limit", fallback=10)
+        self.remaining_card_count = None
 
         self.decks = decks
         self.layout = QVBoxLayout()
@@ -81,6 +82,7 @@ class DeckListWidget(QWidget):
         flashcard_layout_widget = QWidget()
         flashcard_layout = QVBoxLayout(flashcard_layout_widget)
         card_widget = CardWidget(filtered_deck)
+        card_widget.signals.card_passed.connect(self.handle_card_review)
 
         # Create a back button to return to the deck list
         back_button = QPushButton("Back")
@@ -92,3 +94,7 @@ class DeckListWidget(QWidget):
         flashcard_layout.add_widget(card_widget)
         self.stacked_widget.add_widget(flashcard_layout_widget)
         self.stacked_widget.set_current_widget(flashcard_layout_widget)
+
+    def handle_card_review(self):
+        self.remaining_card_count -= 1
+        self.remaining_card_count_label.text = f'Remaining cards: <span style="color: {palette["primary_400"].name()}">{self.remaining_card_count}</span>'
