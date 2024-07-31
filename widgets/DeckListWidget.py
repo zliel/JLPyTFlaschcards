@@ -72,16 +72,22 @@ class DeckListWidget(QWidget):
         :return: None
         """
 
-        filtered_cards, self.remaining_card_count = deck.get_filtered_cards(self.max_reviews, self.max_new)
+        filtered_cards, num_cards_remaining = deck.get_filtered_cards(self.max_reviews, self.max_new)
         filtered_deck = Deck(deck.name, filtered_cards)
 
+        self.remaining_card_count = num_cards_remaining
         self.remaining_card_count_label.text = f'Remaining cards: <span style="color: {palette["primary_400"].name()}">{self.remaining_card_count}</span>'
+        self.remaining_card_count_label.show()
         # Mark the deck as modified so that it is saved when the user exits the application
         deck.is_modified = True
         # Create a new widget to house the card widget
         flashcard_layout_widget = QWidget()
         flashcard_layout = QVBoxLayout(flashcard_layout_widget)
         card_widget = CardWidget(filtered_deck)
+
+        # If a deck has already been viewed, disconnect the card_passed signal from the CardWidget and reconnect it to the handle_card_review method
+        if self.stacked_widget.count > 1:
+            card_widget.signals.card_passed.disconnect()
         card_widget.signals.card_passed.connect(self.handle_card_review)
 
         # Create a back button to return to the deck list
