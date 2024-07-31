@@ -59,7 +59,7 @@ class DeckListWidget(QWidget):
         self.layout.add_widget(self.remaining_card_count_label)
 
         utils.setup_shortcuts(self, shortcuts={
-            "Esc": lambda: self.stacked_widget.set_current_widget(self.deck_list_widget)
+            "Esc": self.handle_escape
         })
 
         self.set_layout(self.layout)
@@ -93,7 +93,7 @@ class DeckListWidget(QWidget):
         # Create a back button to return to the deck list
         back_button = QPushButton("Back")
         back_button.tool_tip = "Shortcut: Esc"
-        back_button.clicked.connect(lambda: self.stacked_widget.set_current_widget(self.deck_list_widget))
+        back_button.clicked.connect(self.handle_escape)
 
         # Add the back button and card widget to the flashcard layout
         flashcard_layout.add_widget(back_button)
@@ -104,3 +104,7 @@ class DeckListWidget(QWidget):
     def handle_card_review(self):
         self.remaining_card_count -= 1
         self.remaining_card_count_label.text = f'Remaining cards: <span style="color: {palette["primary_400"].name()}">{self.remaining_card_count}</span>'
+
+    def handle_escape(self):
+        self.remaining_card_count_label.hide()
+        self.stacked_widget.set_current_widget(self.deck_list_widget)
