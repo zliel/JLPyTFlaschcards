@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, QObject, Signal
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
@@ -11,12 +11,17 @@ import utils
 from theme import palette, card_text_font
 
 
+class CardWidgetSignals(QObject):
+    card_passed = Signal()
+
 class CardWidget(QWidget):
     """
     This widget displays a flashcard for the user to review. The user can click a button to reveal the answer, and then
     click one of two buttons to indicate whether they passed or failed the card. The card is then updated with the
     appropriate review date and the next card is displayed.
     """
+
+    signals = CardWidgetSignals()
 
     def __init__(self, deck: Deck):
         """
@@ -104,6 +109,9 @@ class CardWidget(QWidget):
         """
         if not self.answer_shown or len(self.cards) == 0:
             return
+
+        if grade >= 3:
+            self.signals.card_passed.emit()
         self.cards[0].review(grade)
         # When a card is reviewed, the deck is modified, for the save function to know to save this particular deck
         self.deck.is_modified = True
