@@ -51,6 +51,9 @@ class DeckListWidget(QWidget):
         self.stacked_widget.add_widget(self.deck_list_widget)
         self.layout.add_widget(self.stacked_widget)
 
+        self.remaining_card_count = QLabel()
+        self.layout.add_widget(self.remaining_card_count)
+
         utils.setup_shortcuts(self, shortcuts={
             "Esc": lambda: self.stacked_widget.set_current_widget(self.deck_list_widget)
         })
@@ -65,8 +68,10 @@ class DeckListWidget(QWidget):
         :return: None
         """
 
-        filtered_cards = deck.get_filtered_cards(self.max_reviews, self.max_new)
+        filtered_cards, num_of_cards = deck.get_filtered_cards(self.max_reviews, self.max_new)
         filtered_deck = Deck(deck.name, filtered_cards)
+
+        self.remaining_card_count.text = f"Remaining cards: {num_of_cards}"
         # Mark the deck as modified so that it is saved when the user exits the application
         deck.is_modified = True
         # Create a new widget to house the card widget
