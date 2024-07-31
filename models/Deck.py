@@ -29,7 +29,7 @@ class Deck:
         self.cards.append(card)
         self.is_modified = True
 
-    def get_filtered_cards(self, max_reviews: int, max_new: int):
+    def get_filtered_cards(self, max_reviews: int, max_new: int) -> (list, int):
         """
         Get a filtered list of cards based on the number of reviews and new cards.
         :param max_reviews: Maximum number of review cards
@@ -40,7 +40,11 @@ class Deck:
         review_cards = [card for card in self.cards if card.next_review_date.date() <= today and card.repetitions > 0]
         new_cards = [card for card in self.cards if card.next_review_date.date() >= today and card.repetitions == 0]
 
-        return review_cards[:max_reviews] + new_cards[:max_new]
+        review_cards = review_cards[:max_reviews]
+        new_cards = new_cards[:max_new]
+        num_of_cards = len(review_cards) + len(new_cards)
+
+        return review_cards + new_cards, num_of_cards
 
 
     def __str__(self):
