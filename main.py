@@ -20,8 +20,8 @@ my_app = QApplication([])
 my_app.set_font(button_font, "QPushButton")
 
 settings = utils.load_config("settings.ini")
-theme = settings.get("USER", "theme", fallback="dark_blue")
-my_app.set_palette(PaletteFactory.create_palette(theme))
+starting_theme = settings.get("USER", "theme", fallback="dark_blue")
+my_app.set_palette(PaletteFactory.create_palette(starting_theme))
 
 app_decks = utils.load_decks_from_csv(settings.get("USER", "decks_directory", fallback="decks"))
 
@@ -234,6 +234,9 @@ class MainWindow(QWidget):
         """ This method displays the settings widget. """
         settings_dialog = SettingsDialog(settings)
         settings_dialog.exec()
+        theme = settings.get("USER", "theme", fallback="dark_blue")
+        if theme != starting_theme:
+            my_app.set_palette(PaletteFactory.create_palette(theme))
 
 
 main_window = MainWindow()
