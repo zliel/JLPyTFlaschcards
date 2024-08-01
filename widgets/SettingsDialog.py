@@ -43,7 +43,8 @@ class SettingsDialog(QDialog):
         self.themes_input = QComboBox(self)
         self.themes_input.font = default_text_font
         self.themes_input.add_items(["Dark Blue", "Dark Purple", "Dark Green", "Dark Pink"])
-        self.themes_input.current_text = self.settings.get("USER", "theme", fallback="dark_blue").replace('_', ' ').title()
+        self.themes_input.current_text = self.settings.get("USER", "theme", fallback="dark_blue").replace('_',
+                                                                                                          ' ').title()
         self.themes_input.currentIndexChanged.connect(lambda: self.handle_theme_change())
         themes_layout.add_widget(self.themes_input)
         self.layout.add_layout(themes_layout)

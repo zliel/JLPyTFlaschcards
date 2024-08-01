@@ -14,6 +14,7 @@ from theme import card_text_font, PaletteFactory, palettes
 class CardWidgetSignals(QObject):
     card_passed = Signal()
 
+
 class CardWidget(QWidget):
     """
     This widget displays a flashcard for the user to review. The user can click a button to reveal the answer, and then
