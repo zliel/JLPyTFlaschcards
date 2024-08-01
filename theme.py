@@ -11,34 +11,7 @@ card_list_item_font = QFont("Times New Roman", 14)
 filter_list_item_font = QFont("Times New Roman", 12)
 button_font = QFont("Times New Roman", 12)
 
-palette = {
-    'primary_100': QColor('#76c4e8'),
-    'primary_200': QColor('#88caeb'),
-    'primary_300': QColor('#98d1ed'),
-    'primary_400': QColor('#a8d8f0'),
-    'primary_500': QColor('#b7def2'),
-    'primary_600': QColor('#c6e5f5'),
-    'dark_100': QColor('#121212'),
-    'dark_200': QColor('#282828'),
-    'dark_300': QColor('#3f3f3f'),
-    'dark_400': QColor('#575757'),
-    'dark_500': QColor('#717171'),
-    'dark_600': QColor('#8b8b8b'),
-    'text': QColor('#e8eaf6'),
-    'highlight': QColor('#0a74a6'),
-    'pass': QColor('#23ebcd'),
-    'fail': QColor('#ff599c'),
-}
-
-# Change "dark" to "background" and have multiple palettes
-
-class PaletteFactory:
-
-    @staticmethod
-    def create_palette(theme_name: str) -> QPalette:
-
-        # blue, green, purple, pink
-        palettes = {
+palettes = {
             'dark_blue': {
                 'primary_100': QColor('#76c4e8'),
                 'primary_200': QColor('#88caeb'),
@@ -73,7 +46,7 @@ class PaletteFactory:
                 'text': QColor('#a15dff'),
                 'highlight': QColor('#F6F6F6'),
                 'pass': QColor('#23ebcd'),
-                'fail': QColor('#ff599c'),
+                'fail': QColor('#ff599c')
             },
             'dark_green': {
                 'primary_100': QColor('#1bf773'),
@@ -91,7 +64,7 @@ class PaletteFactory:
                 'text': QColor('#54f983'),
                 'highlight': QColor('#5E7367'),
                 'pass': QColor('#23ebcd'),
-                'fail': QColor('#ff599c'),
+                'fail': QColor('#ff599c')
             },
             'dark_pink': {
                 'primary_100': QColor('#ff3ba7'),
@@ -109,9 +82,14 @@ class PaletteFactory:
                 'text': QColor('#ff74ba'),
                 'highlight': QColor('#fefefe'),
                 'pass': QColor('#23ebcd'),
-                'fail': QColor('#ff599c'),
+                'fail': QColor('#ff599c')
             }
         }
+
+class PaletteFactory:
+
+    @staticmethod
+    def create_palette(theme_name: str) -> QPalette:
 
         new_palette = QPalette()
         palette_to_use = palettes[theme_name]
