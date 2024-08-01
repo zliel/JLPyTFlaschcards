@@ -27,6 +27,7 @@ palettes = {
                 'background_600': QColor('#8b8b8b'),
                 'text': QColor('#e8eaf6'),
                 'highlight': QColor('#0a74a6'),
+                'highlight_text': QColor('#e8eaf6'),
                 'pass': QColor('#23ebcd'),
                 'fail': QColor('#ff599c')
             },
