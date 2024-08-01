@@ -1,20 +1,21 @@
 from configparser import ConfigParser
 
 from PySide6.QtGui import QIntValidator
-from PySide6.QtWidgets import QLabel, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QDialog, QFileDialog, \
-    QComboBox
+from PySide6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QDialog, QFileDialog, \
+    QComboBox, QApplication
 from PySide6.QtCore import Qt, Slot
 
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
 
 import utils
-from theme import default_text_font
+from theme import default_text_font, PaletteFactory
 
 
 class SettingsDialog(QDialog):
     def __init__(self, settings: ConfigParser):
         super().__init__()
+        self.app = QApplication.instance()
         self.window_title = "Settings"
         self.settings = settings
         self.layout = QVBoxLayout()
@@ -41,7 +42,10 @@ class SettingsDialog(QDialog):
         themes_layout.add_widget(self.themes_label)
         self.themes_input = QComboBox(self)
         self.themes_input.font = default_text_font
-        self.themes_input.add_items(["Blue Dark"])
+        self.themes_input.add_items(["Dark Blue", "Dark Purple", "Dark Green", "Dark Pink"])
+        self.themes_input.current_text = self.settings.get("USER", "theme", fallback="dark_blue").replace('_',
+                                                                                                          ' ').title()
+        self.themes_input.currentIndexChanged.connect(lambda: self.handle_theme_change())
         themes_layout.add_widget(self.themes_input)
         self.layout.add_layout(themes_layout)
 
@@ -97,3 +101,10 @@ class SettingsDialog(QDialog):
         dialog.option = QFileDialog.ShowDirsOnly
         directory = dialog.get_existing_directory()
         self.directory_input.text = directory
+
+    @Slot()
+    def handle_theme_change(self):
+        old_theme = self.settings.get("USER", "theme", fallback="dark_blue")
+        theme = self.themes_input.current_text.lower().replace(' ', '_')
+        if old_theme != theme:
+            self.app.set_palette(PaletteFactory.create_palette(theme))

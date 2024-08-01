@@ -4,7 +4,8 @@ from PySide6.QtCore import Qt, QTimer
 # noinspection PyUnresolvedReference
 from __feature__ import snake_case, true_property
 
-from theme import default_text_font, palette
+import utils
+from theme import default_text_font, PaletteFactory, palettes
 
 
 class Toast(QLabel):
@@ -12,7 +13,9 @@ class Toast(QLabel):
         super().__init__(parent)
         self.window_flag = Qt.ToolTip
         self.font = default_text_font
-        self.style_sheet = f"background-color: {palette['dark_200'].name()}; color: {palette['text'].name()}; border-radius: 5px; padding: 3px;"
+        settings = utils.load_config("settings.ini")
+        palette = palettes[settings.get("USER", "theme", fallback="dark_blue")]
+        self.style_sheet = f"background-color: {palette['background_200'].name()}; color: {palette['text'].name()}; border-radius: 5px; padding: 3px;"
 
         self.alignment = Qt.AlignCenter
         self.timer = QTimer(parent=self)
