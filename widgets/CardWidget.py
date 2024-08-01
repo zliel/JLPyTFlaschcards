@@ -8,7 +8,7 @@ from __feature__ import snake_case, true_property
 
 from models.Deck import Deck
 import utils
-from theme import palette, card_text_font
+from theme import card_text_font, PaletteFactory, palettes
 
 
 class CardWidgetSignals(QObject):
@@ -37,8 +37,11 @@ class CardWidget(QWidget):
         self.update_card_list()
 
         vbox = QVBoxLayout()
-        pass_btn_style = f"background-color: {palette['dark_300'].name()}; color: {palette['pass'].name()};"
-        fail_btn_style = f"background-color: {palette['dark_300'].name()}; color: {palette['fail'].name()};"
+        settings = utils.load_config("settings.ini")
+        palette = palettes[settings.get("USER", "theme", fallback="dark_blue")]
+
+        pass_btn_style = f"background-color: {palette['background_300'].name()}; color: {palette['pass'].name()};"
+        fail_btn_style = f"background-color: {palette['background_300'].name()}; color: {palette['fail'].name()};"
 
         # Question and Answer Labels
         self.question_label = QLabel("")

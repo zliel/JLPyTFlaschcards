@@ -9,7 +9,7 @@ from __feature__ import snake_case, true_property
 import utils
 from models.Deck import Deck
 from widgets.CardWidget import CardWidget
-from theme import deck_list_item_font, palette, default_text_font
+from theme import deck_list_item_font, default_text_font, palettes
 
 
 class DeckListWidget(QWidget):
@@ -25,6 +25,7 @@ class DeckListWidget(QWidget):
         """
         super().__init__()
         self.settings = utils.load_config("settings.ini")
+        palette = palettes[self.settings.get("USER", "theme", fallback="dark_blue")]
         self.max_reviews = self.settings.getint("USER", "daily_reviews_limit", fallback=100)
         self.max_new = self.settings.getint("USER", "new_card_limit", fallback=10)
         self.remaining_card_count = None
@@ -71,6 +72,7 @@ class DeckListWidget(QWidget):
         :param deck: The deck to view
         :return: None
         """
+        palette = palettes[self.settings.get("USER", "theme", fallback="dark_blue")]
 
         filtered_cards, num_cards_remaining = deck.get_filtered_cards(self.max_reviews, self.max_new)
         filtered_deck = Deck(deck.name, filtered_cards)
@@ -102,6 +104,7 @@ class DeckListWidget(QWidget):
         self.stacked_widget.set_current_widget(flashcard_layout_widget)
 
     def handle_card_review(self):
+        palette = palettes[self.settings.get("USER", "theme", fallback="dark_blue")]
         self.remaining_card_count -= 1
         self.remaining_card_count_label.text = f'Remaining cards: <span style="color: {palette["primary_400"].name()}">{self.remaining_card_count}</span>'
 
