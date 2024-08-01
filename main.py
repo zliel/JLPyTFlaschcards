@@ -14,13 +14,15 @@ from widgets.AddCardWidget import AddCardWidget
 from widgets.AddDeckWidget import AddDeckWidget
 from widgets.Toast import Toast
 from widgets.SettingsDialog import SettingsDialog
-from theme import blue_dark_palette, default_text_font, button_font
+from theme import PaletteFactory, default_text_font, button_font
 
 my_app = QApplication([])
-my_app.set_palette(blue_dark_palette)
 my_app.set_font(button_font, "QPushButton")
 
 settings = utils.load_config("settings.ini")
+theme = settings.get("USER", "theme", fallback="dark_blue")
+my_app.set_palette(PaletteFactory.create_palette(theme))
+
 app_decks = utils.load_decks_from_csv(settings.get("USER", "decks_directory", fallback="decks"))
 
 
