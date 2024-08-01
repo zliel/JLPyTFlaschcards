@@ -44,7 +44,8 @@ palettes = {
                 'background_500': QColor('#717171'),
                 'background_600': QColor('#8b8b8b'),
                 'text': QColor('#a15dff'),
-                'highlight': QColor('#F6F6F6'),
+                'highlight': QColor('#9400d4'),
+                'highlight_text': QColor('#e1d9f6'),
                 'pass': QColor('#23ebcd'),
                 'fail': QColor('#ff599c')
             },
@@ -62,7 +63,8 @@ palettes = {
                 'background_500': QColor('#717171'),
                 'background_600': QColor('#8b8b8b'),
                 'text': QColor('#54f983'),
-                'highlight': QColor('#5E7367'),
+                'highlight': QColor('#099232'),
+                'highlight_text': QColor('#DAFCE4'),
                 'pass': QColor('#23ebcd'),
                 'fail': QColor('#ff599c')
             },
@@ -80,7 +82,8 @@ palettes = {
                 'background_500': QColor('#717171'),
                 'background_600': QColor('#8b8b8b'),
                 'text': QColor('#ff74ba'),
-                'highlight': QColor('#fefefe'),
+                'highlight': QColor('#E9007C'),
+                'highlight_text': QColor('#fcd0e8'),
                 'pass': QColor('#23ebcd'),
                 'fail': QColor('#ff599c')
             }
@@ -106,7 +109,7 @@ class PaletteFactory:
             QPalette.ColorRole.ButtonText: palette_to_use['primary_500'],
             QPalette.ColorRole.BrightText: palette_to_use['primary_500'],
             QPalette.ColorRole.Highlight: palette_to_use['highlight'],
-            QPalette.ColorRole.HighlightedText: palette_to_use['text'],
+            QPalette.ColorRole.HighlightedText: palette_to_use['highlight_text'],
             QPalette.ColorRole.Accent: palette_to_use['primary_200'],
         }
 
