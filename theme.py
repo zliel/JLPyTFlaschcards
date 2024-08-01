@@ -74,6 +74,24 @@ class PaletteFactory:
                 'highlight': QColor('#F6F6F6'),
                 'pass': QColor('#23ebcd'),
                 'fail': QColor('#ff599c'),
+            },
+            'dark_green': {
+                'primary_100': QColor('#1bf773'),
+                'primary_200': QColor('#54f983'),
+                'primary_300': QColor('#73fa93'),
+                'primary_400': QColor('#8dfca3'),
+                'primary_500': QColor('#a3fdb2'),
+                'primary_600': QColor('#b7fec2'),
+                'background_100': QColor('#121212'),
+                'background_200': QColor('#282828'),
+                'background_300': QColor('#3f3f3f'),
+                'background_400': QColor('#575757'),
+                'background_500': QColor('#717171'),
+                'background_600': QColor('#8b8b8b'),
+                'text': QColor('#54f983'),
+                'highlight': QColor('#5E7367'),
+                'pass': QColor('#23ebcd'),
+                'fail': QColor('#ff599c'),
             }
         }
 
