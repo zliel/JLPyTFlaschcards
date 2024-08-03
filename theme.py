@@ -96,6 +96,7 @@ class PaletteFactory:
 
     @staticmethod
     def create_palette(theme_name: str) -> QPalette:
+        """ Creates a palette given the provided theme name, typically pulled from the user's settings. """
         new_palette = QPalette()
         palette_to_use = palettes[theme_name]
 
