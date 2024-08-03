@@ -92,6 +92,7 @@ palettes = {
 
 
 class PaletteFactory:
+    """ This class handles generating palettes based on the theme set in the user's settings. """
 
     @staticmethod
     def create_palette(theme_name: str) -> QPalette:
