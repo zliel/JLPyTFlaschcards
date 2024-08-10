@@ -8,11 +8,12 @@ from __feature__ import snake_case, true_property
 
 from models.Deck import Deck
 import utils
+from models.Flashcard import Flashcard
 from theme import card_text_font, PaletteFactory, palettes
 
 
 class CardWidgetSignals(QObject):
-    card_passed = Signal()
+    card_passed = Signal(Flashcard)
 
 
 class CardWidget(QWidget):
@@ -115,7 +116,7 @@ class CardWidget(QWidget):
             return
 
         if grade >= 3:
-            self.signals.card_passed.emit()
+            self.signals.card_passed.emit(self.cards[0])
         self.cards[0].review(grade)
         # When a card is reviewed, the deck is modified, for the save function to know to save this particular deck
         self.deck.is_modified = True
