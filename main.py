@@ -183,6 +183,10 @@ class MainWindow(QWidget):
         self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
         self.deck_list_widget.delete_later()
         self.deck_list_widget = new_deck_list_widget
+    def reset_deck_counters(self):
+        """ This method resets the deck counters. """
+        for deck in self.decks:
+            deck.reset_session_counts()
 
     @Slot()
     def show_generation_dialog(self):
