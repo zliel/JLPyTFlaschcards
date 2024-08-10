@@ -9,10 +9,12 @@ from theme import default_text_font
 
 
 class CardEditSignals(QObject):
+    """ This class manages the signals for the CardEditWidget. """
     card_edited = Signal(Flashcard, Flashcard)
 
 
 class CardEditWidget(QWidget):
+    """ This class manages the card editor in the DeckListWidget. """
     signals = CardEditSignals()
 
     def __init__(self, card: Flashcard = None) -> None:
@@ -52,6 +54,7 @@ class CardEditWidget(QWidget):
         # self.show()
 
     def load_card(self):
+        """ This method sets the card's front, back, and tags inputs. """
         self.front_input.set_text(self.card.question)
         self.back_input.set_text(self.card.answer)
         # example: "tag1 tag2 tag3"
@@ -59,6 +62,7 @@ class CardEditWidget(QWidget):
 
     @Slot()
     def save_card(self):
+        """ This method sends the updated card to the DeckListWidget. """
         old_card = Flashcard(question=self.card.question, answer=self.card.answer, tags=self.card.tags)
         self.card.question = self.front_input.plain_text
         self.card.answer = self.back_input.plain_text
