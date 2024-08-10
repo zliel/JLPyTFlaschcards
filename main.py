@@ -183,6 +183,13 @@ class MainWindow(QWidget):
         self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
         self.deck_list_widget.delete_later()
         self.deck_list_widget = new_deck_list_widget
+        current_date = datetime.now().date()
+        if current_date >= self.last_checked_date:
+            self.reset_deck_counters()
+            self.last_checked_date = current_date
+
+
+
     def reset_deck_counters(self):
         """ This method resets the deck counters. """
         for deck in self.decks:

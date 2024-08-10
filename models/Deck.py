@@ -59,6 +59,15 @@ class Deck:
         else:
             self.session_review_cards += 1
 
+
+    def reset_session_counts(self):
+        """
+        Reset the session review and new card counts.
+        :return: None
+        """
+        self.session_review_cards = 0
+        self.session_new_cards = 0
+
     def __str__(self):
         return f"Deck: {self.name}\nID: {self.id}\nCards: {self.cards}"
 
