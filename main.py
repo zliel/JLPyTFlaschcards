@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont, QAction
@@ -31,6 +32,7 @@ class MainWindow(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.last_checked_date = datetime.now().date()
         self.layout = QVBoxLayout()
         self.setup_menu()
         self.toast = Toast(self)
