@@ -8,6 +8,7 @@ from __feature__ import snake_case, true_property
 
 import utils
 from models.Deck import Deck
+from models.Flashcard import Flashcard
 from widgets.CardWidget import CardWidget
 from theme import deck_list_item_font, default_text_font, palettes
 
@@ -31,6 +32,7 @@ class DeckListWidget(QWidget):
         self.remaining_card_count = None
 
         self.decks = decks
+        self.current_deck = None
         self.layout = QVBoxLayout()
         self.deck_list_widget = QWidget()
         self.deck_list_widget.font = deck_list_item_font
@@ -74,6 +76,7 @@ class DeckListWidget(QWidget):
         """
         palette = palettes[self.settings.get("USER", "theme", fallback="dark_blue")]
 
+        self.current_deck = deck
         filtered_cards, num_cards_remaining = deck.get_filtered_cards(self.max_reviews, self.max_new)
         filtered_deck = Deck(deck.name, filtered_cards)
 
@@ -103,10 +106,12 @@ class DeckListWidget(QWidget):
         self.stacked_widget.add_widget(flashcard_layout_widget)
         self.stacked_widget.set_current_widget(flashcard_layout_widget)
 
-    def handle_card_review(self):
+    @Slot(Flashcard)
+    def handle_card_review(self, card: Flashcard):
         palette = palettes[self.settings.get("USER", "theme", fallback="dark_blue")]
         self.remaining_card_count -= 1
         self.remaining_card_count_label.text = f'Remaining cards: <span style="color: {palette["primary_400"].name()}">{self.remaining_card_count}</span>'
+        self.current_deck.handle_card_review(card.repetitions == 0)
 
     def handle_escape(self):
         self.remaining_card_count_label.hide()
