@@ -79,6 +79,10 @@ class SettingsDialog(QDialog):
         self.save_button.clicked.connect(self.save_settings)
         self.layout.add_widget(self.save_button)
 
+        self.warning_text = QLabel("Note: Changes to review counts will take effect after restarting the application.")
+        self.warning_text.font = default_text_font
+        self.layout.add_widget(self.warning_text)
+
         self.resize(700, 250)
         self.set_layout(self.layout)
 
