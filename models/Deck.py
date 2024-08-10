@@ -34,7 +34,7 @@ class Deck:
         Get a filtered list of cards based on the number of reviews and new cards.
         :param max_reviews: Maximum number of review cards
         :param max_new: Maximum number of new cards
-        :return: List of filtered cards
+        :return: List of filtered cards, and the total number of cards that will be reviewed
         """
         today = datetime.now().date()
         review_cards = [card for card in self.cards if card.next_review_date.date() <= today and card.repetitions > 0]
