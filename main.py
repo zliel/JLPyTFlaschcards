@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont, QAction
@@ -31,6 +32,7 @@ class MainWindow(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.last_checked_date = datetime.now().date()
         self.layout = QVBoxLayout()
         self.setup_menu()
         self.toast = Toast(self)
@@ -183,6 +185,17 @@ class MainWindow(QWidget):
         self.layout.replace_widget(self.deck_list_widget, new_deck_list_widget)
         self.deck_list_widget.delete_later()
         self.deck_list_widget = new_deck_list_widget
+        current_date = datetime.now().date()
+        if current_date >= self.last_checked_date:
+            self.reset_deck_counters()
+            self.last_checked_date = current_date
+
+
+
+    def reset_deck_counters(self):
+        """ This method resets the deck counters. """
+        for deck in self.decks:
+            deck.reset_session_counts()
 
     @Slot()
     def show_generation_dialog(self):
