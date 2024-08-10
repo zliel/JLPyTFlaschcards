@@ -20,6 +20,7 @@ class Deck:
         self.is_modified = True
         # When a new deck is created, it is automatically modified, as it has not been saved yet
         self.session_review_cards = 0
+        self.session_new_cards = 0
 
     def append_card(self, card: Flashcard) -> None:
         """
@@ -41,8 +42,6 @@ class Deck:
         review_cards = [card for card in self.cards if card.next_review_date.date() <= today and card.repetitions > 0]
         new_cards = [card for card in self.cards if card.next_review_date.date() >= today and card.repetitions == 0]
 
-        review_cards = review_cards[:max_reviews]
-        new_cards = new_cards[:max_new]
         review_cards = review_cards[:max_reviews - self.session_review_cards]
         new_cards = new_cards[:max_new - self.session_new_cards]
         num_of_cards = len(review_cards) + len(new_cards)
