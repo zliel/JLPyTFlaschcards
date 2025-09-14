@@ -23,7 +23,7 @@ def is_valid_filename(filename: str) -> bool:
     :return: True if the filename is valid, False otherwise
     """
     # Filename can only include alphanumeric characters, dashes, and hyphens, and must end with .csv
-    return re.match(r'^[\w\s-]+\.csv$', filename) is not None
+    return re.match(r"^[\w\s-]+\.csv$", filename) is not None
 
 
 def is_valid_path(basedir, path, follow_symlinks=True):
@@ -44,7 +44,7 @@ def is_valid_path(basedir, path, follow_symlinks=True):
     basedir = os.path.abspath(basedir)
 
     # Ensure the abs_path starts with basedir and that the next character is a path separator
-    return abs_path.startswith(os.path.join(basedir, ''))
+    return abs_path.startswith(os.path.join(basedir, ""))
 
 
 def save_deck_to_csv(deck: Deck, directory: str) -> None:
@@ -63,14 +63,37 @@ def save_deck_to_csv(deck: Deck, directory: str) -> None:
 
     filename = f"{directory}/{deck.name}.csv"
     print(f"Saving deck to {filename}")
-    with open(filename, mode='w', newline='', encoding='utf-8') as file:
+    with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(['Deck ID', 'Deck Name', 'Card ID', 'Question', 'Answer', 'Next Review Date', 'Repetitions',
-                         'Easiness Factor', 'Interval', 'Tags'])
+        writer.writerow(
+            [
+                "Deck ID",
+                "Deck Name",
+                "Card ID",
+                "Question",
+                "Answer",
+                "Next Review Date",
+                "Repetitions",
+                "Easiness Factor",
+                "Interval",
+                "Tags",
+            ]
+        )
         for card in deck.cards:
             writer.writerow(
-                [deck.id, deck.name, card.id, card.question, card.answer, card.next_review_date, card.repetitions,
-                 card.easiness_factor, card.interval, ' '.join(card.tags)])
+                [
+                    deck.id,
+                    deck.name,
+                    card.id,
+                    card.question,
+                    card.answer,
+                    card.next_review_date,
+                    card.repetitions,
+                    card.easiness_factor,
+                    card.interval,
+                    " ".join(card.tags),
+                ]
+            )
     deck.is_modified = False  # Reset the modified flag after saving
 
 
@@ -91,21 +114,21 @@ def load_deck_from_csv(filename: str) -> Deck:
     :param filename: The filename to load the deck from, including the directory
     :return: A Deck instance with the cards loaded from the CSV file
     """
-    with open(filename, mode='r', newline='', encoding='utf-8') as file:
+    with open(filename, mode="r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         cards = []
-        deck_name = filename.split('\\')[-1].split('.')[0]
+        deck_name = filename.split("\\")[-1].split(".")[0]
         print(f"Loading deck {deck_name}")
         for row in reader:
             card = Flashcard(
-                question=row['Question'],
-                answer=row['Answer'],
-                next_review_date=row['Next Review Date'],
-                repetitions=int(row['Repetitions']),
-                easiness_factor=float(row['Easiness Factor']),
-                interval=int(row['Interval']),
-                id=row['Card ID'],
-                tags=row['Tags'].split(' ')
+                question=row["Question"],
+                answer=row["Answer"],
+                next_review_date=row["Next Review Date"],
+                repetitions=int(row["Repetitions"]),
+                easiness_factor=float(row["Easiness Factor"]),
+                interval=int(row["Interval"]),
+                id=row["Card ID"],
+                tags=row["Tags"].split(" "),
             )
             cards.append(card)
         deck = Deck(name=deck_name, cards=cards)
@@ -119,6 +142,8 @@ def load_decks_from_csv(directory: str) -> List[Deck]:
     :return: A list of Deck instances with the cards loaded from the CSV files
     """
     decks = []
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     for filename in os.listdir(directory):
         filepath = os.path.join(directory, filename)
         if is_valid_path(directory, filepath) and is_valid_filename(filename):
@@ -145,7 +170,7 @@ def download_deck_from_url(url: str, deck_name: str, directory: str) -> None:
         cards = []
         for card in response:
             front = card["word"]
-            furigana = card["furigana"] + ' - ' if card["furigana"] != '' else ''
+            furigana = card["furigana"] + " - " if card["furigana"] != "" else ""
             back = furigana + card["meaning"]
             tags = [f'N{card["level"]}']
 
@@ -172,11 +197,11 @@ def setup_shortcuts(widget: QWidget, shortcuts: dict) -> None:
 
 # CONFIGURATION
 default_config = configparser.ConfigParser()
-default_config['DEFAULT'] = {
-    'decks_directory': 'decks',
-    'daily_reviews_limit': 100,
-    'new_card_limit': 20,
-    'theme': 'blue_dark'
+default_config["DEFAULT"] = {
+    "decks_directory": "decks",
+    "daily_reviews_limit": 100,
+    "new_card_limit": 20,
+    "theme": "blue_dark",
 }
 
 
@@ -204,5 +229,5 @@ def save_config(config: configparser.ConfigParser, filename: str) -> None:
     :param filename: The filename to save the configuration to
     :return: None
     """
-    with open(filename, 'w') as file:
+    with open(filename, "w") as file:
         config.write(file)
